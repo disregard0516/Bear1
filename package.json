@@ -1,0 +1,14 @@
+{
+  "name": "bakaboost-static",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "preview": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Static site ready')\""
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
