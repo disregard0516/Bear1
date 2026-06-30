@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BakaBoost Admin Panel</title>
+  <link rel="icon" type="image/png" href="/coffee-mug.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --pink: #FF6B9D; --pink-dark: #e0517f; --lavender: #C084FC;
+      --blush: #FFF0F5; --blush2: #FFE4F0; --card: #fff;
+      --text: #1a0a12; --muted: #7d4e6a; --line: #f3d6e4;
+      --sidebar: #1a0a12; --sidebar-text: #c09ab0;
+      --danger: #ef4444; --success: #22c55e;
+    }
+    html, body { height: 100%; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--text); background: var(--blush); }
+    button { cursor: pointer; font: inherit; }
+    input, textarea, select { font: inherit; }
+
+    /* LOGIN */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fff0f5, #f3e0ff);
+    }
+    .login-card {
+      background: #fff; border-radius: 24px;
+      padding: 48px 40px; width: 100%; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(255,107,157,.18);
+      border: 1px solid var(--line); text-align: center;
+    }
+    .login-logo { font-size: 2rem; font-weight: 900; color: var(--pink); margin-bottom: 8px; }
+    .login-sub { color: var(--muted); font-size: .9rem; margin-bottom: 36px; }
+    .login-card input[type="password"] {
+      width: 100%; padding: 13px 16px; border: 1.5px solid var(--line);
+      border-radius: 12px; font-size: 1rem; margin-bottom: 16px;
+      outline: none; transition: border-color .2s;
+    }
+    .login-card input:focus { border-color: var(--pink); }
+    .btn-pink-full {
+      width: 100%; background: var(--pink); color: #fff; border: none;
+      padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      transition: background .2s; margin-bottom: 12px;
+    }
+    .btn-pink-full:hover { background: var(--pink-dark); }
+    #login-error { color: var(--danger); font-size: .85rem; display: none; margin-top: 8px; }
+
+    /* APP SHELL */
+    #app-shell { display: none; height: 100vh; overflow: hidden; }
+    .app-layout { display: flex; height: 100%; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--sidebar); color: var(--sidebar-text);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      font-size: 1.2rem; font-weight: 900; color: #ff9ec4;
+      border-bottom: 1px solid #3a1a2a;
+    }
+    .sidebar-nav { flex: 1; padding: 16px 0; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 24px; color: var(--sidebar-text);
+      text-decoration: none; font-size: .9rem; font-weight: 500;
+      transition: background .15s, color .15s; border-radius: 8px; margin: 2px 8px;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,107,157,.15); color: #ff9ec4; }
+    .sidebar-footer { padding: 20px; border-top: 1px solid #3a1a2a; }
+    .btn-logout {
+      width: 100%; background: rgba(255,107,157,.1); color: #ff9ec4;
+      border: 1px solid rgba(255,107,157,.3); border-radius: 10px;
+      padding: 10px; font-size: .85rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .btn-logout:hover { background: rgba(255,107,157,.2); }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; }
+    .main-header {
+      background: #fff; border-bottom: 1px solid var(--line);
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .main-header h1 { font-size: 1.3rem; font-weight: 900; }
+    .btn-new {
+      background: var(--pink); color: #fff; border: none;
+      padding: 10px 20px; border-radius: 10px; font-size: .9rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .btn-new:hover { background: var(--pink-dark); }
+    .main-content { padding: 32px; }
+
+    /* PROFILE LIST */
+    .profile-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .profile-item {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 12px rgba(255,107,157,.07);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .profile-item:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,157,.13); }
+    .profile-banner {
+      height: 80px; background: linear-gradient(135deg, #ff9ec4, #c084fc);
+      position: relative; background-size: cover; background-position: center;
+    }
+    .profile-pfp {
+      width: 56px; height: 56px; border-radius: 999px;
+      border: 3px solid #fff; position: absolute; bottom: -28px; left: 16px;
+      background: #ffb3d1; overflow: hidden; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; box-shadow: 0 3px 12px rgba(255,107,157,.25);
+    }
+    .profile-pfp img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info { padding: 36px 16px 16px; }
+    .profile-name { font-size: 1rem; font-weight: 800; margin-bottom: 2px; }
+    .profile-url { font-size: .78rem; color: var(--pink); margin-bottom: 6px; }
+    .profile-bio { font-size: .82rem; color: var(--muted); line-height: 1.4; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-meta { display: flex; gap: 12px; font-size: .78rem; color: var(--muted); margin-bottom: 16px; }
+    .profile-actions { display: flex; gap: 8px; }
+    .btn-edit {
+      flex: 1; background: var(--blush); color: var(--pink); border: 1px solid var(--line);
+      padding: 8px; border-radius: 8px; font-size: .82rem; font-weight: 700; transition: background .2s;
+    }
+    .btn-edit:hover { background: var(--blush2); }
+    .btn-delete {
+      background: #fff0f0; color: var(--danger); border: 1px solid #fecaca;
+      padding: 8px 12px; border-radius: 8px; font-size: .82rem; font-weight: 700; transition: background .2s;
+    }
+    .btn-delete:hover { background: #fee2e2; }
+    .btn-view {
+      background: #fff; color: var(--muted); border: 1px solid var(--line);
+      padding: 8px 12px; border-radius: 8px; font-size: .82rem; font-weight: 700; transition: background .2s;
+      text-decoration: none; display: inline-block; text-align: center;
+    }
+    .btn-view:hover { background: var(--blush); color: var(--pink); }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 20px;
+      width: 100%; max-width: 680px; max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,.2);
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px; border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; background: #fff; z-index: 2;
+    }
+    .modal-header h2 { font-size: 1.1rem; font-weight: 900; }
+    .btn-close {
+      background: none; border: none; font-size: 1.4rem; color: var(--muted);
+      width: 36px; height: 36px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .btn-close:hover { background: var(--blush); }
+    .modal-body { padding: 28px; }
+    .modal-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+    .modal-tab {
+      padding: 10px 18px; font-size: .88rem; font-weight: 600;
+      color: var(--muted); background: none; border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; transition: color .2s;
+    }
+    .modal-tab.active { color: var(--pink); border-bottom-color: var(--pink); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--line);
+      border-radius: 10px; font-size: .9rem; outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--pink); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-hint { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ARRAY FIELDS */
+    .array-section { margin-bottom: 28px; }
+    .array-section h3 { font-size: .95rem; font-weight: 800; margin-bottom: 16px; color: var(--text); }
+    .array-item {
+      background: var(--blush); border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px; margin-bottom: 12px; position: relative;
+    }
+    .array-item .remove-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: #fff0f0; color: var(--danger); border: 1px solid #fecaca;
+      border-radius: 6px; padding: 3px 8px; font-size: .75rem; font-weight: 700;
+    }
+    .array-item .remove-btn:hover { background: #fee2e2; }
+    .array-item input, .array-item textarea {
+      width: 100%; padding: 8px 10px; border: 1.5px solid var(--line);
+      border-radius: 8px; font-size: .85rem; margin-bottom: 8px; outline: none;
+      background: #fff;
+    }
+    .array-item input:focus, .array-item textarea:focus { border-color: var(--pink); }
+    .array-item label { font-size: .78rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 4px; }
+    .btn-add-item {
+      background: var(--blush2); color: var(--pink); border: 1.5px dashed var(--pink);
+      border-radius: 10px; padding: 10px; width: 100%; font-size: .85rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .btn-add-item:hover { background: var(--blush); }
+    .modal-footer {
+      padding: 20px 28px; border-top: 1px solid var(--line);
+      display: flex; justify-content: flex-end; gap: 10px;
+      position: sticky; bottom: 0; background: #fff;
+    }
+    .btn-cancel {
+      background: var(--blush); color: var(--muted); border: none;
+      padding: 11px 22px; border-radius: 10px; font-size: .9rem; font-weight: 700;
+    }
+    .btn-save {
+      background: var(--pink); color: #fff; border: none;
+      padding: 11px 28px; border-radius: 10px; font-size: .9rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .btn-save:hover { background: var(--pink-dark); }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: #1a0a12; color: #fff; padding: 14px 22px;
+      border-radius: 12px; font-size: .9rem; font-weight: 600;
+      transform: translateY(80px); opacity: 0; transition: all .3s;
+      max-width: 300px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { background: var(--success); }
+    #toast.error { background: var(--danger); }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 80px 24px; color: var(--muted); }
+    .empty-state .icon { font-size: 64px; margin-bottom: 20px; }
+    .empty-state h3 { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .empty-state p { font-size: .9rem; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">🌸 BakaBoost</div>
+    <p class="login-sub">Admin Panel — Enter your password</p>
+    <form id="login-form" onsubmit="return false;">
+      <input type="password" id="login-pw" placeholder="Admin password" autocomplete="current-password" />
+      <button class="btn-pink-full" id="login-btn" type="submit">Log In</button>
+    </form>
+    <div id="login-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app-shell">
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">🌸 BakaBoost Admin</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="active">👥 Profiles</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logout-btn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="main-header">
+        <h1>Creator Profiles</h1>
+        <button class="btn-new" id="new-profile-btn">+ New Profile</button>
+      </div>
+      <div class="main-content">
+        <div id="profile-list" class="profile-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">New Profile</h2>
+      <button class="btn-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button class="modal-tab active" data-panel="info">Profile Info</button>
+        <button class="modal-tab" data-panel="posts">Posts</button>
+        <button class="modal-tab" data-panel="gallery">Gallery</button>
+        <button class="modal-tab" data-panel="shop">Shop</button>
+      </div>
+
+      <!-- INFO TAB -->
+      <div class="tab-panel active" id="panel-info">
+        <div class="form-group">
+          <label>Username *</label>
+          <input type="text" id="f-username" placeholder="katelyn" autocomplete="off" />
+          <div class="form-hint">URL will be: bakaboost.com/<span id="username-preview">username</span></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Display Name *</label>
+            <input type="text" id="f-displayName" placeholder="Katelyn" />
+          </div>
+          <div class="form-group">
+            <label>Follower Count</label>
+            <input type="number" id="f-followerCount" placeholder="0" min="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea id="f-bio" placeholder="Tell fans about yourself..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Profile Picture (URL)</label>
+          <input type="url" id="f-pfp" placeholder="https://..." />
+          <div class="form-hint">Direct link to image (JPG, PNG, GIF)</div>
+        </div>
+        <div class="form-group">
+          <label>Banner Image (URL)</label>
+          <input type="url" id="f-banner" placeholder="https://..." />
+          <div class="form-hint">Recommended: 1200×400px</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Coffee Price ($)</label>
+            <input type="number" id="f-coffeePrice" placeholder="1" min="0.5" step="0.5" />
+          </div>
+          <div class="form-group">
+            <label>Coffee Label</label>
+            <input type="text" id="f-coffeeLabel" placeholder="coffee" />
+          </div>
+        </div>
+      </div>
+
+      <!-- POSTS TAB -->
+      <div class="tab-panel" id="panel-posts">
+        <div class="array-section">
+          <h3>Posts</h3>
+          <div id="posts-list"></div>
+          <button class="btn-add-item" id="add-post-btn">+ Add Post</button>
+        </div>
+      </div>
+
+      <!-- GALLERY TAB -->
+      <div class="tab-panel" id="panel-gallery">
+        <div class="array-section">
+          <h3>Gallery Items</h3>
+          <div id="gallery-list"></div>
+          <button class="btn-add-item" id="add-gallery-btn">+ Add Gallery Item</button>
+        </div>
+      </div>
+
+      <!-- SHOP TAB -->
+      <div class="tab-panel" id="panel-shop">
+        <div class="array-section">
+          <h3>Shop Items</h3>
+          <div id="shop-list"></div>
+          <button class="btn-add-item" id="add-shop-btn">+ Add Shop Item</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modal-cancel">Cancel</button>
+      <button class="btn-save" id="modal-save">Save Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  let editingUsername = null;
+  let profiles = {};
+
+  const $ = id => document.getElementById(id);
+
+  function showToast(msg, type = '') {
+    const t = $('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  async function api(method, url, body) {
+    const res = await fetch(url, {
+      method,
+      headers: body ? { 'Content-Type': 'application/json' } : {},
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'include',
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  // LOGIN
+  async function tryLogin() {
+    const pw = $('login-pw').value;
+    $('login-error').style.display = 'none';
+    const { ok } = await api('POST', '/api/admin/login', { password: pw });
+    if (ok) {
+      showApp();
+    } else {
+      $('login-error').style.display = 'block';
+    }
+  }
+
+  $('login-btn').addEventListener('click', tryLogin);
+  $('login-form').addEventListener('submit', e => { e.preventDefault(); tryLogin(); });
+
+  async function logout() {
+    await api('POST', '/api/admin/logout');
+    location.reload();
+  }
+  $('logout-btn').addEventListener('click', logout);
+
+  async function checkSession() {
+    const { data } = await api('GET', '/api/admin/me');
+    if (data.loggedIn) showApp();
+  }
+
+  function showApp() {
+    $('login-screen').style.display = 'none';
+    $('app-shell').style.display = 'block';
+    loadProfiles();
+  }
+
+  // PROFILES
+  async function loadProfiles() {
+    const { ok, data } = await api('GET', '/api/admin/profiles');
+    if (!ok) return;
+    profiles = data;
+    renderProfiles();
+  }
+
+  function renderProfiles() {
+    const list = $('profile-list');
+    const keys = Object.keys(profiles);
+    if (keys.length === 0) {
+      list.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+        <div class="icon">🌸</div>
+        <h3>No profiles yet</h3>
+        <p>Create the first creator profile to get started.</p>
+        <button class="btn-new" onclick="openNewProfile()">+ New Profile</button>
+      </div>`;
+      return;
+    }
+    list.innerHTML = keys.map(username => {
+      const p = profiles[username];
+      const bannerStyle = p.banner ? `background-image:url('${escAttr(p.banner)}');background-size:cover;background-position:center;` : '';
+      const pfpContent = p.pfp ? `<img src="${escAttr(p.pfp)}" alt="" onerror="this.style.display='none'">` : '🌸';
+      return `<div class="profile-item">
+        <div class="profile-banner" style="${bannerStyle}">
+          <div class="profile-pfp">${pfpContent}</div>
+        </div>
+        <div class="profile-info">
+          <div class="profile-name">${esc(p.displayName)}</div>
+          <div class="profile-url">bakaboost.com/${esc(p.username)}</div>
+          <div class="profile-bio">${esc(p.bio || 'No bio set')}</div>
+          <div class="profile-meta">
+            <span>♥ ${(p.followerCount||0).toLocaleString()} followers</span>
+            <span>📷 ${(p.gallery||[]).length} gallery</span>
+            <span>📝 ${(p.posts||[]).length} posts</span>
+            <span>🛍️ ${(p.shop||[]).length} items</span>
+          </div>
+          <div class="profile-actions">
+            <button class="btn-edit" onclick="openEdit('${esc(username)}')">✏️ Edit</button>
+            <a class="btn-view" href="/${esc(username)}" target="_blank">👁️ View</a>
+            <button class="btn-delete" onclick="deleteProfile('${esc(username)}')">🗑️</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function escAttr(s) { return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+  async function deleteProfile(username) {
+    if (!confirm(`Delete profile "${username}"? This cannot be undone.`)) return;
+    const { ok } = await api('DELETE', `/api/admin/profiles/${username}`);
+    if (ok) { showToast('Profile deleted', 'success'); loadProfiles(); }
+    else showToast('Failed to delete', 'error');
+  }
+
+  // MODAL
+  function openNewProfile() {
+    editingUsername = null;
+    $('modal-title').textContent = 'New Profile';
+    $('f-username').disabled = false;
+    resetForm();
+    openModal();
+  }
+
+  function openEdit(username) {
+    editingUsername = username;
+    $('modal-title').textContent = 'Edit Profile';
+    $('f-username').disabled = true;
+    const p = profiles[username];
+    $('f-username').value = p.username || '';
+    $('f-displayName').value = p.displayName || '';
+    $('f-bio').value = p.bio || '';
+    $('f-pfp').value = p.pfp || '';
+    $('f-banner').value = p.banner || '';
+    $('f-followerCount').value = p.followerCount || '';
+    $('f-coffeePrice').value = p.coffeePrice || 1;
+    $('f-coffeeLabel').value = p.coffeeLabel || 'coffee';
+    updateUsernamePreview();
+    renderPosts(p.posts || []);
+    renderGallery(p.gallery || []);
+    renderShop(p.shop || []);
+    openModal();
+  }
+
+  function resetForm() {
+    ['f-username','f-displayName','f-bio','f-pfp','f-banner','f-followerCount','f-coffeeLabel'].forEach(id => { $(id).value = ''; });
+    $('f-coffeePrice').value = '1';
+    $('f-coffeeLabel').value = 'coffee';
+    $('username-preview').textContent = 'username';
+    renderPosts([]);
+    renderGallery([]);
+    renderShop([]);
+    switchModalTab('info');
+  }
+
+  function openModal() {
+    $('modal-overlay').classList.add('open');
+    switchModalTab('info');
+  }
+
+  function closeModal() {
+    $('modal-overlay').classList.remove('open');
+  }
+
+  $('modal-close').addEventListener('click', closeModal);
+  $('modal-cancel').addEventListener('click', closeModal);
+  $('modal-overlay').addEventListener('click', e => { if (e.target === $('modal-overlay')) closeModal(); });
+  $('new-profile-btn').addEventListener('click', openNewProfile);
+
+  // Modal tabs
+  document.querySelectorAll('.modal-tab').forEach(tab => {
+    tab.addEventListener('click', () => switchModalTab(tab.dataset.panel));
+  });
+
+  function switchModalTab(panel) {
+    document.querySelectorAll('.modal-tab').forEach(t => t.classList.toggle('active', t.dataset.panel === panel));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + panel));
+  }
+
+  // Username preview
+  $('f-username').addEventListener('input', updateUsernamePreview);
+  function updateUsernamePreview() {
+    $('username-preview').textContent = $('f-username').value || 'username';
+  }
+
+  // POSTS
+  let postsData = [];
+  function renderPosts(data) {
+    postsData = data.map(p => ({ ...p }));
+    const el = $('posts-list');
+    el.innerHTML = postsData.map((p, i) => `
+      <div class="array-item" data-idx="${i}">
+        <button class="remove-btn" onclick="removePost(${i})">Remove</button>
+        <label>Title</label>
+        <input type="text" value="${escAttr(p.title||'')}" oninput="postsData[${i}].title=this.value" placeholder="Post title" />
+        <label>Date (YYYY-MM-DD)</label>
+        <input type="text" value="${escAttr(p.date||'')}" oninput="postsData[${i}].date=this.value" placeholder="2025-01-01" />
+        <label>Image URL (optional)</label>
+        <input type="url" value="${escAttr(p.image||'')}" oninput="postsData[${i}].image=this.value" placeholder="https://..." />
+        <label>Content</label>
+        <textarea rows="3" oninput="postsData[${i}].content=this.value" placeholder="Post content...">${esc(p.content||'')}</textarea>
+      </div>`).join('');
+  }
+  function removePost(i) { postsData.splice(i, 1); renderPosts(postsData); }
+  $('add-post-btn').addEventListener('click', () => { renderPosts([...postsData, { id: 'p'+Date.now(), title:'', content:'', date: new Date().toISOString().slice(0,10), image:'' }]); });
+
+  // GALLERY
+  let galleryData = [];
+  function renderGallery(data) {
+    galleryData = data.map(g => ({ ...g }));
+    const el = $('gallery-list');
+    el.innerHTML = galleryData.map((g, i) => `
+      <div class="array-item" data-idx="${i}">
+        <button class="remove-btn" onclick="removeGallery(${i})">Remove</button>
+        <label>Image URL</label>
+        <input type="url" value="${escAttr(g.url||'')}" oninput="galleryData[${i}].url=this.value" placeholder="https://..." />
+        <label>Caption (optional)</label>
+        <input type="text" value="${escAttr(g.caption||'')}" oninput="galleryData[${i}].caption=this.value" placeholder="Caption..." />
+      </div>`).join('');
+  }
+  function removeGallery(i) { galleryData.splice(i, 1); renderGallery(galleryData); }
+  $('add-gallery-btn').addEventListener('click', () => { renderGallery([...galleryData, { url:'', caption:'' }]); });
+
+  // SHOP
+  let shopData = [];
+  function renderShop(data) {
+    shopData = data.map(s => ({ ...s }));
+    const el = $('shop-list');
+    el.innerHTML = shopData.map((s, i) => `
+      <div class="array-item" data-idx="${i}">
+        <button class="remove-btn" onclick="removeShop(${i})">Remove</button>
+        <label>Item Name</label>
+        <input type="text" value="${escAttr(s.name||'')}" oninput="shopData[${i}].name=this.value" placeholder="Item name" />
+        <label>Price ($)</label>
+        <input type="number" value="${escAttr(s.price||'')}" oninput="shopData[${i}].price=parseFloat(this.value)||0" placeholder="5" min="0" step="0.5" />
+        <label>Image URL (optional)</label>
+        <input type="url" value="${escAttr(s.image||'')}" oninput="shopData[${i}].image=this.value" placeholder="https://..." />
+        <label>Description</label>
+        <textarea rows="2" oninput="shopData[${i}].description=this.value" placeholder="Item description...">${esc(s.description||'')}</textarea>
+      </div>`).join('');
+  }
+  function removeShop(i) { shopData.splice(i, 1); renderShop(shopData); }
+  $('add-shop-btn').addEventListener('click', () => { renderShop([...shopData, { id:'s'+Date.now(), name:'', price:0, description:'', image:'' }]); });
+
+  // SAVE
+  $('modal-save').addEventListener('click', async () => {
+    const username = $('f-username').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g,'');
+    const displayName = $('f-displayName').value.trim();
+    if (!username || !displayName) { showToast('Username and display name are required', 'error'); switchModalTab('info'); return; }
+
+    const payload = {
+      username,
+      displayName,
+      bio: $('f-bio').value.trim(),
+      pfp: $('f-pfp').value.trim(),
+      banner: $('f-banner').value.trim(),
+      followerCount: parseInt($('f-followerCount').value) || 0,
+      coffeePrice: parseFloat($('f-coffeePrice').value) || 1,
+      coffeeLabel: $('f-coffeeLabel').value.trim() || 'coffee',
+      posts: postsData,
+      gallery: galleryData,
+      shop: shopData,
+    };
+
+    let result;
+    if (editingUsername) {
+      result = await api('PUT', `/api/admin/profiles/${editingUsername}`, payload);
+    } else {
+      result = await api('POST', '/api/admin/profiles', payload);
+    }
+
+    if (result.ok) {
+      showToast(editingUsername ? 'Profile updated ✓' : 'Profile created ✓', 'success');
+      closeModal();
+      loadProfiles();
+    } else {
+      showToast(result.data.message || 'Save failed', 'error');
+    }
+  });
+
+  // INIT
+  checkSession();
+</script>
+</body>
+</html>

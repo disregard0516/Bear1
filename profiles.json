@@ -1,0 +1,72 @@
+{
+  "katelyn": {
+    "username": "katelyn",
+    "displayName": "katelyn",
+    "bio": "Kat is a Roblox streamer who loves sharing fun adventures and creative builds with her community. With a passion for gaming and a friendly vibe, she makes every stream a blast!",
+    "pfp": "/kat.gif",
+    "banner": "https://storage.ko-fi.com/cdn/useruploads/png_17daa8cb-1fec-47f6-86c9-7d23c60ad65bcover.jpg?v=ae160d34-210d-4926-bfc0-0f98144c541e",
+    "followerCount": 2847,
+    "coffeePrice": 1,
+    "coffeeLabel": "coffee",
+    "gallery": [
+      {
+        "url": "https://storage.ko-fi.com/cdn/useruploads/post/6d57fcc4-5129-4a10-936b-2d50a48e2353_social-media-slideshow_0002_layer-14.png",
+        "caption": "Cube Room Series - Halloween room"
+      },
+      {
+        "url": "https://storage.ko-fi.com/cdn/useruploads/post/4ca50e6c-7b02-47fe-b981-9bcc1b9c065e_social-media-slideshow_0001_layer-1.png",
+        "caption": "Cube Room Series - Dreamy Room"
+      },
+      {
+        "url": "https://storage.ko-fi.com/cdn/useruploads/post/48aa3f3d-0423-49d3-a851-151b24e8d150_social-media-slideshow_0000_layer-15.png",
+        "caption": "Cube Room Series - Office"
+      }
+    ],
+    "posts": [
+      {
+        "id": "p1",
+        "title": "New commission slots are open! 🎨",
+        "content": "Hey everyone! I'm opening 5 commission slots this week. DM me for details on pricing and availability. Supporters get priority booking!",
+        "date": "2025-06-28",
+        "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80"
+      },
+      {
+        "id": "p2",
+        "title": "Thank you for 2,000 followers! 💖",
+        "content": "I can't believe we hit 2k! Thank you all so much for the support. I'm working on something special to celebrate. Stay tuned!",
+        "date": "2025-06-15",
+        "image": ""
+      },
+      {
+        "id": "p3",
+        "title": "Behind the scenes: my drawing process ✏️",
+        "content": "Here's a peek at how I create my illustrations from sketch to final color. I use Procreate + Clip Studio for most of my work.",
+        "date": "2025-06-01",
+        "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&q=80"
+      }
+    ],
+    "shop": [
+      {
+        "id": "s1",
+        "name": "Custom Character Commission",
+        "price": 25,
+        "description": "Get your OC or favorite character drawn in my style! Full color, high-res PNG.",
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80"
+      },
+      {
+        "id": "s2",
+        "name": "Digital Sticker Pack",
+        "price": 5,
+        "description": "12 cute stickers featuring my original characters. PNG + Telegram format included.",
+        "image": "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400&q=80"
+      },
+      {
+        "id": "s3",
+        "name": "Wallpaper Bundle",
+        "price": 8,
+        "description": "10 kawaii wallpapers for phone & desktop. New batch every month for members!",
+        "image": "https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=400&q=80"
+      }
+    ]
+  }
+}

