@@ -10,13 +10,13 @@
     <meta property="og:site_name" content="BakaBoost" />
     <meta property="og:title" content="Support a Creator on BakaBoost" />
     <meta property="og:description" content="Support a creator on BakaBoost." />
-    <meta property="og:image" content="/kat-link-preview.png" />
+    <meta property="og:image" content="" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Support a Creator on BakaBoost" />
     <meta name="twitter:description" content="Support a creator on BakaBoost." />
-    <meta name="twitter:image" content="/kat-link-preview.png" />
+    <meta name="twitter:image" content="" />
     <meta name="theme-color" content="#467ceb" />
     <style>
 :root {
@@ -572,13 +572,19 @@ document.title = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(
 const metaDesc = document.querySelector('meta[name="description"]');
 const ogTitle = document.querySelector('meta[property="og:title"]');
 const ogDesc = document.querySelector('meta[property="og:description"]');
+const ogImage = document.querySelector('meta[property="og:image"]');
 const twitterTitle = document.querySelector('meta[name="twitter:title"]');
 const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+const twitterImage = document.querySelector('meta[name="twitter:image"]');
 if (metaDesc) metaDesc.content = `Support ${P.displayName} on BakaBoost.`;
 if (ogTitle) ogTitle.content = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(1)}`;
 if (ogDesc) ogDesc.content = `Support ${P.displayName} on BakaBoost.`;
 if (twitterTitle) twitterTitle.content = `Buy ${P.displayName} a ${LABEL[0].toUpperCase() + LABEL.slice(1)}`;
 if (twitterDesc) twitterDesc.content = `Support ${P.displayName} on BakaBoost.`;
+if (P.pfp) {
+  if (ogImage) ogImage.content = P.pfp;
+  if (twitterImage) twitterImage.content = P.pfp;
+}
 
 // Banner
 if (P.banner) document.getElementById('cover-banner').style.backgroundImage = `url('${P.banner}')`;
