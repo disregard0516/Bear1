@@ -325,15 +325,21 @@ const server = http.createServer(async (req, res) => {
   if (profileEditMatch && req.method === "PUT") {
     const sessionId = getAdminSessionFromCookie(req);
     if (!isValidAdminSession(sessionId)) { sendJson(res, 401, { message: "Unauthorized" }); return; }
-    const username = profileEditMatch[1];
+    const oldUsername = profileEditMatch[1];
     try {
       const body = await readBody(req);
       const data = JSON.parse(body);
+      const newUsername = (data.username || "").toLowerCase().replace(/[^a-z0-9_-]/g, "");
+      if (!newUsername) { sendJson(res, 400, { message: "Invalid username" }); return; }
       const profiles = loadProfiles();
-      if (!profiles[username]) { sendJson(res, 404, { message: "Profile not found" }); return; }
-      const existing = profiles[username];
-      profiles[username] = {
-        username,
+      if (!profiles[oldUsername]) { sendJson(res, 404, { message: "Profile not found" }); return; }
+      if (newUsername !== oldUsername && profiles[newUsername]) { sendJson(res, 409, { message: "Username already exists" }); return; }
+      const existing = profiles[oldUsername];
+      if (newUsername !== oldUsername) {
+        delete profiles[oldUsername];
+      }
+      profiles[newUsername] = {
+        username: newUsername,
         displayName: data.displayName ?? existing.displayName,
         bio: data.bio ?? existing.bio,
         pfp: data.pfp ?? existing.pfp,
@@ -346,7 +352,7 @@ const server = http.createServer(async (req, res) => {
         shop: data.shop ?? existing.shop,
       };
       saveProfiles(profiles);
-      sendJson(res, 200, profiles[username]);
+      sendJson(res, 200, profiles[newUsername]);
     } catch (e) {
       sendJson(res, 400, { message: e.message });
     }
