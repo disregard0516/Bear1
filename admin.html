@@ -139,6 +139,32 @@
       text-decoration: none; display: inline-block; text-align: center;
     }
     .btn-view:hover { background: var(--blush); color: var(--pink); }
+    .btn-gateway {
+      background: #edf2ff; color: #3156c8; border: 1px solid #d9deea;
+      padding: 8px 12px; border-radius: 8px; font-size: .82rem; font-weight: 700;
+      text-decoration: none; display: inline-block; text-align: center;
+    }
+    .profile-earnings { font-size: .82rem; color: #3156c8; font-weight: 700; margin-bottom: 12px; }
+
+    .withdrawals-list { display: grid; gap: 16px; }
+    .withdrawal-item {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px; box-shadow: 0 2px 12px rgba(255,107,157,.07);
+    }
+    .withdrawal-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+    .withdrawal-top strong { font-size: 1.1rem; }
+    .withdrawal-meta { color: var(--muted); font-size: .85rem; line-height: 1.5; }
+    .withdrawal-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .btn-approve { background: #e9f9ef; color: #167f39; border: 1px solid #b7e4c7; padding: 8px 14px; border-radius: 8px; font-weight: 700; }
+    .btn-paid { background: #edf2ff; color: #3156c8; border: 1px solid #d9deea; padding: 8px 14px; border-radius: 8px; font-weight: 700; }
+    .status-tag {
+      display: inline-flex; border-radius: 999px; padding: 5px 10px; font-size: .75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .status-tag.pending { background: #fff7df; color: #9a6500; }
+    .status-tag.approved { background: #edf2ff; color: #3156c8; }
+    .status-tag.paid { background: #e9f9ef; color: #167f39; }
+    .status-tag.rejected { background: #fff0f0; color: #c62828; }
 
     /* MODAL */
     .modal-overlay {
@@ -270,7 +296,8 @@
     <aside class="sidebar">
       <div class="sidebar-logo">🌸 BakaBoost Admin</div>
       <nav class="sidebar-nav">
-        <a href="#" class="active">👥 Profiles</a>
+        <a href="#" class="active" data-view="profiles">👥 Profiles</a>
+        <a href="#" data-view="withdrawals">💸 Withdrawals</a>
       </nav>
       <div class="sidebar-footer">
         <button class="btn-logout" id="logout-btn">Sign Out</button>
@@ -279,12 +306,18 @@
 
     <!-- Main -->
     <div class="main">
-      <div class="main-header">
+      <div class="main-header" id="profiles-header">
         <h1>Creator Profiles</h1>
         <button class="btn-new" id="new-profile-btn">+ New Profile</button>
       </div>
+      <div class="main-header" id="withdrawals-header" style="display:none;">
+        <h1>Withdrawal Requests</h1>
+      </div>
       <div class="main-content">
         <div id="profile-list" class="profile-list"></div>
+        <div id="withdrawals-panel" style="display:none;">
+          <div id="withdrawals-list" class="withdrawals-list"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -346,6 +379,11 @@
             <input type="text" id="f-coffeeLabel" placeholder="coffee" />
           </div>
         </div>
+        <div class="form-group">
+          <label>Gateway Password</label>
+          <input type="text" id="f-gatewayPassword" placeholder="Creator login for /gateway" autocomplete="off" />
+          <div class="form-hint">Share this with the creator so they can sign in at /gateway</div>
+        </div>
       </div>
 
       <!-- POSTS TAB -->
@@ -388,6 +426,8 @@
 <script>
   let editingUsername = null;
   let profiles = {};
+  let withdrawals = [];
+  let activeView = 'profiles';
 
   const $ = id => document.getElementById(id);
 
@@ -439,7 +479,27 @@
     $('login-screen').style.display = 'none';
     $('app-shell').style.display = 'block';
     loadProfiles();
+    loadWithdrawals();
   }
+
+  function switchView(view) {
+    activeView = view;
+    document.querySelectorAll('.sidebar-nav a[data-view]').forEach(link => {
+      link.classList.toggle('active', link.dataset.view === view);
+    });
+    $('profiles-header').style.display = view === 'profiles' ? 'flex' : 'none';
+    $('withdrawals-header').style.display = view === 'withdrawals' ? 'flex' : 'none';
+    $('profile-list').style.display = view === 'profiles' ? 'grid' : 'none';
+    $('withdrawals-panel').style.display = view === 'withdrawals' ? 'block' : 'none';
+    if (view === 'withdrawals') loadWithdrawals();
+  }
+
+  document.querySelectorAll('.sidebar-nav a[data-view]').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      switchView(link.dataset.view);
+    });
+  });
 
   // PROFILES
   async function loadProfiles() {
@@ -465,6 +525,7 @@
       const p = profiles[username];
       const bannerStyle = p.banner ? `background-image:url('${escAttr(p.banner)}');background-size:cover;background-position:center;` : '';
       const pfpContent = p.pfp ? `<img src="${escAttr(p.pfp)}" alt="" onerror="this.style.display='none'">` : '🌸';
+      const balance = p.balance || { available: 0, earned: 0 };
       return `<div class="profile-item">
         <div class="profile-banner" style="${bannerStyle}">
           <div class="profile-pfp">${pfpContent}</div>
@@ -473,6 +534,7 @@
           <div class="profile-name">${esc(p.displayName)}</div>
           <div class="profile-url">bakaboost.com/${esc(p.username)}</div>
           <div class="profile-bio">${esc(p.bio || 'No bio set')}</div>
+          <div class="profile-earnings">Available ${money(balance.available)} · Earned ${money(balance.earned)}</div>
           <div class="profile-meta">
             <span>♥ ${(p.followerCount||0).toLocaleString()} followers</span>
             <span>📷 ${(p.gallery||[]).length} gallery</span>
@@ -482,6 +544,7 @@
           <div class="profile-actions">
             <button class="btn-edit" onclick="openEdit('${esc(username)}')">✏️ Edit</button>
             <a class="btn-view" href="/${esc(username)}" target="_blank">👁️ View</a>
+            <a class="btn-gateway" href="/gateway" target="_blank">💳 Gateway</a>
             <button class="btn-delete" onclick="deleteProfile('${esc(username)}')">🗑️</button>
           </div>
         </div>
@@ -491,6 +554,60 @@
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function escAttr(s) { return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+  function money(value) { return '$' + Number(value || 0).toFixed(2); }
+
+  async function loadWithdrawals() {
+    const { ok, data } = await api('GET', '/api/admin/withdrawals');
+    if (!ok) return;
+    withdrawals = data;
+    renderWithdrawals();
+  }
+
+  function renderWithdrawals() {
+    const list = $('withdrawals-list');
+    if (!withdrawals.length) {
+      list.innerHTML = `<div class="empty-state">
+        <div class="icon">💸</div>
+        <h3>No withdrawal requests</h3>
+        <p>When creators request a payout, they will show up here.</p>
+      </div>`;
+      return;
+    }
+    list.innerHTML = withdrawals.map(item => {
+      const details = item.method === 'paypal'
+        ? `PayPal: ${esc(item.payoutDetails?.paypalEmail || '')}`
+        : `Bank: ${esc(item.payoutDetails?.bankName || '')} · ${esc(item.payoutDetails?.accountName || '')} · ${esc(item.payoutDetails?.accountNumber || '')} · Routing ${esc(item.payoutDetails?.routingNumber || '')}`;
+      return `<div class="withdrawal-item">
+        <div class="withdrawal-top">
+          <div>
+            <strong>${esc(item.creatorUsername)} · ${money(item.amount)}</strong>
+            <div class="withdrawal-meta">${details}</div>
+            <div class="withdrawal-meta">Requested ${esc(new Date(item.createdAt).toLocaleString())}</div>
+            ${item.adminNote ? `<div class="withdrawal-meta">Note: ${esc(item.adminNote)}</div>` : ''}
+          </div>
+          <span class="status-tag ${esc(item.status)}">${esc(item.status)}</span>
+        </div>
+        <div class="withdrawal-actions">
+          ${item.status === 'pending' ? `<button class="btn-approve" onclick="updateWithdrawal('${esc(item.id)}','approve')">Approve</button>` : ''}
+          ${item.status === 'pending' || item.status === 'approved' ? `<button class="btn-paid" onclick="updateWithdrawal('${esc(item.id)}','mark-paid')">Mark paid</button>` : ''}
+          ${item.status === 'pending' || item.status === 'approved' ? `<button class="btn-delete" onclick="updateWithdrawal('${esc(item.id)}','reject')">Reject</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  async function updateWithdrawal(id, action) {
+    const note = action === 'reject' ? (prompt('Optional rejection note:') || '') : '';
+    const { ok, data } = await api('POST', `/api/admin/withdrawals/${id}/${action}`, { adminNote: note });
+    if (ok) {
+      showToast('Withdrawal updated', 'success');
+      loadWithdrawals();
+      loadProfiles();
+    } else {
+      showToast(data.message || 'Update failed', 'error');
+    }
+  }
+  window.updateWithdrawal = updateWithdrawal;
 
   async function deleteProfile(username) {
     if (!confirm(`Delete profile "${username}"? This cannot be undone.`)) return;
@@ -521,6 +638,7 @@
     $('f-followerCount').value = p.followerCount || '';
     $('f-coffeePrice').value = p.coffeePrice || 1;
     $('f-coffeeLabel').value = p.coffeeLabel || 'coffee';
+    $('f-gatewayPassword').value = p.gatewayPassword || '';
     updateUsernamePreview();
     renderPosts(p.posts || []);
     renderGallery(p.gallery || []);
@@ -529,7 +647,7 @@
   }
 
   function resetForm() {
-    ['f-username','f-displayName','f-bio','f-pfp','f-banner','f-followerCount','f-coffeeLabel'].forEach(id => { $(id).value = ''; });
+    ['f-username','f-displayName','f-bio','f-pfp','f-banner','f-followerCount','f-coffeeLabel','f-gatewayPassword'].forEach(id => { $(id).value = ''; });
     $('f-coffeePrice').value = '1';
     $('f-coffeeLabel').value = 'coffee';
     $('username-preview').textContent = 'username';
@@ -643,6 +761,7 @@
       followerCount: parseInt($('f-followerCount').value) || 0,
       coffeePrice: parseFloat($('f-coffeePrice').value) || 1,
       coffeeLabel: $('f-coffeeLabel').value.trim() || 'coffee',
+      gatewayPassword: $('f-gatewayPassword').value.trim(),
       posts: postsData,
       gallery: galleryData,
       shop: shopData,

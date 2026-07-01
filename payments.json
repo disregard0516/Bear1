@@ -1,0 +1,33 @@
+{
+  "transactions": [
+    {
+      "id": "txn_manual001",
+      "creatorUsername": "katelyn",
+      "amount": 100,
+      "currency": "usd",
+      "coffeeCount": 1,
+      "fanName": "Admin credit",
+      "message": "Manual test balance",
+      "stripeSessionId": "",
+      "stripePaymentIntentId": "",
+      "status": "completed",
+      "createdAt": "2026-07-01T12:00:00.000Z"
+    }
+  ],
+  "withdrawals": [
+    {
+      "id": "wd_34090ce9dc6cff83",
+      "creatorUsername": "katelyn",
+      "amount": 30,
+      "method": "paypal",
+      "payoutDetails": {
+        "paypalEmail": "katelyn@gmail.com"
+      },
+      "status": "paid",
+      "adminNote": "",
+      "createdAt": "2026-07-01T04:50:19.429Z",
+      "updatedAt": "2026-07-01T04:50:51.885Z",
+      "paidAt": "2026-07-01T04:50:51.885Z"
+    }
+  ]
+}
