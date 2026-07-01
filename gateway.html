@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BakaBoost Gateway</title>
+  <link rel="icon" type="image/png" href="/coffee-mug.png" />
+  <style>
+:root {
+  --blue: #467ceb;
+  --text: #111827;
+  --muted: #7e879b;
+  --line: #dfe4ee;
+  --soft: #f4f7fc;
+  --card: #ffffff;
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+  --radius: 18px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { margin: 0; color: var(--text); background: #f5f7fb; font-family: Arial, Helvetica, sans-serif; }
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+
+#login-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: linear-gradient(0deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03)), linear-gradient(0deg, rgba(70,124,235,0.05), rgba(70,124,235,0.05));
+}
+.login-card {
+  width: 100%; max-width: 400px; background: #fff; border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px 28px;
+}
+.login-card h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+.login-card p { color: var(--muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
+.login-card label { display: grid; gap: 6px; margin-bottom: 14px; font-size: 12px; font-weight: 600; color: #404756; }
+.login-card .input {
+  width: 100%; min-height: 46px; border: 1px solid #d9deea; border-radius: 8px;
+  background: #f6f7fb; padding: 10px 14px; font-size: 15px;
+}
+.login-card .input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(70,124,235,0.14); }
+.primary-button {
+  width: 100%; border: 0; border-radius: 999px; background: var(--blue); color: #fff;
+  padding: 14px; font-size: 16px; font-weight: 650; margin-top: 8px;
+}
+#login-error { color: #c62828; font-size: 13px; font-weight: 600; margin-top: 10px; display: none; }
+
+#app-shell { display: none; min-height: 100vh; }
+.dashboard-body { min-height: 100vh; display: grid; grid-template-columns: 260px 1fr; }
+.dashboard-sidebar {
+  position: sticky; top: 0; height: 100vh; border-right: 1px solid var(--line);
+  background: #fff; padding: 20px;
+}
+.dashboard-brand { display: block; margin-bottom: 28px; color: var(--text); font-size: 24px; font-weight: 900; text-decoration: none; }
+.sidebar-section { display: grid; gap: 6px; }
+.sidebar-section p {
+  margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+.sidebar-section a, .sidebar-section button {
+  border: 0; border-radius: 8px; background: transparent; color: #374151;
+  padding: 10px 12px; text-decoration: none; font-weight: 700; text-align: left;
+}
+.sidebar-section a.active, .sidebar-section a:hover, .sidebar-section button:hover {
+  background: rgba(70, 124, 235, 0.1); color: var(--blue);
+}
+.dashboard-main { min-width: 0; padding: 28px; }
+.dashboard-topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
+.eyebrow { margin: 0 0 6px; color: var(--blue); font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.14em; }
+.dashboard-topbar h1 { margin: 0; font-size: 30px; }
+.metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.metric-card, .dashboard-card {
+  border: 1px solid var(--line); border-radius: 14px; background: #fff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+.metric-card { padding: 18px; }
+.metric-card p, .metric-card span { margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; }
+.metric-card strong { display: block; margin: 8px 0; font-size: 30px; }
+.metric-card .metric-up { color: #16803a; }
+.payments-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; align-items: start; }
+.dashboard-card { overflow: hidden; }
+.dashboard-card-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px; border-bottom: 1px solid var(--line);
+}
+.dashboard-card-header h2 { margin: 0; font-size: 20px; }
+.dashboard-card-header p { margin: 6px 0 0; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+.payments-table { width: 100%; border-collapse: collapse; }
+.payments-table th {
+  background: #f9fafc; color: var(--muted); font-size: 12px; text-align: left;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.payments-table th, .payments-table td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.payments-table strong { display: block; font-size: 14px; }
+.payments-table span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+.status-pill {
+  display: inline-flex; width: fit-content; border-radius: 999px; padding: 6px 10px;
+  font-size: 12px; font-weight: 900;
+}
+.status-pill.pending { background: #fff7df; color: #9a6500; }
+.status-pill.approved { background: #edf2ff; color: #3156c8; }
+.status-pill.paid { background: #e9f9ef; color: #167f39; }
+.status-pill.rejected { background: #fff0f0; color: #c62828; }
+.detail-card { padding: 20px; }
+.detail-card h2 { margin: 0 0 16px; font-size: 20px; }
+.withdraw-form { display: grid; gap: 11px; }
+.withdraw-form label { display: grid; gap: 5px; color: #1f2937; font-size: 12px; font-weight: 600; }
+.withdraw-form .input, .withdraw-form select, .withdraw-form textarea {
+  width: 100%; min-height: 46px; border: 1px solid #d9deea; border-radius: 8px;
+  background: #f6f7fb; padding: 10px 14px; font-size: 15px;
+}
+.withdraw-form textarea { min-height: 82px; resize: vertical; }
+.method-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.method-toggle button {
+  border: 1px solid var(--line); border-radius: 999px; background: #fff; padding: 10px; font-weight: 700;
+}
+.method-toggle button.active { background: rgba(70,124,235,0.12); color: var(--blue); border-color: rgba(70,124,235,0.3); }
+.payout-panel { display: none; gap: 11px; }
+.payout-panel.active { display: grid; }
+.status { min-height: 18px; color: var(--muted); font-size: 13px; font-weight: 700; }
+.status.ok { color: #16803a; }
+.status.error { color: #c62828; }
+.empty-row td { color: var(--muted); text-align: center; padding: 28px 16px; }
+@media (max-width: 980px) {
+  .dashboard-body { grid-template-columns: 1fr; }
+  .dashboard-sidebar { height: auto; position: static; }
+  .metric-grid, .payments-layout { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+  <div id="login-screen">
+    <form class="login-card" id="login-form">
+      <h1>BakaBoost Gateway</h1>
+      <p>Sign in to view your earnings and request a withdrawal.</p>
+      <label>Username
+        <input class="input" id="login-username" autocomplete="username" required />
+      </label>
+      <label>Gateway password
+        <input class="input" id="login-password" type="password" autocomplete="current-password" required />
+      </label>
+      <button class="primary-button" type="submit">Sign In</button>
+      <div id="login-error">Wrong username or password.</div>
+    </form>
+  </div>
+
+  <div id="app-shell">
+    <div class="dashboard-body">
+      <aside class="dashboard-sidebar">
+        <a class="dashboard-brand" href="/">BakaBoost</a>
+        <div class="sidebar-section">
+          <p>Gateway</p>
+          <a class="active" href="/gateway">Payments</a>
+          <a id="creator-page-link" href="#">Creator page</a>
+        </div>
+        <div class="sidebar-section" style="margin-top:24px;">
+          <button type="button" id="logout-btn">Sign out</button>
+        </div>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="dashboard-topbar">
+          <div>
+            <p class="eyebrow">Creator gateway</p>
+            <h1 id="gateway-title">Payments</h1>
+          </div>
+        </header>
+
+        <section class="metric-grid" aria-label="Balance summary">
+          <article class="metric-card">
+            <p>Available</p>
+            <strong id="metric-available">$0.00</strong>
+            <span>Ready to withdraw</span>
+          </article>
+          <article class="metric-card">
+            <p>Total earned</p>
+            <strong id="metric-earned">$0.00</strong>
+            <span class="metric-up">0% platform fee</span>
+          </article>
+          <article class="metric-card">
+            <p>Pending withdrawal</p>
+            <strong id="metric-pending">$0.00</strong>
+            <span>Awaiting admin</span>
+          </article>
+          <article class="metric-card">
+            <p>Paid out</p>
+            <strong id="metric-withdrawn">$0.00</strong>
+            <span>All time</span>
+          </article>
+        </section>
+
+        <section class="payments-layout">
+          <article class="dashboard-card payments-card">
+            <div class="dashboard-card-header">
+              <div>
+                <h2>Recent payments</h2>
+                <p>Tips and support sent to your page.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="payments-table">
+                <thead>
+                  <tr>
+                    <th>Supporter</th>
+                    <th>Amount</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-body"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <aside class="dashboard-card detail-card">
+            <h2>Request withdrawal</h2>
+            <p style="color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:16px;">Minimum $30. Admin approves and pays manually to your bank or PayPal.</p>
+            <form class="withdraw-form" id="withdraw-form">
+              <label>Amount ($)
+                <input class="input" id="withdraw-amount" inputmode="decimal" min="30" step="0.01" required />
+              </label>
+              <div class="method-toggle">
+                <button type="button" class="active" data-method="paypal">PayPal</button>
+                <button type="button" data-method="bank">Bank</button>
+              </div>
+              <div class="payout-panel active" id="panel-paypal">
+                <label>PayPal email
+                  <input class="input" id="paypal-email" type="email" placeholder="you@email.com" />
+                </label>
+              </div>
+              <div class="payout-panel" id="panel-bank">
+                <label>Bank name<input class="input" id="bank-name" /></label>
+                <label>Account name<input class="input" id="account-name" /></label>
+                <label>Account number<input class="input" id="account-number" /></label>
+                <label>Routing number<input class="input" id="routing-number" /></label>
+              </div>
+              <p class="status" id="withdraw-status"></p>
+              <button class="primary-button" type="submit">Request withdrawal</button>
+            </form>
+
+            <h2 style="margin-top:28px;">Your withdrawals</h2>
+            <div class="table-wrap" style="margin-top:12px;">
+              <table class="payments-table">
+                <thead>
+                  <tr>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="withdrawals-body"></tbody>
+              </table>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let payoutMethod = "paypal";
+    let currentUser = null;
+
+    async function api(method, url, body) {
+      const res = await fetch(url, {
+        method,
+        headers: body ? { "Content-Type": "application/json" } : {},
+        body: body ? JSON.stringify(body) : undefined,
+        credentials: "include",
+      });
+      const data = await res.json().catch(() => ({}));
+      return { ok: res.ok, data };
+    }
+
+    function money(value) {
+      return "$" + Number(value || 0).toFixed(2);
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      return new Date(value).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function esc(s) {
+      return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function setWithdrawStatus(message, type = "") {
+      $("withdraw-status").textContent = message;
+      $("withdraw-status").className = "status " + type;
+    }
+
+    function renderSummary(data) {
+      const balance = data.balance || {};
+      $("metric-available").textContent = money(balance.available);
+      $("metric-earned").textContent = money(balance.earned);
+      $("metric-pending").textContent = money(balance.pending);
+      $("metric-withdrawn").textContent = money(balance.withdrawn);
+
+      const txBody = $("transactions-body");
+      const txs = data.transactions || [];
+      if (!txs.length) {
+        txBody.innerHTML = '<tr class="empty-row"><td colspan="4">No payments yet.</td></tr>';
+      } else {
+        txBody.innerHTML = txs.map((item) => `
+          <tr>
+            <td><strong>${esc(item.fanName)}</strong><span>${esc(item.coffeeCount || 1)} coffee</span></td>
+            <td><strong>${money(item.amount)}</strong><span>${esc(item.status)}</span></td>
+            <td><strong>${esc(item.message || "No message")}</strong></td>
+            <td><strong>${formatDate(item.createdAt)}</strong></td>
+          </tr>`).join("");
+      }
+
+      const wdBody = $("withdrawals-body");
+      const wds = data.withdrawals || [];
+      if (!wds.length) {
+        wdBody.innerHTML = '<tr class="empty-row"><td colspan="3">No withdrawals yet.</td></tr>';
+      } else {
+        wdBody.innerHTML = wds.map((item) => `
+          <tr>
+            <td><strong>${money(item.amount)}</strong><span>${formatDate(item.createdAt)}</span></td>
+            <td><strong>${esc(item.method)}</strong></td>
+            <td><span class="status-pill ${esc(item.status)}">${esc(item.status)}</span></td>
+          </tr>`).join("");
+      }
+    }
+
+    async function loadSummary() {
+      const { ok, data } = await api("GET", "/api/gateway/summary");
+      if (!ok) return;
+      renderSummary(data);
+    }
+
+    async function checkSession() {
+      const { data } = await api("GET", "/api/gateway/me");
+      if (!data.loggedIn) return;
+      currentUser = data;
+      $("login-screen").style.display = "none";
+      $("app-shell").style.display = "block";
+      $("gateway-title").textContent = data.displayName + " — Payments";
+      $("creator-page-link").href = "/" + data.username;
+      loadSummary();
+    }
+
+    $("login-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      $("login-error").style.display = "none";
+      const { ok } = await api("POST", "/api/gateway/login", {
+        username: $("login-username").value.trim(),
+        password: $("login-password").value,
+      });
+      if (ok) checkSession();
+      else $("login-error").style.display = "block";
+    });
+
+    $("logout-btn").addEventListener("click", async () => {
+      await api("POST", "/api/gateway/logout");
+      location.reload();
+    });
+
+    document.querySelectorAll(".method-toggle button").forEach((button) => {
+      button.addEventListener("click", () => {
+        payoutMethod = button.dataset.method;
+        document.querySelectorAll(".method-toggle button").forEach((item) => item.classList.toggle("active", item === button));
+        $("panel-paypal").classList.toggle("active", payoutMethod === "paypal");
+        $("panel-bank").classList.toggle("active", payoutMethod === "bank");
+      });
+    });
+
+    $("withdraw-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      setWithdrawStatus("Sending request...");
+      const payload = {
+        amount: Number($("withdraw-amount").value),
+        method: payoutMethod,
+        paypalEmail: $("paypal-email").value.trim(),
+        bankName: $("bank-name").value.trim(),
+        accountName: $("account-name").value.trim(),
+        accountNumber: $("account-number").value.trim(),
+        routingNumber: $("routing-number").value.trim(),
+      };
+      const { ok, data } = await api("POST", "/api/gateway/withdraw", payload);
+      if (ok) {
+        setWithdrawStatus("Withdrawal requested. Admin will review it.", "ok");
+        $("withdraw-form").reset();
+        loadSummary();
+      } else {
+        setWithdrawStatus(data.message || "Could not request withdrawal.", "error");
+      }
+    });
+
+    checkSession();
+  </script>
+</body>
+</html>
