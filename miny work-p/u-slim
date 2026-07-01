@@ -1,0 +1,6 @@
+PORT=4000
+NODE_ENV=development
+MONGODB_URI=mongodb://miny32720_db_user:T7cUGy1bSzl6ste1@ac-usux7sm-shard-00-00.mf8ybyf.mongodb.net:27017,ac-usux7sm-shard-00-01.mf8ybyf.mongodb.net:27017,ac-usux7sm-shard-00-02.mf8ybyf.mongodb.net:27017/bakaboost?ssl=true&authSource=admin&retryWrites=true&w=majority
+SESSION_SECRET=299c4e8f8a4105521b06a9892cc069e702311459fb34d5eea66a7cb72bc9b719
+ADMIN_PASSWORD=bakaboost2025
+PUBLIC_WEB_URL=http://localhost:5173
