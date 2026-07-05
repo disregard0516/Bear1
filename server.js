@@ -1047,11 +1047,25 @@ const server = http.createServer(async (req, res) => {
   send(res, 404, "Not found");
 });
 
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("UNHANDLED REJECTION:", reason);
+});
+
 migrateShopStatuses();
 
-server.listen(PORT, () => {
-  console.log(`BakaBoost running at http://127.0.0.1:${PORT}`);
-  console.log(`Admin panel: http://127.0.0.1:${PORT}/admin`);
-  console.log(`Login: http://127.0.0.1:${PORT}/login`);
-  console.log(`Admin password: ${ADMIN_PASSWORD}`);
-});
+try {
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(`BakaBoost running at http://0.0.0.0:${PORT}`);
+    console.log(`Admin panel: http://0.0.0.0:${PORT}/admin`);
+    console.log(`Login: http://0.0.0.0:${PORT}/login`);
+    console.log(`Admin password: ${ADMIN_PASSWORD}`);
+  });
+} catch (err) {
+  console.error("FAILED TO START SERVER:", err);
+  process.exit(1);
+}
