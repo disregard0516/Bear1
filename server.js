@@ -1,9 +1,17 @@
+process.stdout.write("BakaBoost starting...\n");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const Stripe = require("stripe");
-const nodemailer = require("nodemailer");
+let Stripe, nodemailer;
+try {
+  Stripe = require("stripe");
+  nodemailer = require("nodemailer");
+  console.log("[startup] Modules loaded successfully");
+} catch (modErr) {
+  console.error("[startup] MODULE LOAD FAILED:", modErr.message, modErr.stack);
+  process.exit(1);
+}
 
 const PORT = process.env.PORT || 5000;
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -1268,6 +1276,11 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  if (pathname === "/health" || pathname === "/_health") {
+    send(res, 200, JSON.stringify({ status: "ok", time: Date.now() }));
+    return;
+  }
+
   const usernameMatch = pathname.match(/^\/([a-zA-Z0-9_-]+)\/?$/);
   if (usernameMatch) {
     const username = usernameMatch[1].toLowerCase();
@@ -1297,7 +1310,6 @@ try {
     console.log(`BakaBoost running at http://0.0.0.0:${PORT}`);
     console.log(`Admin panel: http://0.0.0.0:${PORT}/admin`);
     console.log(`Login: http://0.0.0.0:${PORT}/login`);
-    console.log(`Admin password: ${ADMIN_PASSWORD}`);
   });
 } catch (err) {
   console.error("FAILED TO START SERVER:", err);
