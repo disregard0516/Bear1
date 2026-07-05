@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BakaBoost — Log in or Sign up</title>
+  <link rel="icon" type="image/png" href="/coffee-mug.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #467ceb; --blue-dark: #3665c7;
+      --text: #111827; --muted: #7e879b; --line: #dfe4ee; --soft: #f4f7fc;
+      --shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+      --danger: #ef4444; --success: #22c55e;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--soft);
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font: inherit; }
+
+    /* NAV */
+    .site-header {
+      border-bottom: 1px solid rgba(223,228,238,0.6);
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      max-width: 70rem; height: 64px; margin: 0 auto;
+      padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { color: #111827; font-size: 24px; font-weight: 800; }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { color: #111827; font-size: 14px; }
+    .black-pill {
+      border: 0; border-radius: 999px; background: #050505;
+      color: #fff; padding: 10px 18px; font-weight: 700; cursor: pointer;
+    }
+
+    /* MAIN */
+    .auth-wrap {
+      display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 64px);
+      padding: 40px 16px;
+    }
+    .auth-card {
+      background: #fff; border-radius: 28px;
+      padding: 48px 40px; width: 100%; max-width: 420px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .auth-logo {
+      text-align: center; font-size: 2rem; font-weight: 900;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .auth-sub {
+      text-align: center; color: var(--muted); font-size: .9rem; margin-bottom: 36px;
+    }
+
+    /* TABS */
+    .auth-tabs {
+      display: flex; gap: 0; border: 1.5px solid var(--line);
+      border-radius: 14px; overflow: hidden; margin-bottom: 28px;
+    }
+    .auth-tab {
+      flex: 1; padding: 11px 0; font-size: .9rem; font-weight: 700;
+      background: transparent; border: none; color: var(--muted);
+      transition: background .15s, color .15s;
+    }
+    .auth-tab.active {
+      background: var(--blue); color: #fff;
+    }
+
+    /* FORMS */
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: .8rem; font-weight: 700;
+      color: var(--text); margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%; padding: 13px 16px;
+      border: 1.5px solid var(--line); border-radius: 12px;
+      font-size: .95rem; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fafafa;
+    }
+    .form-group input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(70,124,235,.12);
+      background: #fff;
+    }
+    .form-hint { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+
+    .btn-primary {
+      width: 100%; background: var(--blue); color: #fff; border: none;
+      padding: 14px; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      transition: background .2s, transform .15s;
+      margin-top: 4px;
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .auth-error {
+      color: var(--danger); font-size: .83rem;
+      background: #fef2f2; border: 1px solid #fecaca;
+      border-radius: 8px; padding: 10px 14px;
+      margin-bottom: 14px; display: none;
+    }
+    .auth-success {
+      color: #15803d; font-size: .83rem;
+      background: #f0fdf4; border: 1px solid #bbf7d0;
+      border-radius: 8px; padding: 10px 14px;
+      margin-bottom: 14px; display: none;
+    }
+
+    .switch-hint {
+      text-align: center; font-size: .85rem; color: var(--muted);
+      margin-top: 20px;
+    }
+    .switch-hint a {
+      color: var(--blue); font-weight: 700; cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0; color: var(--muted); font-size: .8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--line);
+    }
+
+    .back-home {
+      display: block; text-align: center; margin-top: 24px;
+      font-size: .82rem; color: var(--muted);
+    }
+    .back-home:hover { color: var(--blue); }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 36px 24px; border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">BakaBoost</a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/#features">Explore</a>
+      <a href="/#how-it-works">How it works</a>
+      <a href="/login#signup"><button class="black-pill" type="button">Start a page</button></a>
+    </nav>
+  </div>
+</header>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">BakaBoost</div>
+    <p class="auth-sub">Support creators you love</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Log In</button>
+      <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div class="auth-panel active" id="panel-login">
+      <div class="auth-error" id="login-error"></div>
+      <form id="login-form" onsubmit="return false;">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="login-username" placeholder="yourname" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn-primary" id="login-btn" type="submit">Log In</button>
+      </form>
+      <p class="switch-hint">
+        Need an account? <a onclick="switchTab('signup')">Sign up free</a>
+      </p>
+    </div>
+
+    <!-- SIGNUP PANEL -->
+    <div class="auth-panel" id="panel-signup">
+      <div class="auth-error" id="signup-disabled-notice" style="display:none;">sign ups are disabled at this time. All sign ups can go through Management.</div>
+      <div id="signup-form-wrap">
+        <div class="auth-error" id="signup-error"></div>
+        <div class="auth-success" id="signup-success"></div>
+        <form id="signup-form" onsubmit="return false;">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="signup-username" placeholder="yourname" autocomplete="username" maxlength="30" />
+            <div class="form-hint">Your page will be at bakaboost.com/<span id="username-preview">yourname</span></div>
+          </div>
+          <div class="form-group">
+            <label>Display Name</label>
+            <input type="text" id="signup-displayname" placeholder="Your Name" autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signup-password" placeholder="••••••••" autocomplete="new-password" />
+            <div class="form-hint">At least 6 characters</div>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="signup-confirm" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+          <button class="btn-primary" id="signup-btn" type="submit">Create My Page</button>
+        </form>
+      </div>
+      <p class="switch-hint">
+        Already have an account? <a onclick="switchTab('login')">Log in</a>
+      </p>
+    </div>
+
+    <a class="back-home" href="/">← Back to homepage</a>
+  </div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
+    document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
+  }
+
+  document.getElementById('signup-username').addEventListener('input', function() {
+    const val = this.value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    document.getElementById('username-preview').textContent = val || 'yourname';
+  });
+
+  async function api(method, url, body) {
+    const res = await fetch(url, {
+      method,
+      headers: body ? { 'Content-Type': 'application/json' } : {},
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'include',
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+  function hideError(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+  function showSuccess(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  // LOGIN
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    hideError('login-error');
+    const username = document.getElementById('login-username').value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!username || !password) { showError('login-error', 'Please fill in all fields.'); return; }
+    document.getElementById('login-btn').textContent = 'Logging in…';
+    document.getElementById('login-btn').disabled = true;
+    const { ok, data } = await api('POST', '/api/auth/login', { username, password });
+    document.getElementById('login-btn').textContent = 'Log In';
+    document.getElementById('login-btn').disabled = false;
+    if (ok) {
+      window.location.href = '/dashboard';
+    } else {
+      showError('login-error', data.message || 'Incorrect username or password.');
+    }
+  });
+  document.getElementById('login-form').addEventListener('submit', () => document.getElementById('login-btn').click());
+
+  // SIGNUP
+  document.getElementById('signup-btn').addEventListener('click', async () => {
+    hideError('signup-error');
+    document.getElementById('signup-success').style.display = 'none';
+    const username = document.getElementById('signup-username').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+    const displayName = document.getElementById('signup-displayname').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const confirm = document.getElementById('signup-confirm').value;
+
+    if (!username) { showError('signup-error', 'Please enter a username.'); return; }
+    if (username.length < 2) { showError('signup-error', 'Username must be at least 2 characters.'); return; }
+    if (!displayName) { showError('signup-error', 'Please enter a display name.'); return; }
+    if (password.length < 6) { showError('signup-error', 'Password must be at least 6 characters.'); return; }
+    if (password !== confirm) { showError('signup-error', 'Passwords do not match.'); return; }
+
+    document.getElementById('signup-btn').textContent = 'Creating your page…';
+    document.getElementById('signup-btn').disabled = true;
+
+    const { ok, data } = await api('POST', '/api/auth/register', { username, displayName, password });
+    document.getElementById('signup-btn').textContent = 'Create My Page';
+    document.getElementById('signup-btn').disabled = false;
+
+    if (ok) {
+      showSuccess('signup-success', 'Account created! Redirecting to your dashboard…');
+      setTimeout(() => { window.location.href = '/dashboard'; }, 1200);
+    } else {
+      showError('signup-error', data.message || 'Something went wrong. Please try again.');
+    }
+  });
+  document.getElementById('signup-form').addEventListener('submit', () => document.getElementById('signup-btn').click());
+
+  // Check if already logged in
+  (async () => {
+    const { data } = await api('GET', '/api/auth/me');
+    if (data.loggedIn) window.location.href = '/dashboard';
+  })();
+
+  // Check if signups are disabled
+  let signupsDisabled = false;
+  (async () => {
+    const { data } = await api('GET', '/api/settings/public');
+    signupsDisabled = !!data.signupsDisabled;
+    if (signupsDisabled) {
+      document.getElementById('signup-disabled-notice').style.display = 'block';
+      document.getElementById('signup-form-wrap').style.display = 'none';
+    }
+  })();
+
+  // Allow tab switching from URL hash
+  if (window.location.hash === '#signup') switchTab('signup');
+</script>
+
+</body>
+</html>

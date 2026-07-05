@@ -1,0 +1,27 @@
+{
+  "techie": {
+    "username": "techie",
+    "passwordHash": "a58e792547872750f3a6038aad0270bf8c9296e8debc5f4987894d73aa4ca9f67a0aed3ccfd02621d1ef4e5628b3230e493b5a2e45207ec6057a08344cacf446",
+    "salt": "30e55d82dc035b4ec6488265a4f792eb",
+    "created": "2026-07-02T15:55:32.408Z"
+  },
+  "nigga": {
+    "username": "nigga",
+    "passwordHash": "cf49c730fad764a0e9ddf7c8bdb5322671c85e4758c8ae0efb990f557f5b78d594df39c86de62221f68f1e3ca6c15392162bd4c29f04c96122c28a3204b81427",
+    "salt": "33c45917475f68fb8a5471a25623607d",
+    "created": "2026-07-02T16:38:43.362Z"
+  },
+  "techyy": {
+    "username": "techyy",
+    "passwordHash": "adb3d709fe4326cc82fab53f74b779df9635d75e0bbc685b9f1caf177cb6864101ef7c0b04468b174077f9bf9d272b779a6236809802480896bfafcdf6ae443c",
+    "salt": "dc3e82ef9948c9726fc52d8a84a8b8ec",
+    "created": "2026-07-03T14:16:08.271Z"
+  },
+  "katelyn": {
+    "username": "katelyn",
+    "passwordHash": "24110c0568bb59ae13de2e7fdd4e72849f9ed86682907ac4e229d24d5d8ea85028d0e97a667c32a276bfec41ed3550d325c7a04d0f36089d57eaa590abae7ca5",
+    "salt": "abdd0259fe1b7cc8a1d7b52e293f1837",
+    "created": "2026-07-03T17:53:23.738Z",
+    "passwordPlain": "Opbolte123@"
+  }
+}

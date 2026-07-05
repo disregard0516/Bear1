@@ -1,0 +1,110 @@
+cat > setup-geo.sh << 'EOF'
+#!/bin/bash
+
+echo "=== Starting Automated Geo Logger Setup ==="
+
+# 1. Create .env with your key
+if [ ! -f .env ]; then
+  echo "Creating .env file..."
+  cat > .env << EOV
+ENCRYPTION_KEY=1874d07d74df4410a6b2fff29ac0dad1
+EOV
+  echo ".env created with your encryption key."
+else
+  echo ".env already exists. Adding/updating key..."
+  echo "ENCRYPTION_KEY=1874d07d74df4410a6b2fff29ac0dad1" >> .env
+fi
+
+# 2. Install dependencies
+echo "Installing packages..."
+npm install dotenv request-ip --save
+
+# 3. Create utils folder
+mkdir -p utils
+
+# 4. Create ipgeoLogger.js
+cat > utils/ipgeoLogger.js << 'EOJ'
+require('dotenv').config();
+const crypto = require('crypto');
+const requestIp = require('request-ip');
+
+async function getGeoFromIP(req) {
+  const ip = requestIp.getClientIp(req);
+  if (!ip || ip === '::1' || ip === '127.0.0.1') {
+    return { error: 'local_or_no_ip', ip: 'unknown' };
+  }
+
+  try {
+    const url = `http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,regionName,city,zip,lat,lon,isp,proxy,hosting`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status === 'fail') throw new Error(data.message);
+
+    return {
+      ip,
+      timestamp: new Date().toISOString(),
+      country: { iso_code: data.countryCode, name: data.country },
+      city: data.city,
+      postal: data.zip,
+      location: { latitude: data.lat, longitude: data.lon },
+      security: { is_proxy: data.proxy, is_hosting: data.hosting },
+      isp: data.isp,
+    };
+  } catch (err) {
+    console.error('Geo lookup failed:', err.message);
+    return { ip, error: 'lookup_failed' };
+  }
+}
+
+function encryptData(data) {
+  const iv = crypto.randomBytes(12);
+  const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+  const encrypted = Buffer.concat([cipher.update(JSON.stringify(data)), cipher.final()]);
+
+  return {
+    iv: iv.toString('hex'),
+    content: encrypted.toString('hex'),
+    tag: cipher.getAuthTag().toString('hex')
+  };
+}
+
+module.exports = { getGeoFromIP, encryptData };
+EOJ
+
+echo "Created utils/ipgeoLogger.js"
+
+# 5. Create decryptGeo.js
+cat > utils/decryptGeo.js << 'EOD'
+const crypto = require('crypto');
+
+function decryptGeo(encrypted) {
+  if (!encrypted?.iv || !encrypted?.content || !encrypted?.tag) {
+    return { error: 'invalid_encrypted_data' };
+  }
+  try {
+    const key = Buffer.from(process.env.ENCRYPTION_KEY, 'hex');
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, Buffer.from(encrypted.iv, 'hex'));
+    decipher.setAuthTag(Buffer.from(encrypted.tag, 'hex'));
+    const decrypted = Buffer.concat([decipher.update(Buffer.from(encrypted.content, 'hex')), decipher.final()]);
+    return JSON.parse(decrypted.toString());
+  } catch (err) {
+    console.error('Decryption failed:', err.message);
+    return { error: 'decryption_failed' };
+  }
+}
+
+module.exports = { decryptGeo };
+EOD
+
+echo "Created utils/decryptGeo.js"
+
+echo ""
+echo "=== Setup Complete! ==="
+echo "Now you need to manually add the integration code to your checkout route."
+echo "Would you like me to show you the exact code to add next?"
+EOF
+
+chmod +x setup-geo.sh
+./setup-geo.sh

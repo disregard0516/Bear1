@@ -1,0 +1,17 @@
+{
+  "name": "bakaboost-static",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node --env-file=.env server.js",
+    "preview": "node --env-file=.env server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Static site ready')\""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "stripe": "^22.3.0"
+  }
+}

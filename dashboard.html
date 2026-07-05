@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BakaBoost — My Dashboard</title>
+  <link rel="icon" type="image/png" href="/coffee-mug.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #467ceb; --blue-dark: #3665c7;
+      --card: #fff;
+      --text: #111827; --muted: #7e879b; --line: #dfe4ee; --soft: #f4f7fc;
+      --shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+      --danger: #ef4444; --success: #22c55e;
+    }
+    html, body { height: 100%; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--text); background: var(--soft); }
+    button { cursor: pointer; font: inherit; }
+    input, textarea, select { font: inherit; }
+
+    /* LOADING SCREEN */
+    #loading-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      background: var(--soft);
+    }
+    .loading-spinner {
+      font-size: 3rem;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* APP SHELL */
+    #app-shell { display: none; height: 100vh; overflow: hidden; }
+    .app-layout { display: flex; height: 100%; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      background: #fff; color: var(--muted);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+      border-right: 1px solid var(--line);
+    }
+    .sidebar-logo {
+      padding: 24px 20px 16px;
+      font-size: 1.1rem; font-weight: 900; color: var(--text);
+      border-bottom: 1px solid var(--line);
+    }
+    .sidebar-user {
+      padding: 20px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sidebar-avatar {
+      width: 48px; height: 48px; border-radius: 999px;
+      background: var(--soft);
+      overflow: hidden; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .sidebar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .sidebar-name { font-size: .9rem; font-weight: 800; color: var(--text); }
+    .sidebar-url { font-size: .75rem; color: var(--blue); margin-top: 2px; }
+    .sidebar-nav { flex: 1; padding: 12px 0; }
+    .sidebar-nav a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 20px; color: var(--muted);
+      text-decoration: none; font-size: .88rem; font-weight: 500;
+      transition: background .15s, color .15s; border-radius: 8px; margin: 2px 8px;
+      cursor: pointer;
+    }
+    .sidebar-nav a:hover, .sidebar-nav a.active { background: var(--soft); color: var(--blue); }
+    .sidebar-nav a.active { font-weight: 700; }
+    .sidebar-nav a.view-page {
+      margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0;
+      padding-top: 14px; margin-left: 0; margin-right: 0; padding-left: 20px;
+    }
+    .sidebar-footer { padding: 16px; border-top: 1px solid var(--line); }
+    .btn-logout {
+      width: 100%; background: var(--soft); color: var(--muted);
+      border: 1px solid var(--line); border-radius: 10px;
+      padding: 10px; font-size: .85rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .btn-logout:hover { background: var(--line); }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; }
+    .main-header {
+      background: #fff; border-bottom: 1px solid var(--line);
+      padding: 18px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .main-header h1 { font-size: 1.2rem; font-weight: 900; }
+    .main-content { padding: 28px; }
+
+    /* SECTION TABS */
+    .dash-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--line);
+      margin-bottom: 28px; background: #fff; border-radius: 16px 16px 0 0;
+      overflow: hidden;
+    }
+    .dash-tab {
+      padding: 14px 20px; font-size: .88rem; font-weight: 600;
+      color: var(--muted); background: none; border: none;
+      border-bottom: 2px solid transparent; cursor: pointer;
+      transition: color .2s; white-space: nowrap;
+    }
+    .dash-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* FORMS */
+    .form-section {
+      background: #fff; border-radius: 16px;
+      border: 1px solid var(--line); padding: 24px; margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .form-section h3 { font-size: .95rem; font-weight: 800; margin-bottom: 20px; color: var(--text); }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: .82rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--line);
+      border-radius: 10px; font-size: .9rem; outline: none;
+      transition: border-color .2s, box-shadow .2s; background: #fafafa;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(70,124,235,.1); background: #fff;
+    }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-hint { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* PROFILE PREVIEW BANNER */
+    .profile-preview {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      overflow: hidden; margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .preview-banner {
+      height: 100px;
+      background: var(--soft);
+      background-size: cover; background-position: center; position: relative;
+    }
+    .preview-pfp {
+      width: 64px; height: 64px; border-radius: 999px;
+      border: 3px solid #fff; position: absolute; bottom: -32px; left: 20px;
+      background: var(--soft); overflow: hidden;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      box-shadow: var(--shadow);
+    }
+    .preview-pfp img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-body { padding: 40px 20px 20px; }
+    .preview-name { font-size: 1rem; font-weight: 800; margin-bottom: 2px; }
+    .preview-bio { font-size: .82rem; color: var(--muted); line-height: 1.4; }
+
+    /* ARRAY FIELDS */
+    .array-section { margin-bottom: 0; }
+    .array-item {
+      background: var(--soft); border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px; margin-bottom: 12px; position: relative;
+    }
+    .array-item .remove-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: #fef2f2; color: var(--danger); border: 1px solid #fecaca;
+      border-radius: 6px; padding: 3px 8px; font-size: .75rem; font-weight: 700;
+    }
+    .array-item .remove-btn:hover { background: #fee2e2; }
+    .array-item input, .array-item textarea {
+      width: 100%; padding: 8px 10px; border: 1.5px solid var(--line);
+      border-radius: 8px; font-size: .85rem; margin-bottom: 8px; outline: none;
+      background: #fff;
+    }
+    .array-item input:last-child, .array-item textarea:last-child { margin-bottom: 0; }
+    .array-item input:focus, .array-item textarea:focus { border-color: var(--blue); }
+    .array-item label { font-size: .78rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 4px; }
+    .btn-add-item {
+      background: var(--soft); color: var(--blue); border: 1.5px dashed var(--blue);
+      border-radius: 10px; padding: 10px; width: 100%; font-size: .85rem; font-weight: 700;
+      transition: background .2s; margin-top: 8px;
+    }
+    .btn-add-item:hover { background: var(--line); }
+
+    /* SAVE BAR */
+    .save-bar {
+      display: flex; justify-content: flex-end; gap: 12px;
+      padding-top: 20px;
+    }
+    .btn-save {
+      background: var(--blue); color: #fff; border: none;
+      padding: 12px 32px; border-radius: 10px; font-size: .9rem; font-weight: 700;
+      transition: background .2s;
+    }
+    .btn-save:hover { background: var(--blue-dark); }
+
+    .tags-input { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tag-input {
+      flex: 1; min-width: 140px; padding: 11px 14px;
+      border: 1.5px solid var(--line); border-radius: 10px;
+      font-size: .9rem; outline: none; background: #fafafa;
+      transition: border-color .2s;
+    }
+    .tag-input:focus { border-color: var(--blue); background: #fff; }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--text); color: #fff; padding: 14px 22px;
+      border-radius: 12px; font-size: .9rem; font-weight: 600;
+      transform: translateY(80px); opacity: 0; transition: all .3s;
+      max-width: 300px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { background: var(--success); }
+    #toast.error { background: var(--danger); }
+
+    /* PASSWORD CHANGE */
+    .section-divider {
+      border: none; border-top: 1px solid var(--line); margin: 24px 0;
+    }
+
+    /* EARNINGS */
+    .earnings-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;
+    }
+    .earn-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      padding: 20px 24px; box-shadow: var(--shadow);
+    }
+    .earn-card-label { font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .earn-card-value { font-size: 1.85rem; font-weight: 900; }
+    .earn-card-value.green { color: #16a34a; }
+    .earn-card-value.red { color: #dc2626; }
+    .earn-card-sub { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+    .earn-table-wrap { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+    .earn-table-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
+    .earn-table-head h3 { font-size: .95rem; font-weight: 800; }
+    table.earn-table { width: 100%; border-collapse: collapse; }
+    .earn-table th { font-size: .72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; padding: 10px 20px; text-align: left; border-bottom: 1px solid var(--line); background: var(--soft); }
+    .earn-table td { font-size: .85rem; padding: 12px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .earn-table tr:last-child td { border-bottom: none; }
+    .earn-table tr:hover td { background: var(--soft); }
+    .earn-empty { padding: 40px; text-align: center; color: var(--muted); font-size: .9rem; }
+    .earn-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: .72rem; font-weight: 700; background: #dcfce7; color: #16a34a; }
+
+    @media (max-width: 720px) {
+      .sidebar { width: 220px; }
+      .main-content { padding: 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .earnings-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .app-layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading-screen">
+  <div class="loading-spinner"></div>
+</div>
+
+<div id="app-shell">
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="/" style="text-decoration:none;color:inherit;"><div class="sidebar-logo">BakaBoost</div></a>
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sb-avatar"></div>
+        <div>
+          <div class="sidebar-name" id="sb-name">Loading…</div>
+          <div class="sidebar-url" id="sb-url"></div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="active" onclick="switchTab('profile')" id="nav-profile">Edit Profile</a>
+        <a onclick="switchTab('posts')" id="nav-posts">Posts</a>
+        <a onclick="switchTab('gallery')" id="nav-gallery">Gallery</a>
+        <a onclick="switchTab('shop')" id="nav-shop">Shop</a>
+        <a onclick="switchTab('earnings')" id="nav-earnings">Earnings</a>
+        <a onclick="switchTab('account')" id="nav-account">Account</a>
+        <a class="view-page" id="view-page-link" href="#" target="_blank">View My Page →</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logout-btn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <div class="main-header">
+        <h1 id="section-title">Edit Profile</h1>
+      </div>
+      <div class="main-content">
+
+        <!-- PROFILE TAB -->
+        <div class="tab-panel active" id="panel-profile">
+          <div class="profile-preview">
+            <div class="preview-banner" id="prev-banner">
+              <div class="preview-pfp" id="prev-pfp"></div>
+            </div>
+            <div class="preview-body">
+              <div class="preview-name" id="prev-name">Your Name</div>
+              <div class="preview-bio" id="prev-bio">Your bio will appear here</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Basic Info</h3>
+            <div class="form-group">
+              <label>Display Name *</label>
+              <input type="text" id="f-displayName" placeholder="Your display name" oninput="updatePreview()" />
+            </div>
+            <div class="form-group">
+              <label>Bio</label>
+              <textarea id="f-bio" placeholder="Tell your fans about yourself…" oninput="updatePreview()"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Coffee Price ($)</label>
+                <input type="number" id="f-coffeePrice" placeholder="1" min="0.5" step="0.5" />
+              </div>
+              <div class="form-group">
+                <label>Coffee Label</label>
+                <input type="text" id="f-coffeeLabel" placeholder="coffee" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Profile Images</h3>
+            <div class="form-group">
+              <label>Profile Picture URL</label>
+              <input type="url" id="f-pfp" placeholder="https://…" oninput="updatePreview()" />
+              <div class="form-hint">Direct link to image (JPG, PNG, GIF)</div>
+            </div>
+            <div class="form-group">
+              <label>Banner Image URL</label>
+              <input type="url" id="f-banner" placeholder="https://…" oninput="updatePreview()" />
+              <div class="form-hint">Recommended: 1200×400px</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Tags (max 4)</h3>
+            <div class="tags-input" id="tags-editor">
+              <input type="text" class="tag-input" maxlength="30" placeholder="Animation" />
+              <input type="text" class="tag-input" maxlength="30" placeholder="Design" />
+              <input type="text" class="tag-input" maxlength="30" placeholder="Art" />
+              <input type="text" class="tag-input" maxlength="30" placeholder="Game Development" />
+            </div>
+            <div class="form-hint">Tags appear on your profile page. Leave blank to hide.</div>
+          </div>
+
+          <div class="save-bar">
+            <button class="btn-save" onclick="saveProfile()">Save Profile</button>
+          </div>
+        </div>
+        
+        <!-- POSTS TAB -->
+        <div class="tab-panel" id="panel-posts">
+          <div class="form-section">
+            <h3>Posts</h3>
+            <div class="array-section">
+              <div id="posts-list"></div>
+              <button class="btn-add-item" id="add-post-btn">+ Add Post</button>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" onclick="saveProfile()">Save Posts</button>
+          </div>
+        </div>
+
+        <!-- GALLERY TAB -->
+        <div class="tab-panel" id="panel-gallery">
+          <div class="form-section">
+            <h3>Gallery</h3>
+            <div class="array-section">
+              <div id="gallery-list"></div>
+              <button class="btn-add-item" id="add-gallery-btn">+ Add Gallery Item</button>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" onclick="saveProfile()">Save Gallery</button>
+          </div>
+        </div>
+
+        <!-- SHOP TAB -->
+        <div class="tab-panel" id="panel-shop">
+          <div class="form-section">
+            <h3>Shop Items</h3>
+            <p class="form-hint" style="margin-bottom:16px;">New items and edits to existing items must be approved by Management before they appear on your page.</p>
+            <div class="array-section">
+              <div id="shop-list"></div>
+              <button class="btn-add-item" id="add-shop-btn">+ Add Shop Item</button>
+            </div>
+          </div>
+          <div class="save-bar">
+            <button class="btn-save" onclick="saveProfile()">Save Shop</button>
+          </div>
+        </div>
+
+        <!-- EARNINGS TAB -->
+        <div class="tab-panel" id="panel-earnings">
+          <div class="earnings-grid">
+            <div class="earn-card">
+              <div class="earn-card-label">Total Received</div>
+              <div class="earn-card-value" id="earn-gross">—</div>
+              <div class="earn-card-sub" id="earn-count">Loading…</div>
+            </div>
+            <div class="earn-card">
+              <div class="earn-card-label">Stripe Fees</div>
+              <div class="earn-card-value red" id="earn-fees">—</div>
+              <div class="earn-card-sub">2.9% + $0.30 per payment</div>
+            </div>
+            <div class="earn-card">
+              <div class="earn-card-label">Your Payout</div>
+              <div class="earn-card-value green" id="earn-net">—</div>
+              <div class="earn-card-sub">After Stripe fees</div>
+            </div>
+          </div>
+          <div class="earn-table-wrap">
+            <div class="earn-table-head">
+              <h3>Payment History</h3>
+            </div>
+            <div id="earn-table-body"></div>
+          </div>
+        </div>
+
+        <!-- ACCOUNT TAB -->
+        <div class="tab-panel" id="panel-account">
+          <div class="form-section">
+            <h3>Change Password</h3>
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="f-current-pw" placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="f-new-pw" placeholder="••••••••" />
+              <div class="form-hint">At least 6 characters</div>
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="f-confirm-pw" placeholder="••••••••" />
+            </div>
+            <div class="save-bar">
+              <button class="btn-save" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  let myUsername = '';
+  let myProfile = {};
+
+  const $ = id => document.getElementById(id);
+
+  function showToast(msg, type = '') {
+    const t = $('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    setTimeout(() => { t.className = ''; }, 3200);
+  }
+
+  async function api(method, url, body) {
+    const res = await fetch(url, {
+      method,
+      headers: body ? { 'Content-Type': 'application/json' } : {},
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'include',
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  // Tab switching
+  const tabNames = ['profile','posts','gallery','shop','earnings','account'];
+  const tabLabels = { profile:'Edit Profile', posts:'Posts', gallery:'Gallery', shop:'Shop', earnings:'Earnings', account:'Account' };
+  let earningsLoaded = false;
+  function switchTab(name) {
+    tabNames.forEach(t => {
+      $('panel-' + t).classList.toggle('active', t === name);
+      $('nav-' + t).classList.toggle('active', t === name);
+    });
+    $('section-title').textContent = tabLabels[name] || 'Dashboard';
+    if (name === 'earnings') { earningsLoaded = false; loadEarnings(); }
+  }
+
+  // Earnings
+  function fmt(n) { return '$' + n.toFixed(2); }
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+  }
+  async function loadEarnings() {
+    $('earn-gross').textContent = '…';
+    $('earn-fees').textContent = '…';
+    $('earn-net').textContent = '…';
+    $('earn-count').textContent = 'Loading…';
+    $('earn-table-body').innerHTML = '<div class="earn-empty">Loading…</div>';
+    const { ok, data } = await api('GET', '/api/user/earnings');
+    if (!ok) {
+      $('earn-table-body').innerHTML = '<div class="earn-empty">Could not load earnings.</div>';
+      return;
+    }
+    earningsLoaded = true;
+    $('earn-gross').textContent = fmt(data.gross);
+    $('earn-fees').textContent = '−' + fmt(data.fees);
+    $('earn-net').textContent = fmt(data.net);
+    $('earn-count').textContent = data.count === 1 ? '1 payment' : data.count + ' payments';
+    if (!data.payments || data.payments.length === 0) {
+      $('earn-table-body').innerHTML = '<div class="earn-empty">No payments yet. Share your page to start receiving donations!</div>';
+      return;
+    }
+    $('earn-table-body').innerHTML = `
+      <table class="earn-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>Item</th>
+            <th>Gross</th>
+            <th>Fee</th>
+            <th>Net</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.payments.map(p => `
+            <tr>
+              <td>${fmtDate(p.date)}</td>
+              <td>${p.type === 'shop' ? '—' : esc(p.donorName || 'Anonymous')}</td>
+              <td style="color:var(--muted);max-width:200px">${p.type === 'shop' ? esc(p.itemName || 'Shop item') : esc(p.message || '—')}</td>
+              <td>${fmt(p.gross)}</td>
+              <td style="color:#dc2626">−${fmt(p.fee)}</td>
+              <td><strong style="color:#16a34a">${fmt(p.net)}</strong></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>`;
+  }
+
+  // Preview updater
+  function updatePreview() {
+    const name = $('f-displayName').value || 'Your Name';
+    const bio = $('f-bio').value || 'Your bio will appear here';
+    const pfp = $('f-pfp').value;
+    const banner = $('f-banner').value;
+
+    $('prev-name').textContent = name;
+    $('prev-bio').textContent = bio;
+
+    const bannerEl = $('prev-banner');
+    if (banner) {
+      bannerEl.style.backgroundImage = `url('${banner.replace(/'/g,"\\'")}')`;
+      bannerEl.style.backgroundSize = 'cover';
+      bannerEl.style.backgroundPosition = 'center';
+    } else {
+      bannerEl.style.backgroundImage = '';
+    }
+
+    const pfpEl = $('prev-pfp');
+    if (pfp) {
+      pfpEl.innerHTML = `<img src="${esc(pfp)}" alt="" onerror="this.style.display='none'">`;
+    } else {
+      pfpEl.innerHTML = '';
+    }
+
+    // Update sidebar avatar
+    if (pfp) {
+      $('sb-avatar').innerHTML = `<img src="${esc(pfp)}" alt="" onerror="this.style.display='none'">`;
+    } else {
+      $('sb-avatar').innerHTML = '';
+    }
+    $('sb-name').textContent = name;
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // Load my profile
+  async function loadMyProfile() {
+    const { ok, data } = await api('GET', '/api/user/profile');
+    if (!ok) { window.location.href = '/login'; return; }
+    myProfile = data;
+
+    $('f-displayName').value = data.displayName || '';
+    $('f-bio').value = data.bio || '';
+    $('f-pfp').value = data.pfp || '';
+    $('f-banner').value = data.banner || '';
+    $('f-coffeePrice').value = data.coffeePrice || 1;
+    $('f-coffeeLabel').value = data.coffeeLabel || 'coffee';
+
+    const tags = data.tags || [];
+    const inputs = document.querySelectorAll('#tags-editor .tag-input');
+    inputs.forEach((inp, i) => { inp.value = tags[i] || ''; });
+
+    renderPosts(data.posts || []);
+    renderGallery(data.gallery || []);
+    renderShop(data.shop || []);
+    updatePreview();
+  }
+
+  // Save profile
+  async function saveProfile() {
+    const payload = {
+      displayName: $('f-displayName').value.trim(),
+      bio: $('f-bio').value.trim(),
+      pfp: $('f-pfp').value.trim(),
+      banner: $('f-banner').value.trim(),
+      coffeePrice: parseFloat($('f-coffeePrice').value) || 1,
+      coffeeLabel: $('f-coffeeLabel').value.trim() || 'coffee',
+      posts: postsData,
+      gallery: galleryData,
+      shop: shopData,
+      tags: Array.from(document.querySelectorAll('#tags-editor .tag-input')).map(inp => inp.value.trim()).filter(Boolean).slice(0, 4),
+    };
+    if (!payload.displayName) { showToast('Display name cannot be empty.', 'error'); return; }
+
+    const { ok, data } = await api('PUT', '/api/user/profile', payload);
+
+    if (ok) {
+      myProfile = { ...myProfile, ...payload };
+      showToast('Profile saved!', 'success');
+      updatePreview();
+    } else {
+      showToast(data.message || 'Failed to save. Try again.', 'error');
+    }
+  }
+
+  // Change password
+  async function changePassword() {
+    const currentPw = $('f-current-pw').value;
+    const newPw = $('f-new-pw').value;
+    const confirmPw = $('f-confirm-pw').value;
+    if (!currentPw || !newPw) { showToast('Please fill in all fields.', 'error'); return; }
+    if (newPw.length < 6) { showToast('New password must be at least 6 characters.', 'error'); return; }
+    if (newPw !== confirmPw) { showToast('Passwords do not match.', 'error'); return; }
+    const { ok, data } = await api('POST', '/api/auth/change-password', { currentPassword: currentPw, newPassword: newPw });
+    if (ok) {
+      showToast('Password updated!', 'success');
+      $('f-current-pw').value = '';
+      $('f-new-pw').value = '';
+      $('f-confirm-pw').value = '';
+    } else {
+      showToast(data.message || 'Failed to update password.', 'error');
+    }
+  }
+
+  // POSTS
+  let postsData = [];
+  function renderPosts(data) {
+    postsData = data.map(p => ({ ...p }));
+    const el = $('posts-list');
+    if (postsData.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = postsData.map((p, i) => `
+      <div class="array-item">
+        <button class="remove-btn" onclick="removePost(${i})">✕ Remove</button>
+        <label>Title</label>
+        <input type="text" value="${esc(p.title||'')}" oninput="postsData[${i}].title=this.value" placeholder="Post title" />
+        <label>Content</label>
+        <textarea oninput="postsData[${i}].content=this.value" placeholder="Post content…">${esc(p.content||'')}</textarea>
+        <label>Date</label>
+        <input type="date" value="${esc(p.date||'')}" oninput="postsData[${i}].date=this.value" />
+        <label>Image URL (optional)</label>
+        <input type="url" value="${esc(p.image||'')}" oninput="postsData[${i}].image=this.value" placeholder="https://…" />
+      </div>
+    `).join('');
+  }
+  function removePost(i) { postsData.splice(i, 1); renderPosts(postsData); }
+  $('add-post-btn').addEventListener('click', () => {
+    postsData.push({ id: 'p' + Date.now(), title: '', content: '', date: new Date().toISOString().slice(0,10), image: '' });
+    renderPosts(postsData);
+  });
+
+  // GALLERY
+  let galleryData = [];
+  function renderGallery(data) {
+    galleryData = data.map(g => ({ ...g }));
+    const el = $('gallery-list');
+    if (galleryData.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = galleryData.map((g, i) => `
+      <div class="array-item">
+        <button class="remove-btn" onclick="removeGallery(${i})">✕ Remove</button>
+        <label>Image URL</label>
+        <input type="url" value="${esc(g.url||'')}" oninput="galleryData[${i}].url=this.value" placeholder="https://…" />
+        <label>Caption</label>
+        <input type="text" value="${esc(g.caption||'')}" oninput="galleryData[${i}].caption=this.value" placeholder="Optional caption" />
+      </div>
+    `).join('');
+  }
+  function removeGallery(i) { galleryData.splice(i, 1); renderGallery(galleryData); }
+  $('add-gallery-btn').addEventListener('click', () => {
+    galleryData.push({ url: '', caption: '' });
+    renderGallery(galleryData);
+  });
+
+  // SHOP
+  let shopData = [];
+  function shopStatusBadge(status) {
+    if (status === 'pending') return '<span style="display:inline-block;background:#fff7e6;color:#b45309;border:1px solid #fde68a;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;margin-bottom:8px;">Pending approval</span>';
+    if (status === 'rejected') return '<span style="display:inline-block;background:#fff0f0;color:#b91c1c;border:1px solid #fecaca;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;margin-bottom:8px;">Rejected — edit &amp; resubmit</span>';
+    return '<span style="display:inline-block;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;margin-bottom:8px;">Live on your page</span>';
+  }
+  function renderShop(data) {
+    shopData = data.map(s => ({ ...s }));
+    const el = $('shop-list');
+    if (shopData.length === 0) { el.innerHTML = ''; return; }
+    el.innerHTML = shopData.map((s, i) => `
+      <div class="array-item">
+        <button class="remove-btn" onclick="removeShop(${i})">✕ Remove</button>
+        ${shopStatusBadge(s.status)}
+        <label>Item Name</label>
+        <input type="text" value="${esc(s.name||'')}" oninput="shopData[${i}].name=this.value" placeholder="Product name" />
+        <label>Price ($)</label>
+        <input type="number" value="${s.price||''}" oninput="shopData[${i}].price=parseFloat(this.value)||0" placeholder="0.00" min="0" step="0.5" />
+        <label>Description</label>
+        <textarea oninput="shopData[${i}].description=this.value" placeholder="Describe the item…">${esc(s.description||'')}</textarea>
+        <label>Image URL (optional)</label>
+        <input type="url" value="${esc(s.image||'')}" oninput="shopData[${i}].image=this.value" placeholder="https://…" />
+      </div>
+    `).join('');
+  }
+  function removeShop(i) { shopData.splice(i, 1); renderShop(shopData); }
+  $('add-shop-btn').addEventListener('click', () => {
+    shopData.push({ id: 's' + Date.now(), name: '', price: 0, description: '', image: '', status: 'pending' });
+    renderShop(shopData);
+  });
+
+  // Logout
+  $('logout-btn').addEventListener('click', async () => {
+    await api('POST', '/api/auth/logout');
+    window.location.href = '/';
+  });
+
+  // Init
+  (async () => {
+    const { ok, data } = await api('GET', '/api/auth/me');
+    if (!ok || !data.loggedIn) {
+      window.location.href = '/login';
+      return;
+    }
+    myUsername = data.username;
+    $('sb-url').textContent = 'bakaboost.com/' + myUsername;
+    $('view-page-link').href = '/' + myUsername;
+    await loadMyProfile();
+    $('loading-screen').style.display = 'none';
+    $('app-shell').style.display = 'block';
+  })();
+</script>
+
+</body>
+</html>
