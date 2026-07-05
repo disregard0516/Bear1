@@ -320,6 +320,11 @@
               <label>Bio</label>
               <textarea id="f-bio" placeholder="Tell your fans about yourself…" oninput="updatePreview()"></textarea>
             </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="f-email" placeholder="you@example.com" />
+              <div class="form-hint">Contact email for your page</div>
+            </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Coffee Price ($)</label>
@@ -423,12 +428,43 @@
               <div class="earn-card-value green" id="earn-net">—</div>
               <div class="earn-card-sub">After Stripe fees</div>
             </div>
+            <div class="earn-card">
+              <div class="earn-card-label">Available for Withdrawal</div>
+              <div class="earn-card-value green" id="earn-available">—</div>
+              <div class="earn-card-sub" id="earn-withdrawn-sub">$0 already requested</div>
+            </div>
           </div>
           <div class="earn-table-wrap">
             <div class="earn-table-head">
               <h3>Payment History</h3>
             </div>
             <div id="earn-table-body"></div>
+          </div>
+
+          <div class="withdraw-section" style="margin-top:24px;">
+            <div class="form-section">
+              <h3>Request Withdrawal</h3>
+              <p class="form-hint" style="margin-bottom:16px;">Request a payout of your available balance. Minimum withdrawal is $10.</p>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Amount ($)</label>
+                  <input type="number" id="withdraw-amount" placeholder="0.00" min="10" step="0.01" />
+                </div>
+                <div class="form-group">
+                  <label>Payment Email</label>
+                  <input type="email" id="withdraw-email" placeholder="you@example.com" />
+                </div>
+              </div>
+              <div class="save-bar" style="justify-content:flex-start;">
+                <button class="btn-save" id="withdraw-btn" onclick="requestWithdraw()">Submit Request</button>
+              </div>
+              <div id="withdraw-status" style="margin-top:12px;font-size:.85rem;font-weight:600;"></div>
+            </div>
+
+            <div class="form-section">
+              <h3>Withdrawal History</h3>
+              <div id="withdraw-history" style="font-size:.85rem;color:var(--muted);">No withdrawal requests yet.</div>
+            </div>
           </div>
         </div>
 
@@ -497,7 +533,7 @@
       $('nav-' + t).classList.toggle('active', t === name);
     });
     $('section-title').textContent = tabLabels[name] || 'Dashboard';
-    if (name === 'earnings') { earningsLoaded = false; loadEarnings(); }
+    if (name === 'earnings') { earningsLoaded = false; loadEarnings(); loadWithdrawals(); }
   }
 
   // Earnings
@@ -510,6 +546,7 @@
     $('earn-gross').textContent = '…';
     $('earn-fees').textContent = '…';
     $('earn-net').textContent = '…';
+    $('earn-available').textContent = '…';
     $('earn-count').textContent = 'Loading…';
     $('earn-table-body').innerHTML = '<div class="earn-empty">Loading…</div>';
     const { ok, data } = await api('GET', '/api/user/earnings');
@@ -518,9 +555,13 @@
       return;
     }
     earningsLoaded = true;
+    myAvailableBalance = data.available || 0;
     $('earn-gross').textContent = fmt(data.gross);
     $('earn-fees').textContent = '−' + fmt(data.fees);
     $('earn-net').textContent = fmt(data.net);
+    $('earn-available').textContent = fmt(myAvailableBalance);
+    $('earn-available').style.color = myAvailableBalance > 0 ? '#16a34a' : 'var(--muted)';
+    $('earn-withdrawn-sub').textContent = '$' + (data.alreadyWithdrawn || 0).toFixed(2) + ' already requested';
     $('earn-count').textContent = data.count === 1 ? '1 payment' : data.count + ' payments';
     if (!data.payments || data.payments.length === 0) {
       $('earn-table-body').innerHTML = '<div class="earn-empty">No payments yet. Share your page to start receiving donations!</div>';
@@ -598,6 +639,7 @@
 
     $('f-displayName').value = data.displayName || '';
     $('f-bio').value = data.bio || '';
+    $('f-email').value = data.email || '';
     $('f-pfp').value = data.pfp || '';
     $('f-banner').value = data.banner || '';
     $('f-coffeePrice').value = data.coffeePrice || 1;
@@ -618,6 +660,7 @@
     const payload = {
       displayName: $('f-displayName').value.trim(),
       bio: $('f-bio').value.trim(),
+      email: $('f-email').value.trim(),
       pfp: $('f-pfp').value.trim(),
       banner: $('f-banner').value.trim(),
       coffeePrice: parseFloat($('f-coffeePrice').value) || 1,
@@ -738,6 +781,61 @@
     shopData.push({ id: 's' + Date.now(), name: '', price: 0, description: '', image: '', status: 'pending' });
     renderShop(shopData);
   });
+
+  // WITHDRAWALS
+  let myAvailableBalance = 0;
+
+  async function requestWithdraw() {
+    const amount = parseFloat($('withdraw-amount').value);
+    const email = $('withdraw-email').value.trim();
+    const statusEl = $('withdraw-status');
+    statusEl.textContent = '';
+    if (!amount || amount < 10) { statusEl.style.color = 'var(--danger)'; statusEl.textContent = 'Minimum withdrawal is $10.'; return; }
+    if (!email) { statusEl.style.color = 'var(--danger)'; statusEl.textContent = 'Please enter your payment email.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { statusEl.style.color = 'var(--danger)'; statusEl.textContent = 'Please enter a valid email address.'; return; }
+    if (amount > myAvailableBalance) {
+      statusEl.style.color = 'var(--danger)';
+      statusEl.textContent = 'Insufficient balance. You have $' + myAvailableBalance.toFixed(2) + ' available to withdraw.';
+      return;
+    }
+    $('withdraw-btn').textContent = 'Submitting…';
+    $('withdraw-btn').disabled = true;
+    const { ok, data } = await api('POST', '/api/user/withdraw', { amount, email });
+    $('withdraw-btn').textContent = 'Submit Request';
+    $('withdraw-btn').disabled = false;
+    if (ok) {
+      statusEl.style.color = 'var(--success)';
+      statusEl.textContent = 'Withdrawal request submitted!';
+      $('withdraw-amount').value = '';
+      $('withdraw-email').value = '';
+      loadEarnings();
+      loadWithdrawals();
+    } else {
+      statusEl.style.color = 'var(--danger)';
+      statusEl.textContent = data.message || 'Something went wrong.';
+    }
+  }
+
+  async function loadWithdrawals() {
+    const { ok, data } = await api('GET', '/api/user/withdrawals');
+    if (!ok) return;
+    const el = $('withdraw-history');
+    if (!data || data.length === 0) {
+      el.innerHTML = '<div style="color:var(--muted);">No withdrawal requests yet.</div>';
+      return;
+    }
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px;">' + data.map(w => {
+      const statusColor = w.status === 'approved' ? '#16a34a' : w.status === 'rejected' ? '#dc2626' : '#b45309';
+      const statusBg = w.status === 'approved' ? '#f0fdf4' : w.status === 'rejected' ? '#fef2f2' : '#fff7e6';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 16px;">
+        <div>
+          <strong>$${w.amount.toFixed(2)}</strong>
+          <div style="font-size:.78rem;color:var(--muted);">to ${esc(w.email)} · ${new Date(w.created).toLocaleDateString()}</div>
+        </div>
+        <span style="display:inline-block;background:${statusBg};color:${statusColor};border-radius:6px;padding:3px 10px;font-size:.75rem;font-weight:700;">${w.status}</span>
+      </div>`;
+    }).join('') + '</div>';
+  }
 
   // Logout
   $('logout-btn').addEventListener('click', async () => {

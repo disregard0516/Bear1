@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BakaBoost — Log in or Sign up</title>
+  <title>BakaBoost — Log in</title>
   <link rel="icon" type="image/png" href="/coffee-mug.png" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -145,6 +145,12 @@
     }
     .back-home:hover { color: var(--blue); }
 
+    .forgot-link {
+      display: block; text-align: center; margin-top: 14px;
+      font-size: .82rem; color: var(--muted); cursor: pointer;
+    }
+    .forgot-link:hover { color: var(--blue); text-decoration: underline; }
+
     @media (max-width: 480px) {
       .auth-card { padding: 36px 24px; border-radius: 20px; }
     }
@@ -159,7 +165,7 @@
       <a href="/">Home</a>
       <a href="/#features">Explore</a>
       <a href="/#how-it-works">How it works</a>
-      <a href="/login#signup"><button class="black-pill" type="button">Start a page</button></a>
+      <a href="/apply"><button class="black-pill" type="button">Start a page</button></a>
     </nav>
   </div>
 </header>
@@ -168,11 +174,6 @@
   <div class="auth-card">
     <div class="auth-logo">BakaBoost</div>
     <p class="auth-sub">Support creators you love</p>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Log In</button>
-      <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
-    </div>
 
     <!-- LOGIN PANEL -->
     <div class="auth-panel active" id="panel-login">
@@ -188,42 +189,48 @@
         </div>
         <button class="btn-primary" id="login-btn" type="submit">Log In</button>
       </form>
-      <p class="switch-hint">
-        Need an account? <a onclick="switchTab('signup')">Sign up free</a>
-      </p>
+      <a class="forgot-link" onclick="showForgot()">Forgot password?</a>
     </div>
 
-    <!-- SIGNUP PANEL -->
-    <div class="auth-panel" id="panel-signup">
-      <div class="auth-error" id="signup-disabled-notice" style="display:none;">sign ups are disabled at this time. All sign ups can go through Management.</div>
-      <div id="signup-form-wrap">
-        <div class="auth-error" id="signup-error"></div>
-        <div class="auth-success" id="signup-success"></div>
-        <form id="signup-form" onsubmit="return false;">
-          <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="signup-username" placeholder="yourname" autocomplete="username" maxlength="30" />
-            <div class="form-hint">Your page will be at bakaboost.com/<span id="username-preview">yourname</span></div>
-          </div>
-          <div class="form-group">
-            <label>Display Name</label>
-            <input type="text" id="signup-displayname" placeholder="Your Name" autocomplete="name" />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="signup-password" placeholder="••••••••" autocomplete="new-password" />
-            <div class="form-hint">At least 6 characters</div>
-          </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" id="signup-confirm" placeholder="••••••••" autocomplete="new-password" />
-          </div>
-          <button class="btn-primary" id="signup-btn" type="submit">Create My Page</button>
-        </form>
+    <!-- FORGOT PASSWORD PANEL -->
+    <div class="auth-panel" id="panel-forgot">
+      <div class="auth-error" id="forgot-error"></div>
+      <div class="auth-success" id="forgot-success" style="display:none;margin-bottom:14px;"></div>
+
+      <div id="forgot-step-1">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px;line-height:1.5;">Enter your email address and we'll send you a reset code.</p>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="forgot-email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <button class="btn-primary" id="forgot-send-btn" type="button">Send Reset Code</button>
       </div>
-      <p class="switch-hint">
-        Already have an account? <a onclick="switchTab('login')">Log in</a>
-      </p>
+
+      <div id="forgot-step-2" style="display:none;">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px;line-height:1.5;">Enter the 6-digit code sent to your email.</p>
+        <div class="form-group">
+          <label>Reset Code</label>
+          <input type="text" id="forgot-code" placeholder="000000" maxlength="6" autocomplete="off" />
+        </div>
+        <button class="btn-primary" id="forgot-verify-btn" type="button">Verify Code</button>
+        <a class="forgot-link" onclick="resendCode()" style="margin-top:10px;">Resend code</a>
+      </div>
+
+      <div id="forgot-step-3" style="display:none;">
+        <p style="font-size:.85rem;color:var(--muted);margin-bottom:20px;line-height:1.5;">Choose a new password for your account.</p>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="forgot-new-pw" placeholder="••••••••" autocomplete="new-password" />
+          <div class="form-hint">At least 6 characters</div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="forgot-confirm-pw" placeholder="••••••••" autocomplete="new-password" />
+        </div>
+        <button class="btn-primary" id="forgot-reset-btn" type="button">Reset Password</button>
+      </div>
+
+      <a class="forgot-link" onclick="showLogin()">← Back to log in</a>
     </div>
 
     <a class="back-home" href="/">← Back to homepage</a>
@@ -231,18 +238,6 @@
 </div>
 
 <script>
-  function switchTab(tab) {
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
-    document.getElementById('panel-login').classList.toggle('active', tab === 'login');
-    document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
-  }
-
-  document.getElementById('signup-username').addEventListener('input', function() {
-    const val = this.value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
-    document.getElementById('username-preview').textContent = val || 'yourname';
-  });
-
   async function api(method, url, body) {
     const res = await fetch(url, {
       method,
@@ -268,6 +263,26 @@
     el.style.display = 'block';
   }
 
+  function showLogin() {
+    document.getElementById('panel-login').classList.add('active');
+    document.getElementById('panel-forgot').classList.remove('active');
+    hideError('forgot-error');
+    document.getElementById('forgot-success').style.display = 'none';
+  }
+
+  let forgotEmail = '';
+
+  function showForgot() {
+    document.getElementById('panel-login').classList.remove('active');
+    document.getElementById('panel-forgot').classList.add('active');
+    hideError('login-error');
+    hideError('forgot-error');
+    document.getElementById('forgot-success').style.display = 'none';
+    document.getElementById('forgot-step-1').style.display = 'block';
+    document.getElementById('forgot-step-2').style.display = 'none';
+    document.getElementById('forgot-step-3').style.display = 'none';
+  }
+
   // LOGIN
   document.getElementById('login-btn').addEventListener('click', async () => {
     hideError('login-error');
@@ -287,56 +302,90 @@
   });
   document.getElementById('login-form').addEventListener('submit', () => document.getElementById('login-btn').click());
 
-  // SIGNUP
-  document.getElementById('signup-btn').addEventListener('click', async () => {
-    hideError('signup-error');
-    document.getElementById('signup-success').style.display = 'none';
-    const username = document.getElementById('signup-username').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
-    const displayName = document.getElementById('signup-displayname').value.trim();
-    const password = document.getElementById('signup-password').value;
-    const confirm = document.getElementById('signup-confirm').value;
-
-    if (!username) { showError('signup-error', 'Please enter a username.'); return; }
-    if (username.length < 2) { showError('signup-error', 'Username must be at least 2 characters.'); return; }
-    if (!displayName) { showError('signup-error', 'Please enter a display name.'); return; }
-    if (password.length < 6) { showError('signup-error', 'Password must be at least 6 characters.'); return; }
-    if (password !== confirm) { showError('signup-error', 'Passwords do not match.'); return; }
-
-    document.getElementById('signup-btn').textContent = 'Creating your page…';
-    document.getElementById('signup-btn').disabled = true;
-
-    const { ok, data } = await api('POST', '/api/auth/register', { username, displayName, password });
-    document.getElementById('signup-btn').textContent = 'Create My Page';
-    document.getElementById('signup-btn').disabled = false;
-
+  // FORGOT PASSWORD — STEP 1: Send code
+  document.getElementById('forgot-send-btn').addEventListener('click', async () => {
+    hideError('forgot-error');
+    document.getElementById('forgot-success').style.display = 'none';
+    const email = document.getElementById('forgot-email').value.trim();
+    if (!email) { showError('forgot-error', 'Please enter your email address.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('forgot-error', 'Please enter a valid email address.'); return; }
+    document.getElementById('forgot-send-btn').textContent = 'Sending…';
+    document.getElementById('forgot-send-btn').disabled = true;
+    const { ok, data } = await api('POST', '/api/auth/forgot-password', { email });
+    document.getElementById('forgot-send-btn').textContent = 'Send Reset Code';
+    document.getElementById('forgot-send-btn').disabled = false;
     if (ok) {
-      showSuccess('signup-success', 'Account created! Redirecting to your dashboard…');
-      setTimeout(() => { window.location.href = '/dashboard'; }, 1200);
+      forgotEmail = email;
+      document.getElementById('forgot-step-1').style.display = 'none';
+      document.getElementById('forgot-step-2').style.display = 'block';
+      showSuccess('forgot-success', data.message);
     } else {
-      showError('signup-error', data.message || 'Something went wrong. Please try again.');
+      showError('forgot-error', data.message || 'Something went wrong.');
     }
   });
-  document.getElementById('signup-form').addEventListener('submit', () => document.getElementById('signup-btn').click());
+
+  // FORGOT PASSWORD — STEP 2: Verify code
+  document.getElementById('forgot-verify-btn').addEventListener('click', async () => {
+    hideError('forgot-error');
+    document.getElementById('forgot-success').style.display = 'none';
+    const code = document.getElementById('forgot-code').value.trim();
+    if (!code || code.length !== 6) { showError('forgot-error', 'Please enter the 6-digit reset code.'); return; }
+    document.getElementById('forgot-verify-btn').textContent = 'Verifying…';
+    document.getElementById('forgot-verify-btn').disabled = true;
+    const { ok, data } = await api('POST', '/api/auth/verify-reset-code', { email: forgotEmail, code });
+    document.getElementById('forgot-verify-btn').textContent = 'Verify Code';
+    document.getElementById('forgot-verify-btn').disabled = false;
+    if (ok) {
+      document.getElementById('forgot-step-2').style.display = 'none';
+      document.getElementById('forgot-step-3').style.display = 'block';
+      document.getElementById('forgot-success').style.display = 'none';
+    } else {
+      showError('forgot-error', data.message || 'Invalid code.');
+    }
+  });
+
+  // FORGOT PASSWORD — STEP 3: Reset password
+  document.getElementById('forgot-reset-btn').addEventListener('click', async () => {
+    hideError('forgot-error');
+    const code = document.getElementById('forgot-code').value.trim();
+    const newPw = document.getElementById('forgot-new-pw').value;
+    const confirmPw = document.getElementById('forgot-confirm-pw').value;
+    if (newPw.length < 6) { showError('forgot-error', 'Password must be at least 6 characters.'); return; }
+    if (newPw !== confirmPw) { showError('forgot-error', 'Passwords do not match.'); return; }
+    document.getElementById('forgot-reset-btn').textContent = 'Resetting…';
+    document.getElementById('forgot-reset-btn').disabled = true;
+    const { ok, data } = await api('POST', '/api/auth/reset-password', { email: forgotEmail, code, newPassword: newPw });
+    document.getElementById('forgot-reset-btn').textContent = 'Reset Password';
+    document.getElementById('forgot-reset-btn').disabled = false;
+    if (ok) {
+      showSuccess('forgot-success', 'Password has been reset! You can now log in with your new password.');
+      document.getElementById('forgot-code').value = '';
+      document.getElementById('forgot-new-pw').value = '';
+      document.getElementById('forgot-confirm-pw').value = '';
+      setTimeout(() => showLogin(), 2000);
+    } else {
+      showError('forgot-error', data.message || 'Something went wrong. Try again.');
+    }
+  });
+
+  function resendCode() {
+    document.getElementById('forgot-step-2').style.display = 'none';
+    document.getElementById('forgot-step-1').style.display = 'block';
+    document.getElementById('forgot-success').style.display = 'none';
+    hideError('forgot-error');
+  }
+
+  // Enter key support
+  document.getElementById('forgot-email').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('forgot-send-btn').click(); });
+  document.getElementById('forgot-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('forgot-verify-btn').click(); });
+  document.getElementById('forgot-new-pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('forgot-reset-btn').click(); });
+  document.getElementById('forgot-confirm-pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('forgot-reset-btn').click(); });
 
   // Check if already logged in
   (async () => {
     const { data } = await api('GET', '/api/auth/me');
     if (data.loggedIn) window.location.href = '/dashboard';
   })();
-
-  // Check if signups are disabled
-  let signupsDisabled = false;
-  (async () => {
-    const { data } = await api('GET', '/api/settings/public');
-    signupsDisabled = !!data.signupsDisabled;
-    if (signupsDisabled) {
-      document.getElementById('signup-disabled-notice').style.display = 'block';
-      document.getElementById('signup-form-wrap').style.display = 'none';
-    }
-  })();
-
-  // Allow tab switching from URL hash
-  if (window.location.hash === '#signup') switchTab('signup');
 </script>
 
 </body>

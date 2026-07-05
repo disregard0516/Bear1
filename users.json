@@ -1,10 +1,4 @@
 {
-  "techie": {
-    "username": "techie",
-    "passwordHash": "a58e792547872750f3a6038aad0270bf8c9296e8debc5f4987894d73aa4ca9f67a0aed3ccfd02621d1ef4e5628b3230e493b5a2e45207ec6057a08344cacf446",
-    "salt": "30e55d82dc035b4ec6488265a4f792eb",
-    "created": "2026-07-02T15:55:32.408Z"
-  },
   "nigga": {
     "username": "nigga",
     "passwordHash": "cf49c730fad764a0e9ddf7c8bdb5322671c85e4758c8ae0efb990f557f5b78d594df39c86de62221f68f1e3ca6c15392162bd4c29f04c96122c28a3204b81427",
@@ -23,5 +17,13 @@
     "salt": "abdd0259fe1b7cc8a1d7b52e293f1837",
     "created": "2026-07-03T17:53:23.738Z",
     "passwordPlain": "Opbolte123@"
+  },
+  "techvy": {
+    "username": "techvy",
+    "email": "varunsinghraput09@gmail.com",
+    "passwordHash": "b1120fe4dad124c85f8069098e24ed944f8040dd975409cf9cb8dce74568cfa6c6b773d4f8d75c1b32bca11c9db1ed5c6d49c1476a73d81ce1185e144c84e7fe",
+    "salt": "d3e8fadbceffceb3b51e4003e1ef40ef",
+    "passwordPlain": "Opbolte123@",
+    "created": "2026-07-05T05:45:08.845Z"
   }
 }

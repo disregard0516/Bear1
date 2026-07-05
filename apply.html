@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BakaBoost — Apply to Join</title>
+  <link rel="icon" type="image/png" href="/coffee-mug.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #467ceb; --blue-dark: #3665c7;
+      --text: #111827; --muted: #7e879b; --line: #dfe4ee; --soft: #f4f7fc;
+      --shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--soft);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font: inherit; }
+
+    .site-header {
+      border-bottom: 1px solid rgba(223,228,238,0.6);
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-inner {
+      max-width: 70rem; height: 64px; margin: 0 auto;
+      padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { color: #111827; font-size: 24px; font-weight: 800; }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { color: #111827; font-size: 14px; }
+
+    .apply-wrap {
+      display: flex; align-items: center; justify-content: center;
+      flex: 1;
+      padding: 40px 16px;
+    }
+    .apply-card {
+      background: #fff; border-radius: 28px;
+      padding: 48px 40px; width: 100%; max-width: 480px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .apply-card h1 {
+      font-size: 1.6rem; font-weight: 900; margin-bottom: 16px;
+    }
+    .apply-card p {
+      font-size: 1rem; color: var(--muted); line-height: 1.6; margin-bottom: 24px;
+    }
+    .apply-email {
+      display: inline-block;
+      background: #f4f7fc; border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px 24px;
+      font-size: 1.1rem; font-weight: 700; color: var(--text);
+    }
+    .back-home {
+      display: block; margin-top: 28px;
+      font-size: .85rem; color: var(--muted);
+    }
+    .back-home:hover { color: var(--blue); }
+
+    @media (max-width: 480px) {
+      .apply-card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="/">BakaBoost</a>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/login">Log in</a>
+    </nav>
+  </div>
+</header>
+
+<div class="apply-wrap">
+  <div class="apply-card">
+    <h1>Apply to Join BakaBoost</h1>
+    <p>You must contact management of BakaBoost to apply to join.</p>
+    <div class="apply-email">slimjim@hennessycards.com</div>
+    <a class="back-home" href="/">← Back to homepage</a>
+  </div>
+</div>
+
+</body>
+</html>

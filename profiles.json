@@ -78,32 +78,19 @@
       "Game Development"
     ]
   },
-  "techie": {
-    "username": "techie",
-    "displayName": "Techvy",
-    "bio": "",
+  "techvy": {
+    "username": "techvy",
+    "displayName": "techvy",
+    "email": "varunsinghraput09@gmail.com",
+    "bio": "hsad",
     "pfp": "",
     "banner": "",
-    "followerCount": 0,
+    "followerCount": 32,
     "coffeePrice": 1,
     "coffeeLabel": "coffee",
     "gallery": [],
     "posts": [],
-    "shop": [
-      {
-        "id": "s1783092471385",
-        "name": "Nitro",
-        "description": "hdsjfd",
-        "price": 10,
-        "image": "",
-        "status": "approved"
-      }
-    ],
-    "tags": [
-      "Animation",
-      "Design",
-      "Art",
-      "Game Development"
-    ]
+    "shop": [],
+    "tags": []
   }
 }

@@ -283,6 +283,7 @@
       <nav class="sidebar-nav">
         <a href="#" class="active" id="nav-profiles" onclick="switchSection('profiles');return false;">Profiles</a>
         <a href="#" id="nav-shop-approvals" onclick="switchSection('shop-approvals');return false;">Shop Approvals <span id="shop-pending-count" style="display:none;background:var(--blue);color:#fff;border-radius:999px;padding:1px 7px;font-size:.72rem;margin-left:6px;"></span></a>
+        <a href="#" id="nav-withdrawals" onclick="switchSection('withdrawals');return false;">Withdrawals <span id="withdraw-pending-count" style="display:none;background:var(--blue);color:#fff;border-radius:999px;padding:1px 7px;font-size:.72rem;margin-left:6px;"></span></a>
         <a href="#" id="nav-settings" onclick="switchSection('settings');return false;">Settings</a>
       </nav>
       <div class="sidebar-footer">
@@ -311,23 +312,21 @@
         </div>
       </div>
 
+      <div id="section-withdrawals" style="display:none;">
+        <div class="main-header">
+          <h1>Withdrawal Requests</h1>
+        </div>
+        <div class="main-content">
+          <div id="withdrawals-list"></div>
+        </div>
+      </div>
+
       <div id="section-settings" style="display:none;">
         <div class="main-header">
           <h1>Site Settings</h1>
         </div>
         <div class="main-content">
           <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 28px;max-width:560px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
-              <div>
-                <div style="font-weight:800;font-size:1rem;margin-bottom:4px;">Disable Sign Ups</div>
-                <div style="font-size:.85rem;color:var(--muted);">When enabled, new users can't create accounts. The Sign Up tab stays visible but shows a message directing them to Management.</div>
-              </div>
-              <label style="position:relative;display:inline-block;width:48px;height:28px;flex-shrink:0;">
-                <input type="checkbox" id="signups-disabled-toggle" style="opacity:0;width:0;height:0;">
-                <span id="toggle-track" style="position:absolute;cursor:pointer;inset:0;background:#d8dee8;border-radius:999px;transition:.2s;"></span>
-                <span id="toggle-knob" style="position:absolute;height:22px;width:22px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></span>
-              </label>
-            </div>
           </div>
           <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 28px;max-width:560px;margin-top:16px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
@@ -379,6 +378,11 @@
             <label>Follower Count</label>
             <input type="number" id="f-followerCount" placeholder="0" min="0" />
           </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="creator@example.com" />
+          <div class="form-hint">Contact email for this creator</div>
         </div>
         <div class="form-group">
           <label>Bio</label>
@@ -522,15 +526,18 @@
     $('app-shell').style.display = 'block';
     loadProfiles();
     refreshShopPendingBadge();
+    refreshWithdrawPendingBadge();
   }
 
   // SECTIONS
   async function switchSection(section) {
     $('nav-profiles').classList.toggle('active', section === 'profiles');
     $('nav-shop-approvals').classList.toggle('active', section === 'shop-approvals');
+    $('nav-withdrawals').classList.toggle('active', section === 'withdrawals');
     $('nav-settings').classList.toggle('active', section === 'settings');
     $('section-profiles').style.display = section === 'profiles' ? 'block' : 'none';
     $('section-shop-approvals').style.display = section === 'shop-approvals' ? 'block' : 'none';
+    $('section-withdrawals').style.display = section === 'withdrawals' ? 'block' : 'none';
     if (section === 'settings') {
       await loadSettings();
       $('section-settings').style.display = 'block';
@@ -538,6 +545,7 @@
       $('section-settings').style.display = 'none';
     }
     if (section === 'shop-approvals') await loadShopApprovals();
+    if (section === 'withdrawals') await loadWithdrawals();
   }
 
   // SHOP APPROVALS
@@ -596,13 +604,77 @@
     }
   }
 
-  // SETTINGS
-  function renderToggle(checked) {
-    $('signups-disabled-toggle').checked = checked;
-    $('toggle-track').style.background = checked ? '#467ceb' : '#d8dee8';
-    $('toggle-knob').style.transform = checked ? 'translateX(20px)' : 'translateX(0)';
+  async function refreshWithdrawPendingBadge() {
+    const { ok, data } = await api('GET', '/api/admin/withdrawals');
+    if (ok) {
+      const pending = data.filter(w => w.status === 'pending');
+      if (pending.length > 0) {
+        $('withdraw-pending-count').style.display = 'inline-block';
+        $('withdraw-pending-count').textContent = pending.length;
+      } else {
+        $('withdraw-pending-count').style.display = 'none';
+      }
+    }
   }
 
+  // WITHDRAWALS
+  async function loadWithdrawals() {
+    const { ok, data } = await api('GET', '/api/admin/withdrawals');
+    if (!ok) return;
+    renderWithdrawals(data);
+  }
+
+  function renderWithdrawals(list) {
+    const el = $('withdrawals-list');
+    const pending = list.filter(w => w.status === 'pending');
+    if (pending.length > 0) {
+      $('withdraw-pending-count').style.display = 'inline-block';
+      $('withdraw-pending-count').textContent = pending.length;
+    } else {
+      $('withdraw-pending-count').style.display = 'none';
+    }
+    if (list.length === 0) {
+      el.innerHTML = `<div class="empty-state">
+        <div class="icon" style="font-size:48px;color:var(--line);">○</div>
+        <h3>No withdrawal requests</h3>
+        <p>When creators request payouts, they'll appear here.</p>
+      </div>`;
+      return;
+    }
+    el.innerHTML = `<div class="profile-list">` + list.map(w => {
+      const statusColor = w.status === 'approved' ? '#16a34a' : w.status === 'rejected' ? '#dc2626' : '#b45309';
+      const statusBg = w.status === 'approved' ? '#f0fdf4' : w.status === 'rejected' ? '#fef2f2' : '#fff7e6';
+      return `<div class="profile-item">
+        <div class="profile-info" style="padding-top:16px;">
+          <div class="profile-name">${esc(w.username)}</div>
+          <div class="profile-url" style="color:var(--text);font-size:1.1rem;">$${(w.amount||0).toFixed(2)}</div>
+          <div class="profile-bio" style="white-space:normal;">Email: ${esc(w.email)}</div>
+          <div class="profile-meta">
+            <span>${new Date(w.created).toLocaleDateString()}</span>
+            <span style="display:inline-block;background:${statusBg};color:${statusColor};border-radius:6px;padding:2px 8px;font-size:.72rem;font-weight:700;">${w.status}</span>
+          </div>
+          ${w.status === 'pending' ? `
+            <div class="profile-actions">
+              <button class="btn-edit" onclick="reviewWithdraw('${w.id}','approved')">Approve</button>
+              <button class="btn-delete" onclick="reviewWithdraw('${w.id}','rejected')">Reject</button>
+            </div>
+          ` : ''}
+        </div>
+      </div>`;
+    }).join('') + `</div>`;
+  }
+
+  async function reviewWithdraw(id, decision) {
+    const { ok } = await api('POST', '/api/admin/withdraw-review', { id, decision });
+    if (ok) {
+      showToast(decision === 'approved' ? 'Withdrawal approved' : 'Withdrawal rejected', 'success');
+      loadWithdrawals();
+    } else {
+      showToast('Failed to update', 'error');
+    }
+  }
+
+  // SETTINGS
   function renderStripeToggle(checked) {
     $('stripe-toggle').checked = checked;
     $('stripe-toggle-track').style.background = checked ? '#467ceb' : '#d8dee8';
@@ -612,22 +684,9 @@
   async function loadSettings() {
     const { ok, data } = await api('GET', '/api/admin/settings');
     if (ok) {
-      renderToggle(!!data.signupsDisabled);
       renderStripeToggle(!!data.stripeEnabled);
     }
   }
-
-  $('signups-disabled-toggle').addEventListener('change', async (e) => {
-    const desired = e.target.checked;
-    const { ok, data } = await api('PUT', '/api/admin/settings', { signupsDisabled: desired });
-    if (ok) {
-      renderToggle(!!data.signupsDisabled);
-      showToast(desired ? 'Sign ups disabled' : 'Sign ups enabled', 'success');
-    } else {
-      renderToggle(!desired);
-      showToast('Failed to update setting', 'error');
-    }
-  });
 
   $('stripe-toggle').addEventListener('change', async (e) => {
     const desired = e.target.checked;
@@ -720,6 +779,7 @@
     const p = profiles[username];
     $('f-username').value = p.username || '';
     $('f-displayName').value = p.displayName || '';
+    $('f-email').value = p.email || '';
     $('f-bio').value = p.bio || '';
     $('f-pfp').value = p.pfp || '';
     $('f-banner').value = p.banner || '';
@@ -759,7 +819,7 @@
   }
 
   function resetForm() {
-    ['f-username','f-displayName','f-bio','f-pfp','f-banner','f-followerCount','f-coffeeLabel'].forEach(id => { $(id).value = ''; });
+    ['f-username','f-displayName','f-email','f-bio','f-pfp','f-banner','f-followerCount','f-coffeeLabel'].forEach(id => { $(id).value = ''; });
     $('f-coffeePrice').value = '1';
     $('f-coffeeLabel').value = 'coffee';
     $('f-password').value = '';
@@ -881,6 +941,7 @@
     const payload = {
       username,
       displayName,
+      email: $('f-email').value.trim(),
       bio: $('f-bio').value.trim(),
       pfp: $('f-pfp').value.trim(),
       banner: $('f-banner').value.trim(),
