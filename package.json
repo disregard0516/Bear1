@@ -8,9 +8,6 @@
     "start": "node server.js",
     "build": "node -e \"console.log('Static site ready')\""
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "dependencies": {
     "nodemailer": "^9.0.3",
     "stripe": "^22.3.0"
